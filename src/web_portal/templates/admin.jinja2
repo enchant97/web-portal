@@ -1,7 +1,7 @@
 {% extends "base.jinja2" %}
 {% block title %}Admin{% endblock %}
 {% block main %}
-<form action="{{ url_for('new_widget') }}" method="post">
+<form action="{{ url_for('admin.new_widget') }}" method="post">
     <h2>New Widget</h2>
     <input type="text" name="url" required placeholder="https://...">
     <input type="text" name="prefix" required placeholder="prefix...">
