@@ -1,5 +1,5 @@
 quart
-flask-login
+quart-auth
 tortoise-orm
 hypercorn
 pydantic[dotenv]

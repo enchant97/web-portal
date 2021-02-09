@@ -1,4 +1,3 @@
-from flask_login import UserMixin
 from tortoise.fields import (BinaryField, BooleanField, CharField,
                              ForeignKeyField, ForeignKeyRelation, IntField,
                              ReverseRelation)
@@ -6,7 +5,7 @@ from tortoise.models import Model
 from werkzeug.security import check_password_hash, generate_password_hash
 
 
-class User(UserMixin, Model):
+class User(Model):
     id = IntField(pk=True)
     username = CharField(20, unique=True)
     password_hash = BinaryField()

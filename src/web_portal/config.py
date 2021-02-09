@@ -6,6 +6,7 @@ class Settings(BaseSettings):
     DB_URL: str
     ADMIN_CREATE_OVERRIDE: Optional[bool] = False
     SECRET_KEY: str
+    UNSECURE_LOGIN: Optional[bool] = False
 
     class Config:
         case_sensitive = True
