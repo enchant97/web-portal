@@ -17,6 +17,11 @@
         <nav>
             <a href="{{ url_for('portal') }}">Portal</a>
             <a href="{{ url_for('admin') }}">Admin</a>
+            {% if current_user.is_authenticated %}
+            <a href="{{ url_for('logout') }}">Logout</a>
+            {% else %}
+            <a href="{{ url_for('login') }}">Login</a>
+            {% endif %}
         </nav>
     </header>
     <main>

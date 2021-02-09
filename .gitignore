@@ -3,6 +3,8 @@
 ~$*
 
 .vscode
+data/
+.env
 
 __pycache__
 venv/

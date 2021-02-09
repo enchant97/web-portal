@@ -1,5 +1,15 @@
 {% extends "base.jinja2" %}
 {% block title %}Admin{% endblock %}
 {% block main %}
-
+<form action="{{ url_for('new_widget') }}" method="post">
+    <h2>New Widget</h2>
+    <input type="text" name="url" required placeholder="https://...">
+    <input type="text" name="prefix" required placeholder="prefix...">
+    <select name="group_id">
+        {% for group in groups %}
+        <option value="{{ group.id }}">{{ group.prefix }}</option>
+        {% endfor %}
+    </select>
+    <button type="submit">Save</button>
+</form>
 {% endblock %}
