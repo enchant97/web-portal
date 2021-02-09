@@ -11,7 +11,9 @@
 footer,
 header,
 input,
-select {
+select,
+button,
+label {
     font-family: var(--font-family-main);
 }
 
@@ -74,7 +76,6 @@ form h2 {
 form input,
 form select,
 form button {
-    font-size: 0.9em;
     padding: 4px;
     border-radius: 6px;
     border-style: none;

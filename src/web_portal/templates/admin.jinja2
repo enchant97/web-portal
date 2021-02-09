@@ -33,4 +33,59 @@
     <input type="text" name="prefix" id="new-group-prefix" required placeholder="prefix...">
     <button type="submit">Save</button>
 </form>
+
+<form action="{{ url_for('admin.re_group_widget') }}" method="post">
+    <h2>Re-Group Wiget</h2>
+    <label for="re-group-widget-widget">Widget</label>
+    <select name="widget_id" id="re-group-widget-widget" required>
+        <option value=""></option>
+        {% for widget in widgets %}
+        <option value="{{ widget.id }}">{{ widget.prefix }}</option>
+        {% endfor %}
+    </select>
+    <label for="re-group-widget-group">Group</label>
+    <select name="group_id" id="re-group-widget-group" required>
+        <option value=""></option>
+        {% for group in groups %}
+        <option value="{{ group.id }}">{{ group.prefix }}</option>
+        {% endfor %}
+    </select>
+    <button type="submit">Save</button>
+</form>
+
+<form action="{{ url_for('admin.delete_widget') }}" method="post">
+    <h2>Delete Widget</h2>
+    <label for="delete-widget-widget">Widget</label>
+    <select name="widget_id" id="delete-widget-widget" required>
+        <option value=""></option>
+        {% for widget in widgets %}
+        <option value="{{ widget.id }}">{{ widget.prefix }}</option>
+        {% endfor %}
+    </select>
+    <button type="submit">Save</button>
+</form>
+
+<form action="{{ url_for('admin.change_widget_color') }}" method="post">
+    <h2>Widget Color</h2>
+    <label for="widget-color-widget">Widget</label>
+    <select name="widget_id" id="widget-color-widget" required>
+        <option value=""></option>
+        {% for widget in widgets %}
+        <option value="{{ widget.id }}">{{ widget.prefix }}</option>
+        {% endfor %}
+    </select>
+    <label for="widget-color-name">Color</label>
+    <select name="color_name" id="widget-color-name" required>
+        <option value=""></option>
+        <option>grey</option>
+        <option>red</option>
+        <option>orange</option>
+        <option>yellow</option>
+        <option>green</option>
+        <option>blue</option>
+        <option>purple</option>
+        <option>pink</option>
+    </select>
+    <button type="submit">Save</button>
+</form>
 {% endblock %}

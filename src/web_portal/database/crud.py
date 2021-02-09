@@ -1,4 +1,4 @@
-from typing import Iterator, List
+from typing import List
 
 from .models import Panel_Group, Panel_Widget, User
 
@@ -34,6 +34,15 @@ async def new_panel_widget(
     prefix: str,
     color_name: str,
     group_id: int) -> Panel_Widget:
+    """
+    create a new widget
+
+        :param url: the url
+        :param prefix: the prefix
+        :param color_name: the background color
+        :param group_id: the group id it belongs to
+        :return: the created row
+    """
     widget = Panel_Widget(
         url=url,
         prefix=prefix,
@@ -44,6 +53,12 @@ async def new_panel_widget(
 
 
 async def new_panel_group(prefix: str) -> Panel_Group:
+    """
+    create a new panel group
+
+        :param prefix: the prefix
+        :return: the created row
+    """
     group = Panel_Group(prefix=prefix)
     await group.save()
     return group
@@ -65,10 +80,20 @@ async def check_user(username: str, password: str) -> User:
 
 
 async def get_widgets() -> List[Panel_Widget]:
+    """
+    get all widgets
+
+        :return: all the widgets
+    """
     return await Panel_Widget.all()
 
 
 async def get_widgets_by_group():
+    """
+    get all widgets by their group
+
+        :return: the grouped widgets as list
+    """
     widgets_grouped = []
     group_ids = await Panel_Group.all()
     for group in group_ids:
@@ -80,4 +105,38 @@ async def get_widgets_by_group():
 
 
 async def get_panel_groups() -> List[Panel_Group]:
+    """
+    get all groups
+
+        :return: the group rows as list
+    """
     return await Panel_Group.all()
+
+
+async def modify_widget_group(widget_id: int, group_id: int):
+    """
+    modify a widget's group
+
+        :param widget_id: the widget id
+        :param group_id: the group id
+    """
+    await Panel_Widget.filter(id=widget_id).update(group_id=group_id)
+
+
+async def modify_widget_color(widget_id: int, color_name: str):
+    """
+    modify a widget's color
+
+        :param widget_id: the widget id
+        :param color_name: the color
+    """
+    await Panel_Widget.filter(id=widget_id).update(color_name=color_name)
+
+
+async def delete_widget_by_id(widget_id: int):
+    """
+    delete a widget by it's id
+
+        :param widget_id: the widget id
+    """
+    await Panel_Widget.filter(id=widget_id).delete()
