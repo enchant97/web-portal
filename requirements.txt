@@ -1,0 +1,3 @@
+quart
+flask-login
+tortoise-orm
