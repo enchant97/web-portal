@@ -17,7 +17,8 @@ async def new_widget():
     url = (await request.form)["url"]
     group_id = (await request.form)["group_id"]
     prefix = (await request.form)["prefix"]
-    await new_panel_widget(url, prefix, group_id)
+    color_name = (await request.form)["color_name"]
+    await new_panel_widget(url, prefix, color_name, group_id)
     return redirect(url_for("admin.index"))
 
 @blueprint.route("/new-group", methods=["POST"])

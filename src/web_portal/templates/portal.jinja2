@@ -3,10 +3,10 @@
 {% block main %}
 {% for group in widgets_grouped %}
 <div class="panel">
-    <h3>{{ group.group_prefix }}<h3>
+    <h3>{{ group.group_prefix }}</h3>
     <div>
     {% for widget in group.widgets %}
-        <a href="{{ widget.url }}">{{ widget.prefix }}</a>
+        <a class="{{ widget.color_name }}" href="{{ widget.url }}">{{ widget.prefix }}</a>
     {% endfor %}
     </div>
 </div>

@@ -3,19 +3,34 @@
 {% block main %}
 <form action="{{ url_for('admin.new_widget') }}" method="post">
     <h2>New Widget</h2>
-    <input type="text" name="url" required placeholder="https://...">
-    <input type="text" name="prefix" required placeholder="prefix...">
-    <select name="group_id">
+    <label for="new-widget-url">URL</label>
+    <input type="text" name="url" id="new-widget-url" required placeholder="https://...">
+    <label for="new-widget-prefix">Prefix</label>
+    <input type="text" name="prefix" id="new-widget-prefix" required placeholder="prefix...">
+    <label for="new-widget-group-id">Group</label>
+    <select name="group_id" id="new-widget-group-id">
         {% for group in groups %}
         <option value="{{ group.id }}">{{ group.prefix }}</option>
         {% endfor %}
+    </select>
+    <label for="new-widget-color-name">Color</label>
+    <select name="color_name" id="new-widget-color-name">
+        <option>grey</option>
+        <option>red</option>
+        <option>orange</option>
+        <option>yellow</option>
+        <option>green</option>
+        <option>blue</option>
+        <option>purple</option>
+        <option>pink</option>
     </select>
     <button type="submit">Save</button>
 </form>
 
 <form action="{{ url_for('admin.new_group') }}" method="post">
     <h2>New Group</h2>
-    <input type="text" name="prefix" required placeholder="prefix...">
+    <label for="new-group-prefix">Prefix</label>
+    <input type="text" name="prefix" id="new-group-prefix" required placeholder="prefix...">
     <button type="submit">Save</button>
 </form>
 {% endblock %}

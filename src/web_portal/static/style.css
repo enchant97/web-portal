@@ -1,6 +1,6 @@
 :root {
     --font-dark: black;
-    --font-light: white;
+    --font-light: #f0f0f0;
     --bg-bnt: #adadad;
     --bg-body: #9299a5;
     --bg-panel: #848a94;
@@ -9,7 +9,9 @@
 }
 
 footer,
-header {
+header,
+input,
+select {
     font-family: var(--font-family-main);
 }
 
@@ -58,6 +60,39 @@ header nav a:hover {
     color: var(--font-light);
 }
 
+form {
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    max-width: 500px;
+}
+
+form h2 {
+    text-align: center;
+}
+
+form input,
+form select,
+form button {
+    font-size: 0.9em;
+    padding: 4px;
+    border-radius: 6px;
+    border-style: none;
+    margin: 2px;
+    background-color: var(--bg-panel);
+}
+
+form button {
+    background-color: var(--bg-bnt);
+}
+
+form button:hover {
+    cursor: pointer;
+    transition-duration: 400ms;
+    background-color: black;
+    color: var(--font-light);
+}
+
 footer {
     text-align: center;
     margin-top: 100px;
@@ -86,16 +121,56 @@ footer {
 .panel div a {
     border-radius: 10px;
     padding: 70px;
-    background-color: var(--bg-bnt);
     text-decoration: none;
     font-family: var(--font-family-title);
     font-size: 1.5em;
-    color: var(--font-dark);
     justify-content: center;
+    box-shadow: 4px 4px 0px black;
 }
 
 .panel div a:hover {
     transition-duration: 400ms;
     background-color: black;
+    color: var(--font-light);
+}
+
+/* colors for widgets */
+.grey {
+    background-color: #7c7c7c;
+    color: var(--font-light);
+}
+
+.red {
+    background-color: #c24141;
+    color: var(--font-light);
+}
+
+.orange {
+    background-color: #b96f32;
+    color: var(--font-light);
+}
+
+.yellow {
+    background-color: #bbca2d;
+    color: var(--font-dark);
+}
+
+.green {
+    background-color: #3c9630;
+    color: var(--font-light);
+}
+
+.blue {
+    background-color: #4175b9;
+    color: var(--font-light);
+}
+
+.purple {
+    background-color: #5d2aaf;
+    color: var(--font-light);
+}
+
+.pink {
+    background-color: #aa2aaf;
     color: var(--font-light);
 }

@@ -28,6 +28,7 @@ class Panel_Widget(Model):
     id = IntField(pk=True)
     url = CharField(255)
     prefix = CharField(128)
+    color_name = CharField(40)
 
     group: ForeignKeyRelation[Panel_Group] = ForeignKeyField(
         "models.Panel_Group", related_name="panel_widgets"

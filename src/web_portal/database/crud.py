@@ -29,8 +29,16 @@ async def create_default_panel_group():
         await default_group.save()
 
 
-async def new_panel_widget(url: str, prefix: str, group_id: int) -> Panel_Widget:
-    widget = Panel_Widget(url=url, prefix=prefix, group_id=group_id)
+async def new_panel_widget(
+    url: str,
+    prefix: str,
+    color_name: str,
+    group_id: int) -> Panel_Widget:
+    widget = Panel_Widget(
+        url=url,
+        prefix=prefix,
+        color_name=color_name,
+        group_id=group_id)
     await widget.save()
     return widget
 

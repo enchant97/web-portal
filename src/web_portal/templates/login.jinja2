@@ -2,7 +2,10 @@
 {% block title %}Login{% endblock %}
 {% block main %}
 <form action="{{ url_for('login.login') }}" method="post">
+    <h2>Please Login</h2>
+    <label for="username">Username</label>
     <input type="text" id="username" name="username" required>
+    <label for="password">Password</label>
     <input type="password" name="password" id="password" required>
     <button type="submit">Login</button>
 </form>
