@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>{% block title %}{% endblock %} - Web Portal</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="/static/favicon.ico" type="image/x-icon">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&family=Roboto&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+
+<body>
+    <header>
+        <h1>{{ self.title() }}</h1>
+        <nav>
+            <a href="{{ url_for('portal') }}">Portal</a>
+            <a href="{{ url_for('admin') }}">Admin</a>
+        </nav>
+    </header>
+    <main>
+        {% block main %}
+        {% endblock %}
+    </main>
+    <footer>Portal provided by <strong><a href="https://github.com/enchant97">enchant97<a/></strong></footer>
+</body>
+
+</html>
