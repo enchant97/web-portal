@@ -5,7 +5,7 @@ from tortoise.contrib.quart import register_tortoise
 from .config import get_settings
 from .database import models
 from .database.crud import (check_user, create_default_admin,
-                            create_default_panel_group, get_widgets)
+                            create_default_panel_group, get_widgets_by_group)
 from .views import admin, login
 
 app = Quart(__name__)
@@ -17,8 +17,8 @@ async def redirect_to_login(*_):
 
 @app.route("/")
 async def portal():
-    widgets = await get_widgets()
-    return await render_template("portal.jinja2", widgets=widgets)
+    widgets = await get_widgets_by_group()
+    return await render_template("portal.jinja2", widgets_grouped=widgets)
 
 @app.before_first_request
 async def first_request():

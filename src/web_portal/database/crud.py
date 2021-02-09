@@ -1,5 +1,7 @@
+from typing import Iterator, List
+
 from .models import Panel_Group, Panel_Widget, User
-from typing import List
+
 
 async def create_default_admin(override=False):
     """
@@ -33,8 +35,10 @@ async def new_panel_widget(url: str, prefix: str, group_id: int) -> Panel_Widget
     return widget
 
 
-async def new_panel_group(prefix: str):
-    pass
+async def new_panel_group(prefix: str) -> Panel_Group:
+    group = Panel_Group(prefix=prefix)
+    await group.save()
+    return group
 
 
 async def check_user(username: str, password: str) -> User:
@@ -54,6 +58,18 @@ async def check_user(username: str, password: str) -> User:
 
 async def get_widgets() -> List[Panel_Widget]:
     return await Panel_Widget.all()
+
+
+async def get_widgets_by_group():
+    widgets_grouped = []
+    group_ids = await Panel_Group.all()
+    for group in group_ids:
+        widgets_grouped.append({
+            "group_id": group.id,
+            "group_prefix": group.prefix,
+            "widgets": (await Panel_Widget.filter(group_id=group.id).all())})
+    return widgets_grouped
+
 
 async def get_panel_groups() -> List[Panel_Group]:
     return await Panel_Group.all()

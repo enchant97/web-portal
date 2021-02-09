@@ -12,4 +12,10 @@
     </select>
     <button type="submit">Save</button>
 </form>
+
+<form action="{{ url_for('admin.new_group') }}" method="post">
+    <h2>New Group</h2>
+    <input type="text" name="prefix" required placeholder="prefix...">
+    <button type="submit">Save</button>
+</form>
 {% endblock %}

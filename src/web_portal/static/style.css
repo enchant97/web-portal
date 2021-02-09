@@ -3,6 +3,7 @@
     --font-light: white;
     --bg-bnt: #adadad;
     --bg-body: #9299a5;
+    --bg-panel: #848a94;
     --font-family-title: 'Roboto', sans-serif;
     --font-family-main: 'Open Sans', sans-serif;
 }
@@ -12,8 +13,13 @@ header {
     font-family: var(--font-family-main);
 }
 
-h1 {
+h1,
+h2,
+h3 {
     font-family: var(--font-family-title);
+}
+
+h1 {
     font-size: 2em;
 }
 
@@ -57,4 +63,39 @@ footer {
     margin-top: 100px;
     border-top-style: solid;
     padding-top: 10px;
+}
+
+
+.panel {
+    border-radius: 6px;
+    background-color: var(--bg-panel);
+    padding: 10px;
+    margin-bottom: 8px;
+}
+
+.panel h3 {
+    text-align: center;
+}
+
+.panel div {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.panel div a {
+    border-radius: 10px;
+    padding: 70px;
+    background-color: var(--bg-bnt);
+    text-decoration: none;
+    font-family: var(--font-family-title);
+    font-size: 1.5em;
+    color: var(--font-dark);
+    justify-content: center;
+}
+
+.panel div a:hover {
+    transition-duration: 400ms;
+    background-color: black;
+    color: var(--font-light);
 }
