@@ -91,8 +91,8 @@
 
     <form action="{{ url_for('admin.modify_user_permissions') }}" method="post">
         <h3>Modify User Permissions</h3>
-        <label for="delete-user-user-id">User</label>
-        <select name="user_id" id="delete-user-user-id" required>
+        <label for="modify-user-permissions-user-id">User</label>
+        <select name="user_id" id="modify-user-permissions-user-id" required>
             {% include "/shared/includes/options-users.jinja2" %}
         </select>
         <label for="modify-permissions-is-admin">Has Admin</label>

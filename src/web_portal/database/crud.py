@@ -1,5 +1,7 @@
 from typing import List
 
+from tortoise.exceptions import DoesNotExist
+
 from .models import Panel_Group, Panel_Widget, User
 
 
@@ -169,6 +171,8 @@ async def modify_user_password(user_id: int, new_password: str):
         :param new_password: the new password
     """
     user = await User.filter(id=user_id).first()
+    if not user:
+        raise DoesNotExist("user id does not exist")
     user.set_password(new_password)
     await user.save()
 

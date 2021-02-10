@@ -3,11 +3,14 @@ from typing import Any, Callable
 
 from quart_auth import Unauthorized, current_user
 
-from .config import get_settings
 from .database.crud import check_is_admin
 
 
 class NotAdmin(Unauthorized):
+    pass
+
+
+class PasswordStrength(ValueError):
     pass
 
 

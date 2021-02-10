@@ -1,4 +1,6 @@
-from quart import Quart, redirect, render_template, request, url_for, flash
+import logging
+
+from quart import Quart, flash, redirect, render_template, request, url_for
 from quart_auth import AuthManager, Unauthorized, current_user
 from tortoise.contrib.quart import register_tortoise
 
@@ -35,17 +37,24 @@ async def first_request():
     await create_default_panel_group()
 
 def create_app():
+    logging.basicConfig(
+        level=logging.getLevelName(get_settings().LOG_LEVEL))
+    logging.debug("loading config")
     # do config
     app.secret_key = get_settings().SECRET_KEY
     app.config["QUART_AUTH_COOKIE_SECURE"] = not get_settings().UNSECURE_LOGIN
+    logging.debug("registering blueprints")
     # register blueprints
     app.register_blueprint(admin.blueprint)
     app.register_blueprint(login.blueprint)
+    logging.debug("registering tortoise-orm")
     # other setup
     register_tortoise(
         app,
         db_url=get_settings().DB_URL,
         modules={"models": [models]},
         generate_schemas=True)
+    logging.debug("init auth manager")
     auth_manager.init_app(app)
+    logging.debug("created app")
     return app
