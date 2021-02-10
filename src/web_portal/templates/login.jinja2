@@ -2,7 +2,7 @@
 {% block title %}Login{% endblock %}
 {% block main %}
 <form class="form-group" action="{{ url_for('login.login') }}" method="post">
-    <h2>Please Login</h2>
+    <img class="img-branding" src="/static/icon-256.png" alt="web-portal icon">
     <label for="username">Username</label>
     <input type="text" id="username" name="username" required>
     <label for="password">Password</label>

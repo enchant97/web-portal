@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg width="100%" height="100%" viewBox="0 0 128 128" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;">
+    <g transform="matrix(1.04065,0,0,1.04065,-35.3821,2.0813)">
+        <circle cx="95.5" cy="59.5" r="61.5" style="fill:rgb(64,117,186);"/>
+    </g>
+    <g transform="matrix(0.747967,0,0,0.747967,-7.43089,19.4959)">
+        <circle cx="95.5" cy="59.5" r="61.5" style="fill:rgb(53,172,207);"/>
+    </g>
+    <g transform="matrix(4.04614,0,0,4.04614,-142.557,14.2471)">
+        <text x="47.643px" y="25.834px" style="font-family:'Roboto-Black', 'Roboto';font-weight:900;font-size:29.317px;fill:rgb(243,232,225);stroke:black;stroke-width:0.74px;">P</text>
+    </g>
+    <g transform="matrix(1.6062,0,0,1.6062,-62.2458,20.2094)">
+        <text x="47.643px" y="25.834px" style="font-family:'Roboto-Black', 'Roboto';font-weight:900;font-size:29.317px;fill:rgb(243,232,225);stroke:black;stroke-width:1.25px;">W</text>
+    </g>
+</svg>

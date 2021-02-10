@@ -178,6 +178,12 @@ footer {
     color: black;
 }
 
+.img-branding {
+    margin: auto;
+    max-width: 200px;
+    width: -webkit-fill-available;
+}
+
 /* colors for widgets */
 .white {
     background-color: #e4e4e4;
