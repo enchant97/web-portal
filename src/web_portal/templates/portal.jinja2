@@ -1,15 +1,5 @@
-{% extends "base.jinja2" %}
+{% extends "/shared/base.jinja2" %}
 {% block title %}Portal{% endblock %}
 {% block main %}
-{% for group in widgets_grouped %}
-<div class="panel">
-    <h3>{{ group.group_prefix }}</h3>
-    <div>
-        {% for widget in group.widgets %}
-        <a class="{{ widget.color_name }}" href="{{ widget.url }}" target="_blank" rel="noopener noreferrer">{{
-            widget.prefix }}</a>
-        {% endfor %}
-    </div>
-</div>
-{% endfor %}
+{% include "/shared/includes/panels.jinja2" %}
 {% endblock %}

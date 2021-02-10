@@ -1,4 +1,4 @@
-{% extends "base.jinja2" %}
+{% extends "/shared/base.jinja2" %}
 {% block title %}Login{% endblock %}
 {% block main %}
 <form action="{{ url_for('login.login') }}" method="post">

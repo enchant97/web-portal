@@ -1,4 +1,4 @@
-{% extends "base.jinja2" %}
+{% extends "/shared/base.jinja2" %}
 {% block title %}Admin{% endblock %}
 {% block main %}
 <form action="{{ url_for('admin.new_widget') }}" method="post">
@@ -15,14 +15,7 @@
     </select>
     <label for="new-widget-color-name">Color</label>
     <select name="color_name" id="new-widget-color-name">
-        <option>grey</option>
-        <option>red</option>
-        <option>orange</option>
-        <option>yellow</option>
-        <option>green</option>
-        <option>blue</option>
-        <option>purple</option>
-        <option>pink</option>
+        {% include "/shared/includes/options-color.jinja2" %}
     </select>
     <button type="submit">Save</button>
 </form>
@@ -38,10 +31,7 @@
     <h2>Re-Group Wiget</h2>
     <label for="re-group-widget-widget">Widget</label>
     <select name="widget_id" id="re-group-widget-widget" required>
-        <option value=""></option>
-        {% for widget in widgets %}
-        <option value="{{ widget.id }}">{{ widget.prefix }}</option>
-        {% endfor %}
+        {% include "/shared/includes/options-widgets.jinja2" %}
     </select>
     <label for="re-group-widget-group">Group</label>
     <select name="group_id" id="re-group-widget-group" required>
@@ -57,10 +47,7 @@
     <h2>Delete Widget</h2>
     <label for="delete-widget-widget">Widget</label>
     <select name="widget_id" id="delete-widget-widget" required>
-        <option value=""></option>
-        {% for widget in widgets %}
-        <option value="{{ widget.id }}">{{ widget.prefix }}</option>
-        {% endfor %}
+        {% include "/shared/includes/options-widgets.jinja2" %}
     </select>
     <button type="submit">Save</button>
 </form>
@@ -69,22 +56,11 @@
     <h2>Widget Color</h2>
     <label for="widget-color-widget">Widget</label>
     <select name="widget_id" id="widget-color-widget" required>
-        <option value=""></option>
-        {% for widget in widgets %}
-        <option value="{{ widget.id }}">{{ widget.prefix }}</option>
-        {% endfor %}
+        {% include "/shared/includes/options-widgets.jinja2" %}
     </select>
     <label for="widget-color-name">Color</label>
     <select name="color_name" id="widget-color-name" required>
-        <option value=""></option>
-        <option>grey</option>
-        <option>red</option>
-        <option>orange</option>
-        <option>yellow</option>
-        <option>green</option>
-        <option>blue</option>
-        <option>purple</option>
-        <option>pink</option>
+        {% include "/shared/includes/options-color.jinja2" %}
     </select>
     <button type="submit">Save</button>
 </form>
