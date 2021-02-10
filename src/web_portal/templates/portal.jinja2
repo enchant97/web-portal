@@ -5,9 +5,10 @@
 <div class="panel">
     <h3>{{ group.group_prefix }}</h3>
     <div>
-    {% for widget in group.widgets %}
-        <a class="{{ widget.color_name }}" href="{{ widget.url }}">{{ widget.prefix }}</a>
-    {% endfor %}
+        {% for widget in group.widgets %}
+        <a class="{{ widget.color_name }}" href="{{ widget.url }}" target="_blank" rel="noopener noreferrer">{{
+            widget.prefix }}</a>
+        {% endfor %}
     </div>
 </div>
 {% endfor %}

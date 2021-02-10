@@ -1,6 +1,6 @@
 from quart import Blueprint, redirect, render_template, request, url_for
 from quart_auth import (AuthUser, Unauthorized, login_required, login_user,
-                        logout_user)
+                        logout_user, current_user)
 
 from ..database.crud import check_user
 
@@ -15,6 +15,10 @@ async def login():
         if user:
             login_user(AuthUser(user.id))
             return redirect(url_for("portal"))
+
+    if (await current_user.is_authenticated):
+        # if user is already logged in redirect to portal
+        return redirect(url_for("portal"))
 
     return await render_template("login.jinja2")
 
