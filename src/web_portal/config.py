@@ -8,6 +8,7 @@ class Settings(BaseSettings):
     SECRET_KEY: str
     UNSECURE_LOGIN: Optional[bool] = False
     PORTAL_SECURED: Optional[bool] = False
+    SHOW_PANEL_HEADERS: Optional[bool] = True
 
     class Config:
         case_sensitive = True

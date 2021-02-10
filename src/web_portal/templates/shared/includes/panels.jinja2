@@ -1,6 +1,8 @@
 {% for group in widgets_grouped %}
 <div class="panel">
+    {% if show_panel_headers is true %}
     <h3>{{ group.group_prefix }}</h3>
+    {% endif %}
     <div>
         {% for widget in group.widgets %}
         <a class="{{ widget.color_name }}" href="{{ widget.url }}" target="_blank" rel="noopener noreferrer">{{

@@ -22,7 +22,10 @@ async def portal():
         if not (await current_user.is_authenticated):
             return redirect(url_for("login.login"))
     widgets = await get_widgets_by_group()
-    return await render_template("portal.jinja2", widgets_grouped=widgets)
+    return await render_template(
+        "portal.jinja2",
+        widgets_grouped=widgets,
+        show_panel_headers=get_settings().SHOW_PANEL_HEADERS)
 
 @app.before_first_request
 async def first_request():
