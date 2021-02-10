@@ -29,6 +29,21 @@ async def create_default_panel_group():
         await default_group.save()
 
 
+async def new_user(username: str, password: str, is_admin: bool) -> User:
+    """
+    create a new user
+
+        :param username: the username
+        :param password: the password
+        :param is_admin: whether they are a admin
+        :return: the created User row
+    """
+    user = User(username=username, is_admin=is_admin)
+    user.set_password(password)
+    await user.save()
+    return user
+
+
 async def new_panel_widget(
     url: str,
     prefix: str,
@@ -93,6 +108,15 @@ async def check_is_admin(user_id: int) -> bool:
     return user.is_admin
 
 
+async def get_users() -> List[User]:
+    """
+    get all users in database
+
+        :return: each user row in a list
+    """
+    return await User.all()
+
+
 async def get_widgets() -> List[Panel_Widget]:
     """
     get all widgets
@@ -127,6 +151,28 @@ async def get_panel_groups() -> List[Panel_Group]:
     return await Panel_Group.all()
 
 
+async def modify_user_permissions(user_id: int, is_admin: bool):
+    """
+    modify a users's permissions
+
+        :param user_id: the user's id
+        :param is_admin: whether they are a admin
+    """
+    await User.filter(id=user_id).update(is_admin=is_admin)
+
+
+async def modify_user_password(user_id: int, new_password: str):
+    """
+    change a user's password
+
+        :param user_id: the user's id
+        :param new_password: the new password
+    """
+    user = await User.filter(id=user_id).first()
+    user.set_password(new_password)
+    await user.save()
+
+
 async def modify_widget_group(widget_id: int, group_id: int):
     """
     modify a widget's group
@@ -145,6 +191,15 @@ async def modify_widget_color(widget_id: int, color_name: str):
         :param color_name: the color
     """
     await Panel_Widget.filter(id=widget_id).update(color_name=color_name)
+
+
+async def delete_user(user_id: int):
+    """
+    delete a user
+
+        :param user_id: the user's id
+    """
+    await User.filter(id=user_id).delete()
 
 
 async def delete_widget_by_id(widget_id: int):

@@ -10,7 +10,12 @@ blueprint = Blueprint("admin", __name__, url_prefix="/admin")
 async def index():
     groups = await crud.get_panel_groups()
     widgets = await crud.get_widgets()
-    return await render_template("admin.jinja2", groups=groups, widgets=widgets)
+    users = await crud.get_users()
+    return await render_template(
+        "admin.jinja2",
+        groups=groups,
+        widgets=widgets,
+        users=users)
 
 @blueprint.route("/new-widget", methods=["POST"])
 @login_admin_required
@@ -50,4 +55,36 @@ async def change_widget_color():
     widget_id = (await request.form)["widget_id"]
     color_name = (await request.form)["color_name"]
     await crud.modify_widget_color(widget_id, color_name)
+    return redirect(url_for("admin.index"))
+
+@blueprint.route("/new-user", methods=["POST"])
+@login_admin_required
+async def new_user():
+    username = (await request.form)["username"]
+    password = (await request.form)["password"]
+    is_admin = (await request.form).get("is_admin", False, bool)
+    await crud.new_user(username, password, is_admin)
+    return redirect(url_for("admin.index"))
+
+@blueprint.route("/delete-user", methods=["POST"])
+@login_admin_required
+async def delete_user():
+    user_id = (await request.form)["user_id"]
+    await crud.delete_user(user_id)
+    return redirect(url_for("admin.index"))
+
+@blueprint.route("/modify-user-permissions", methods=["POST"])
+@login_admin_required
+async def modify_user_permissions():
+    user_id = (await request.form)["user_id"]
+    is_admin = (await request.form).get("is_admin", False, bool)
+    await crud.modify_user_permissions(user_id, is_admin)
+    return redirect(url_for("admin.index"))
+
+@blueprint.route("/change-password", methods=["POST"])
+@login_admin_required
+async def change_user_password():
+    user_id = (await request.form)["user_id"]
+    new_password = (await request.form)["new_password"]
+    await crud.modify_user_password(user_id, new_password)
     return redirect(url_for("admin.index"))

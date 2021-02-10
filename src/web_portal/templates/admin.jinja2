@@ -1,67 +1,114 @@
 {% extends "/shared/base.jinja2" %}
 {% block title %}Admin{% endblock %}
 {% block main %}
-<form action="{{ url_for('admin.new_widget') }}" method="post">
-    <h2>New Widget</h2>
-    <label for="new-widget-url">URL</label>
-    <input type="text" name="url" id="new-widget-url" required placeholder="https://...">
-    <label for="new-widget-prefix">Prefix</label>
-    <input type="text" name="prefix" id="new-widget-prefix" required placeholder="prefix...">
-    <label for="new-widget-group-id">Group</label>
-    <select name="group_id" id="new-widget-group-id">
-        {% for group in groups %}
-        <option value="{{ group.id }}">{{ group.prefix }}</option>
-        {% endfor %}
-    </select>
-    <label for="new-widget-color-name">Color</label>
-    <select name="color_name" id="new-widget-color-name">
-        {% include "/shared/includes/options-color.jinja2" %}
-    </select>
-    <button type="submit">Save</button>
-</form>
+<div class="form-group">
+    <h2>Portal Customisation</h2>
+    <form action="{{ url_for('admin.new_widget') }}" method="post">
+        <h3>New Widget</h3>
+        <label for="new-widget-url">URL</label>
+        <input type="text" name="url" id="new-widget-url" required placeholder="https://...">
+        <label for="new-widget-prefix">Prefix</label>
+        <input type="text" name="prefix" id="new-widget-prefix" required placeholder="prefix...">
+        <label for="new-widget-group-id">Group</label>
+        <select name="group_id" id="new-widget-group-id">
+            {% for group in groups %}
+            <option value="{{ group.id }}">{{ group.prefix }}</option>
+            {% endfor %}
+        </select>
+        <label for="new-widget-color-name">Color</label>
+        <select name="color_name" id="new-widget-color-name">
+            {% include "/shared/includes/options-color.jinja2" %}
+        </select>
+        <button type="submit">Save</button>
+    </form>
 
-<form action="{{ url_for('admin.new_group') }}" method="post">
-    <h2>New Group</h2>
-    <label for="new-group-prefix">Prefix</label>
-    <input type="text" name="prefix" id="new-group-prefix" required placeholder="prefix...">
-    <button type="submit">Save</button>
-</form>
+    <form action="{{ url_for('admin.new_group') }}" method="post">
+        <h3>New Group</h3>
+        <label for="new-group-prefix">Prefix</label>
+        <input type="text" name="prefix" id="new-group-prefix" required placeholder="prefix...">
+        <button type="submit">Save</button>
+    </form>
 
-<form action="{{ url_for('admin.re_group_widget') }}" method="post">
-    <h2>Re-Group Wiget</h2>
-    <label for="re-group-widget-widget">Widget</label>
-    <select name="widget_id" id="re-group-widget-widget" required>
-        {% include "/shared/includes/options-widgets.jinja2" %}
-    </select>
-    <label for="re-group-widget-group">Group</label>
-    <select name="group_id" id="re-group-widget-group" required>
-        <option value=""></option>
-        {% for group in groups %}
-        <option value="{{ group.id }}">{{ group.prefix }}</option>
-        {% endfor %}
-    </select>
-    <button type="submit">Save</button>
-</form>
+    <form action="{{ url_for('admin.re_group_widget') }}" method="post">
+        <h3>Re-Group Wiget</h3>
+        <label for="re-group-widget-widget">Widget</label>
+        <select name="widget_id" id="re-group-widget-widget" required>
+            {% include "/shared/includes/options-widgets.jinja2" %}
+        </select>
+        <label for="re-group-widget-group">Group</label>
+        <select name="group_id" id="re-group-widget-group" required>
+            <option value=""></option>
+            {% for group in groups %}
+            <option value="{{ group.id }}">{{ group.prefix }}</option>
+            {% endfor %}
+        </select>
+        <button type="submit">Save</button>
+    </form>
 
-<form action="{{ url_for('admin.delete_widget') }}" method="post">
-    <h2>Delete Widget</h2>
-    <label for="delete-widget-widget">Widget</label>
-    <select name="widget_id" id="delete-widget-widget" required>
-        {% include "/shared/includes/options-widgets.jinja2" %}
-    </select>
-    <button type="submit">Save</button>
-</form>
+    <form action="{{ url_for('admin.delete_widget') }}" method="post">
+        <h3>Delete Widget</h3>
+        <label for="delete-widget-widget">Widget</label>
+        <select name="widget_id" id="delete-widget-widget" required>
+            {% include "/shared/includes/options-widgets.jinja2" %}
+        </select>
+        <button type="submit">Save</button>
+    </form>
 
-<form action="{{ url_for('admin.change_widget_color') }}" method="post">
-    <h2>Widget Color</h2>
-    <label for="widget-color-widget">Widget</label>
-    <select name="widget_id" id="widget-color-widget" required>
-        {% include "/shared/includes/options-widgets.jinja2" %}
-    </select>
-    <label for="widget-color-name">Color</label>
-    <select name="color_name" id="widget-color-name" required>
-        {% include "/shared/includes/options-color.jinja2" %}
-    </select>
-    <button type="submit">Save</button>
-</form>
+    <form action="{{ url_for('admin.change_widget_color') }}" method="post">
+        <h3>Widget Color</h3>
+        <label for="widget-color-widget">Widget</label>
+        <select name="widget_id" id="widget-color-widget" required>
+            {% include "/shared/includes/options-widgets.jinja2" %}
+        </select>
+        <label for="widget-color-name">Color</label>
+        <select name="color_name" id="widget-color-name" required>
+            {% include "/shared/includes/options-color.jinja2" %}
+        </select>
+        <button type="submit">Save</button>
+    </form>
+</div>
+<div class="form-group">
+    <h2>User Customisation</h2>
+    <form action="{{ url_for('admin.new_user') }}" method="post">
+        <h3>New User</h3>
+        <label for="new-user-username">Username</label>
+        <input type="text" name="username" id="new-user-username" required placeholder="username...">
+        <label for="new-user-password">Password</label>
+        <input type="password" name="password" id="new-user-password" required placeholder="password..." minlength="8">
+        <label for="new-user-is-admin">Has Admin</label>
+        <input type="checkbox" name="is_admin" id="new-user-is-admin" value="1">
+        <button type="submit">Save</button>
+    </form>
+
+    <form action="{{ url_for('admin.delete_user') }}" method="post">
+        <h3>Delete User</h3>
+        <label for="delete-user-user-id">User</label>
+        <select name="user_id" id="delete-user-user-id" required>
+            {% include "/shared/includes/options-users.jinja2" %}
+        </select>
+        <button type="submit">Save</button>
+    </form>
+
+    <form action="{{ url_for('admin.modify_user_permissions') }}" method="post">
+        <h3>Modify User Permissions</h3>
+        <label for="delete-user-user-id">User</label>
+        <select name="user_id" id="delete-user-user-id" required>
+            {% include "/shared/includes/options-users.jinja2" %}
+        </select>
+        <label for="modify-permissions-is-admin">Has Admin</label>
+        <input type="checkbox" name="is_admin" id="modify-permissions-is-admin" value="1">
+        <button type="submit">Save</button>
+    </form>
+
+    <form action="{{ url_for('admin.change_user_password') }}" method="post">
+        <h3>Change User Password</h3>
+        <label for="change-password-user-id">User</label>
+        <select name="user_id" id="change-password-user-id" required>
+            {% include "/shared/includes/options-users.jinja2" %}
+        </select>
+        <label for="change-password-password">New Password</label>
+        <input type="password" name="new_password" id="change-password-password" required placeholder="new password..." minlength="8">
+        <button type="submit">Save</button>
+    </form>
+</div>
 {% endblock %}

@@ -1,7 +1,7 @@
 {% extends "/shared/base.jinja2" %}
 {% block title %}Login{% endblock %}
 {% block main %}
-<form action="{{ url_for('login.login') }}" method="post">
+<form class="form-group" action="{{ url_for('login.login') }}" method="post">
     <h2>Please Login</h2>
     <label for="username">Username</label>
     <input type="text" id="username" name="username" required>

@@ -3,6 +3,7 @@
     --font-light: #f0f0f0;
     --bg-bnt: #adadad;
     --bg-body: #9299a5;
+    --bg-sub-body: #8c93a0;
     --bg-panel: #848a94;
     --font-family-title: 'Roboto', sans-serif;
     --font-family-main: 'Open Sans', sans-serif;
@@ -69,7 +70,7 @@ form {
     max-width: 500px;
 }
 
-form h2 {
+form h3 {
     text-align: center;
 }
 
@@ -133,6 +134,19 @@ footer {
     transition-duration: 400ms;
     background-color: black;
     color: var(--font-light);
+}
+
+.form-group {
+    border-radius: 10px;
+    background-color: var(--bg-sub-body);
+    width: 50%;
+    margin: auto;
+    padding: 10px;
+    margin-bottom: 15px;
+}
+
+.form-group h2 {
+    text-align: center;
 }
 
 /* colors for widgets */
