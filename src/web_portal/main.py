@@ -31,6 +31,11 @@ async def portal():
         widgets_grouped=widgets,
         show_panel_headers=get_settings().SHOW_PANEL_HEADERS)
 
+@app.route("/is-alive")
+async def is_alive():
+    # route to test whether server has not crashed
+    return "🆗"
+
 @app.before_first_request
 async def first_request():
     await create_default_admin(get_settings().ADMIN_CREATE_OVERRIDE)
