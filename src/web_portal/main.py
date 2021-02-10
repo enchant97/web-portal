@@ -1,4 +1,4 @@
-from quart import Quart, redirect, render_template, request, url_for
+from quart import Quart, redirect, render_template, request, url_for, flash
 from quart_auth import AuthManager, Unauthorized, current_user
 from tortoise.contrib.quart import register_tortoise
 
@@ -13,6 +13,7 @@ auth_manager=AuthManager()
 
 @app.errorhandler(Unauthorized)
 async def redirect_to_login(*_):
+    await flash("You need to be logged in to view this page", "red")
     return redirect(url_for("login.login"))
 
 @app.route("/")
@@ -20,6 +21,7 @@ async def portal():
     if get_settings().PORTAL_SECURED:
         # if the user has made the portal login protected
         if not (await current_user.is_authenticated):
+            await flash("You need to be logged in to view this page", "red")
             return redirect(url_for("login.login"))
     widgets = await get_widgets_by_group()
     return await render_template(

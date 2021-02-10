@@ -1,6 +1,6 @@
-from quart import Blueprint, redirect, render_template, request, url_for
-from quart_auth import (AuthUser, Unauthorized, login_required, login_user,
-                        logout_user, current_user)
+from quart import Blueprint, flash, redirect, render_template, request, url_for
+from quart_auth import (AuthUser, Unauthorized, current_user, login_required,
+                        login_user, logout_user)
 
 from ..database.crud import check_user
 
@@ -15,6 +15,7 @@ async def login():
         if user:
             login_user(AuthUser(user.id))
             return redirect(url_for("portal"))
+        await flash("username or password incorrect", "red")
 
     if (await current_user.is_authenticated):
         # if user is already logged in redirect to portal
@@ -26,4 +27,5 @@ async def login():
 @login_required
 async def logout():
     logout_user()
+    await flash("You have been logged out", "green")
     return redirect(url_for("portal"))

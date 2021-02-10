@@ -14,7 +14,8 @@ header,
 input,
 select,
 button,
-label {
+label,
+div {
     font-family: var(--font-family-main);
 }
 
@@ -147,6 +148,34 @@ footer {
 
 .form-group h2 {
     text-align: center;
+}
+
+/* flash styles */
+.flashes {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.flashes div {
+    border-radius: 10px;
+    padding: 10px;
+    margin-bottom: 5px;
+}
+
+.flashes div span {
+    margin-left: 15px;
+    color: var(--font-light);
+    font-weight: bold;
+    float: right;
+    font-size: 22px;
+    line-height: 20px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.flashes div span:hover {
+    color: black;
 }
 
 /* colors for widgets */
