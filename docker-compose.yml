@@ -1,0 +1,21 @@
+version: "3.3"
+
+services:
+  web-portal:
+    build: .
+    restart: unless-stopped
+    volumes:
+      - ./.env:/.env:ro
+      - web-portal:/data
+    ports:
+      - 8080:8000
+    environment:
+      - BINDS=["0.0.0.0:8000"]
+    healthcheck:
+      test: "curl --fail http://127.0.0.1:8000/is-alive || exit 1"
+      timeout: 20s
+      interval: 1m
+      retries: 3
+
+volumes:
+  web-portal:
