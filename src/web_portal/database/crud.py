@@ -1,8 +1,34 @@
 from typing import List
 
+from quart import render_template
 from tortoise.exceptions import DoesNotExist
 
+from ..cache import CachedData
 from .models import Panel_Group, Panel_Widget, User
+
+cached_panels = CachedData()
+
+
+async def generate_cached_panels(regenerate=False) -> str:
+    """
+    generates the html of widgets
+    for each panel group,
+    as well as getting from the database,
+    also adding it to cache to make it faster next time
+
+        :param regenerate: whether to use fresh
+                           values, defaults to False
+        :return: the generated html
+    """
+    if cached_panels.get_cache() and regenerate is False:
+        return cached_panels.get_cache()
+
+    widgets = await get_widgets_by_group()
+    template = await render_template(
+        "shared/includes/panels.jinja2",
+        widgets_grouped=widgets)
+    cached_panels.set_cache(template)
+    return cached_panels.get_cache()
 
 
 async def create_default_admin(override=False):
@@ -47,10 +73,10 @@ async def new_user(username: str, password: str, is_admin: bool) -> User:
 
 
 async def new_panel_widget(
-    url: str,
-    prefix: str,
-    color_name: str,
-    group_id: int) -> Panel_Widget:
+        url: str,
+        prefix: str,
+        color_name: str,
+        group_id: int) -> Panel_Widget:
     """
     create a new widget
 
@@ -66,6 +92,7 @@ async def new_panel_widget(
         color_name=color_name,
         group_id=group_id)
     await widget.save()
+    cached_panels.reset_cache()
     return widget
 
 
@@ -185,6 +212,7 @@ async def modify_widget_group(widget_id: int, group_id: int):
         :param group_id: the group id
     """
     await Panel_Widget.filter(id=widget_id).update(group_id=group_id)
+    cached_panels.reset_cache()
 
 
 async def modify_widget_color(widget_id: int, color_name: str):
@@ -195,6 +223,7 @@ async def modify_widget_color(widget_id: int, color_name: str):
         :param color_name: the color
     """
     await Panel_Widget.filter(id=widget_id).update(color_name=color_name)
+    cached_panels.reset_cache()
 
 
 async def delete_user(user_id: int):
@@ -213,3 +242,4 @@ async def delete_widget_by_id(widget_id: int):
         :param widget_id: the widget id
     """
     await Panel_Widget.filter(id=widget_id).delete()
+    cached_panels.reset_cache()
