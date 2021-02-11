@@ -1,16 +1,19 @@
 import logging
 
-from quart import Quart, flash, redirect, render_template, request, url_for
-from quart_auth import AuthManager, Unauthorized, current_user
+from quart import Quart, flash, redirect, request, url_for
+from quart_auth import AuthManager, Unauthorized
 from tortoise.contrib.quart import register_tortoise
 
 from .config import get_settings
 from .database import models
-from .database.crud import (check_user, create_default_admin,
-                            create_default_panel_group, get_widgets_by_group)
-from .views import admin, login
+from .database.crud import create_default_admin, create_default_panel_group
+from .views import admin, login, portal
 
-app = Quart(__name__)
+BASE_URL = get_settings().BASE_URL
+if BASE_URL == "/":
+    BASE_URL = ""
+
+app = Quart(__name__, static_url_path=BASE_URL + "/static")
 auth_manager=AuthManager()
 
 @app.errorhandler(Unauthorized)
@@ -18,23 +21,12 @@ async def redirect_to_login(*_):
     await flash("You need to be logged in to view this page", "red")
     return redirect(url_for("login.login"))
 
-@app.route("/")
-async def portal():
-    if get_settings().PORTAL_SECURED:
-        # if the user has made the portal login protected
-        if not (await current_user.is_authenticated):
-            await flash("You need to be logged in to view this page", "red")
-            return redirect(url_for("login.login"))
-    widgets = await get_widgets_by_group()
-    return await render_template(
-        "portal.jinja2",
-        widgets_grouped=widgets,
-        show_panel_headers=get_settings().SHOW_PANEL_HEADERS)
-
-@app.route("/is-alive")
-async def is_alive():
-    # route to test whether server has not crashed
-    return "🆗"
+if BASE_URL != "":
+    # allow redirect to index if base url was set
+    @app.route("/")
+    async def redirect_to_portal():
+        logging.info("redirecting / to %s, as BASE_URL was set", BASE_URL)
+        return redirect(url_for('portal.portal'))
 
 @app.before_first_request
 async def first_request():
@@ -46,12 +38,14 @@ def create_app():
         level=logging.getLevelName(get_settings().LOG_LEVEL))
     logging.debug("loading config")
     # do config
+    # app.config["APPLICATION_ROOT"] = get_settings().BASE_URL
     app.secret_key = get_settings().SECRET_KEY
     app.config["QUART_AUTH_COOKIE_SECURE"] = not get_settings().UNSECURE_LOGIN
     logging.debug("registering blueprints")
     # register blueprints
-    app.register_blueprint(admin.blueprint)
-    app.register_blueprint(login.blueprint)
+    app.register_blueprint(portal.blueprint, url_prefix=BASE_URL+"/")
+    app.register_blueprint(login.blueprint, url_prefix=BASE_URL+"/auth")
+    app.register_blueprint(admin.blueprint, url_prefix=BASE_URL+"/admin")
     logging.debug("registering tortoise-orm")
     # other setup
     register_tortoise(

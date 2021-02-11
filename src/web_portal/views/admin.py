@@ -6,7 +6,7 @@ from tortoise.exceptions import DoesNotExist, IntegrityError
 from ..database import crud
 from ..helpers import PasswordStrength, login_admin_required
 
-blueprint = Blueprint("admin", __name__, url_prefix="/admin")
+blueprint = Blueprint("admin", __name__)
 
 @blueprint.route("/")
 @login_admin_required

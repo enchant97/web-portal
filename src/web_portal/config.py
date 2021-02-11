@@ -11,6 +11,7 @@ class Settings(BaseSettings):
     SHOW_PANEL_HEADERS: Optional[bool] = True
     LOG_LEVEL: Optional[str] = "INFO"
     BINDS: Optional[List[str]] = ["127.0.0.1:8000"]
+    BASE_URL: Optional[str] = ""
 
     class Config:
         case_sensitive = True

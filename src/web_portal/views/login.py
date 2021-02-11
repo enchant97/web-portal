@@ -4,7 +4,7 @@ from quart_auth import (AuthUser, Unauthorized, current_user, login_required,
 
 from ..database.crud import check_user
 
-blueprint = Blueprint("login", __name__, url_prefix="/")
+blueprint = Blueprint("login", __name__)
 
 @blueprint.route("/login", methods=['GET', 'POST'])
 async def login():
@@ -14,12 +14,12 @@ async def login():
         user = await check_user(username, password)
         if user:
             login_user(AuthUser(user.id))
-            return redirect(url_for("portal"))
+            return redirect(url_for("portal.portal"))
         await flash("username or password incorrect", "red")
 
     if (await current_user.is_authenticated):
         # if user is already logged in redirect to portal
-        return redirect(url_for("portal"))
+        return redirect(url_for("portal.portal"))
 
     return await render_template("login.jinja2")
 
@@ -28,4 +28,4 @@ async def login():
 async def logout():
     logout_user()
     await flash("You have been logged out", "green")
-    return redirect(url_for("portal"))
+    return redirect(url_for("portal.portal"))
