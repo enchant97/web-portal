@@ -4,6 +4,7 @@ from quart import Quart, flash, redirect, request, url_for
 from quart_auth import AuthManager, Unauthorized
 from tortoise.contrib.quart import register_tortoise
 
+from . import __version__
 from .config import get_settings
 from .database import models
 from .database.crud import create_default_admin, create_default_panel_group
@@ -38,7 +39,7 @@ def create_app():
         level=logging.getLevelName(get_settings().LOG_LEVEL))
     logging.debug("loading config")
     # do config
-    # app.config["APPLICATION_ROOT"] = get_settings().BASE_URL
+    app.config["__VERSION__"] = __version__
     app.secret_key = get_settings().SECRET_KEY
     app.config["QUART_AUTH_COOKIE_SECURE"] = not get_settings().UNSECURE_LOGIN
     logging.debug("registering blueprints")
