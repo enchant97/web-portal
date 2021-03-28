@@ -10,7 +10,8 @@ class Settings(BaseSettings):
     PORTAL_SECURED: Optional[bool] = False
     SHOW_PANEL_HEADERS: Optional[bool] = True
     LOG_LEVEL: Optional[str] = "INFO"
-    BINDS: Optional[List[str]] = ["127.0.0.1:8000"]
+    HOST: str = "127.0.0.1"
+    PORT: int = 8000
     BASE_URL: Optional[str] = ""
 
     class Config:

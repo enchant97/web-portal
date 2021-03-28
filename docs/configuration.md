@@ -14,5 +14,6 @@
 | PORTAL_SECURED        | Whether the portal requires a login           | NO       | False              |
 | SHOW_PANEL_HEADERS    | Show the panel header names                   | NO       | True               |
 | LOG_LEVEL             | What log level to use                         | NO       | "INFO"             |
-| BINDS                 | Where to listen for requests                  | NO       | ["127.0.0.1:8000"] |
+| HOST                  | host to listen for requests                   | NO       | "127.0.0.1"        |
+| PORT                  | port to listen for requests                   | NO       | 8000               |
 | BASE_URL              | The base url prefix                           | NO       | "/"                |
