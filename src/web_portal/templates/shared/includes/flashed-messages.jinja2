@@ -1,6 +1,6 @@
 {% with messages = get_flashed_messages(with_categories=true) %}
   {% if messages %}
-    <div class=flashes>
+    <div class="flashes">
     {% for category, message in messages %}
       <div class="{{ category }}">
         <strong>{{ message }}</strong>

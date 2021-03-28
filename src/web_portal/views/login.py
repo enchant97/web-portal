@@ -1,5 +1,5 @@
 from quart import Blueprint, flash, redirect, render_template, request, url_for
-from quart_auth import (AuthUser, Unauthorized, current_user, login_required,
+from quart_auth import (AuthUser, current_user, login_required,
                         login_user, logout_user)
 
 from ..database.crud import check_user

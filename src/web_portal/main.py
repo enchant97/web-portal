@@ -1,6 +1,6 @@
 import logging
 
-from quart import Quart, flash, redirect, request, url_for
+from quart import Quart, flash, redirect, url_for
 from quart_auth import AuthManager, Unauthorized
 from tortoise.contrib.quart import register_tortoise
 
