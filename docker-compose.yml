@@ -10,7 +10,8 @@ services:
     ports:
       - 8080:8000
     environment:
-      - BINDS=["0.0.0.0:8000"]
+      - HOST=0.0.0.0
+      - PORT=8000
     healthcheck:
       test: "curl --fail http://127.0.0.1:8000/is-alive || exit 1"
       timeout: 20s
