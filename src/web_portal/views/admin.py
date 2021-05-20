@@ -8,6 +8,7 @@ from ..helpers import PasswordStrength, login_admin_required
 
 blueprint = Blueprint("admin", __name__)
 
+
 @blueprint.route("/")
 @login_admin_required
 async def index():
@@ -19,6 +20,7 @@ async def index():
         groups=groups,
         widgets=widgets,
         users=users)
+
 
 @blueprint.route("/new-widget", methods=["POST"])
 @login_admin_required
@@ -38,6 +40,7 @@ async def new_widget():
         await flash("form field id's are invalid", "red")
     return redirect(url_for("admin.index"))
 
+
 @blueprint.route("/new-group", methods=["POST"])
 @login_admin_required
 async def new_group():
@@ -45,6 +48,7 @@ async def new_group():
     await crud.new_panel_group(prefix)
     await flash("created new widget group", "green")
     return redirect(url_for("admin.index"))
+
 
 @blueprint.route("/re-goup-widget", methods=["POST"])
 @login_admin_required
@@ -62,6 +66,7 @@ async def re_group_widget():
         await flash("form field id's are invalid", "red")
     return redirect(url_for("admin.index"))
 
+
 @blueprint.route("/delete-widget", methods=["POST"])
 @login_admin_required
 async def delete_widget():
@@ -72,6 +77,7 @@ async def delete_widget():
         await crud.delete_widget_by_id(widget_id)
         await flash("deleted widget", "green")
     return redirect(url_for("admin.index"))
+
 
 @blueprint.route("/change-widget-color", methods=["POST"])
 @login_admin_required
@@ -84,6 +90,20 @@ async def change_widget_color():
         await crud.modify_widget_color(widget_id, color_name)
         await flash("changed widget color", "green")
     return redirect(url_for("admin.index"))
+
+
+@blueprint.route("/change-widget-url", methods=["POST"])
+@login_admin_required
+async def change_widget_url():
+    widget_id = (await request.form)["widget_id"]
+    url = (await request.form)["url"]
+    if not widget_id.isnumeric():
+        await flash("form field type error", "red")
+    else:
+        await crud.modify_widget_url(widget_id, url)
+        await flash("changed widget url", "green")
+    return redirect(url_for("admin.index"))
+
 
 @blueprint.route("/new-user", methods=["POST"])
 @login_admin_required
@@ -100,6 +120,7 @@ async def new_user():
         await flash(err.args[0], "red")
     return redirect(url_for("admin.index"))
 
+
 @blueprint.route("/delete-user", methods=["POST"])
 @login_admin_required
 async def delete_user():
@@ -110,6 +131,7 @@ async def delete_user():
         await crud.delete_user(user_id)
         await flash("deleted user", "green")
     return redirect(url_for("admin.index"))
+
 
 @blueprint.route("/modify-user-permissions", methods=["POST"])
 @login_admin_required
@@ -122,6 +144,7 @@ async def modify_user_permissions():
         await crud.modify_user_permissions(user_id, is_admin)
         await flash("modified permissions", "green")
     return redirect(url_for("admin.index"))
+
 
 @blueprint.route("/change-password", methods=["POST"])
 @login_admin_required

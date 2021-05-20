@@ -30,7 +30,7 @@
     </form>
 
     <form action="{{ url_for('admin.re_group_widget') }}" method="post">
-        <h3>Re-Group Wiget</h3>
+        <h3>Re-Group Widget</h3>
         <label for="re-group-widget-widget">Widget</label>
         <select name="widget_id" id="re-group-widget-widget" required>
             {% include "/shared/includes/options-widgets.jinja2" %}
@@ -64,6 +64,16 @@
         <select name="color_name" id="widget-color-name" required>
             {% include "/shared/includes/options-color.jinja2" %}
         </select>
+        <button type="submit">Save</button>
+    </form>
+
+    <form action="{{ url_for('admin.change_widget_url') }}" method="post">
+        <h3>Widget Url</h3>
+        <label for="widget-url-widget">Widget</label>
+        <select name="widget_id" id="widget-url-widget" required>
+            {% include "/shared/includes/options-widgets.jinja2" %}
+        </select>
+        <input type="text" name="url" id="widget-url-url" required maxlength="255">
         <button type="submit">Save</button>
     </form>
 </div>
@@ -107,7 +117,8 @@
             {% include "/shared/includes/options-users.jinja2" %}
         </select>
         <label for="change-password-password">New Password</label>
-        <input type="password" name="new_password" id="change-password-password" required placeholder="new password..." minlength="8">
+        <input type="password" name="new_password" id="change-password-password" required placeholder="new password..."
+            minlength="8">
         <button type="submit">Save</button>
     </form>
 </div>

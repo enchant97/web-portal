@@ -167,7 +167,7 @@ async def get_widgets_by_group():
         widgets_grouped.append({
             "group_id": group.id,
             "group_prefix": group.prefix,
-            "widgets": (await Panel_Widget.filter(group_id=group.id).all())})
+            "widgets": (await Panel_Widget.filter(group_id=group.id).order_by("prefix").all())})
     return widgets_grouped
 
 
@@ -223,6 +223,11 @@ async def modify_widget_color(widget_id: int, color_name: str):
         :param color_name: the color
     """
     await Panel_Widget.filter(id=widget_id).update(color_name=color_name)
+    cached_panels.reset_cache()
+
+
+async def modify_widget_url(widget_id: int, url: str):
+    await Panel_Widget.filter(id=widget_id).update(url=url)
     cached_panels.reset_cache()
 
 
