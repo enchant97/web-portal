@@ -1,6 +1,8 @@
 from functools import lru_cache
+from typing import Optional
+
 from pydantic import BaseSettings
-from typing import Optional, List
+
 
 class Settings(BaseSettings):
     DB_URL: str
@@ -12,7 +14,6 @@ class Settings(BaseSettings):
     LOG_LEVEL: Optional[str] = "INFO"
     HOST: str = "127.0.0.1"
     PORT: int = 8000
-    BASE_URL: Optional[str] = ""
 
     class Config:
         case_sensitive = True
