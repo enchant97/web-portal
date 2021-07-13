@@ -1,4 +1,4 @@
-quart==0.14.*
-quart-auth==0.4.*
-tortoise-orm==0.17.*
+quart==0.15.*
+quart-auth==0.5.*
+tortoise-orm[aiomysql]==0.17.*
 pydantic[dotenv]==1.8.*
