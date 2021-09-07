@@ -5,15 +5,13 @@ from pydantic import BaseSettings
 
 
 class Settings(BaseSettings):
-    DB_URL: str
+    DB_URI: str
     ADMIN_CREATE_OVERRIDE: Optional[bool] = False
     SECRET_KEY: str
     UNSECURE_LOGIN: Optional[bool] = False
     PORTAL_SECURED: Optional[bool] = False
     SHOW_PANEL_HEADERS: Optional[bool] = True
     LOG_LEVEL: Optional[str] = "INFO"
-    HOST: str = "127.0.0.1"
-    PORT: int = 8000
 
     class Config:
         case_sensitive = True

@@ -43,7 +43,7 @@ def create_app():
     # other setup
     register_tortoise(
         app,
-        db_url=get_settings().DB_URL,
+        db_url=get_settings().DB_URI,
         modules={"models": [models]},
         generate_schemas=True)
     logging.debug("init auth manager")
