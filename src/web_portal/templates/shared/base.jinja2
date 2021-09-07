@@ -9,6 +9,8 @@
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&family=Roboto&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script src="{{ url_for('static', filename='theme-changer.js') }}"></script>
+    <script src="{{ url_for('static', filename='script.js') }}" defer></script>
 </head>
 
 <body>
@@ -22,6 +24,7 @@
             {% else %}
             <a href="{{ url_for('login.login') }}">Login</a>
             {% endif %}
+            <button id="themeToggleBnt"></button>
         </nav>
     </header>
     <main>

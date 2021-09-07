@@ -9,6 +9,17 @@
     --font-family-main: 'Open Sans', sans-serif;
 }
 
+@media (prefers-color-scheme: dark) {
+    :root {
+        --font-dark: var(--font-light);
+        --font-light: #bcbcbc;
+        --bg-bnt: #003d4b;
+        --bg-body: #002b36;
+        --bg-sub-body: #073540;
+        --bg-panel: #083b47;
+    }
+}
+
 footer,
 header,
 input,
@@ -16,6 +27,7 @@ select,
 button,
 label,
 div {
+    color: var(--font-dark);
     font-family: var(--font-family-main);
 }
 
@@ -23,6 +35,7 @@ h1,
 h2,
 h3 {
     font-family: var(--font-family-title);
+    color: var(--font-dark);
 }
 
 h1 {
@@ -50,18 +63,22 @@ header nav {
     align-items: center;
 }
 
-header nav a {
+header nav a,
+header nav button {
     text-decoration: none;
     color: var(--font-dark);
     padding: 10px 20px;
     background-color: var(--bg-bnt);
     border-radius: 10px;
+    border-style: none;
 }
 
-header nav a:hover {
+header nav a:hover,
+header nav button:hover {
     transition-duration: 400ms;
     background-color: black;
     color: var(--font-light);
+    cursor: pointer;
 }
 
 form {
@@ -253,4 +270,13 @@ footer {
 .pink-red {
     background-color: #af2a7c;
     color: var(--font-light);
+}
+
+#themeToggleBnt {
+    background-image: url("/static/theme-changer.svg");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: auto;
+    height: 35px;
+    width: 65px;
 }
