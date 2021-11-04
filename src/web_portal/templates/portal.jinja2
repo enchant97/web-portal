@@ -1,6 +1,12 @@
 {% extends "/shared/base.jinja2" %}
 {% block title %}Portal{% endblock %}
 {% block main %}
+{% if config.SEARCH_URL != None %}
+<form class="search-box" action="{{ config.SEARCH_URL }}" method="get">
+    <input type="text" name="q" placeholder="search..." required>
+    <button type="submit" title="Search">{{ macros.feather_img('search') }}</button>
+</form>
+{% endif %}
 {# include "/shared/includes/panels.jinja2" #}
-{{ widget_panels|safe  }}
+{{ widget_panels|safe }}
 {% endblock %}

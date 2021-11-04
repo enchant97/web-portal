@@ -11,7 +11,7 @@ from .database.crud import create_default_admin, create_default_panel_group
 from .views import admin, login, portal
 
 app = Quart(__name__)
-auth_manager=AuthManager()
+auth_manager = AuthManager()
 
 
 @app.errorhandler(Unauthorized)
@@ -34,6 +34,7 @@ def create_app():
     app.config["__VERSION__"] = __version__
     app.secret_key = get_settings().SECRET_KEY
     app.config["QUART_AUTH_COOKIE_SECURE"] = not get_settings().UNSECURE_LOGIN
+    app.config["SEARCH_URL"] = get_settings().SEARCH_URL
     logging.debug("registering blueprints")
     # register blueprints
     app.register_blueprint(portal.blueprint, url_prefix="/")

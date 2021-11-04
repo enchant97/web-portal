@@ -11,6 +11,7 @@ class Settings(BaseSettings):
     UNSECURE_LOGIN: Optional[bool] = False
     PORTAL_SECURED: Optional[bool] = False
     SHOW_PANEL_HEADERS: Optional[bool] = True
+    SEARCH_URL: Optional[str] = None
     LOG_LEVEL: Optional[str] = "INFO"
 
     class Config:
