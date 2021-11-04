@@ -19,9 +19,3 @@ async def portal():
         "portal.jinja2",
         widget_panels=widget_panels,
         show_panel_headers=get_settings().SHOW_PANEL_HEADERS)
-
-
-@blueprint.route("/is-alive")
-async def is_alive():
-    # route to test whether server has not crashed
-    return "🆗"
