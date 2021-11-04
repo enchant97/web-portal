@@ -63,6 +63,7 @@ body {
     background-color: var(--bg-body);
     max-width: 1000px;
     margin: auto;
+    padding: 10px;
 }
 
 header {
@@ -161,18 +162,19 @@ footer {
 }
 
 .panel div {
-    display: flex;
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: repeat(3, 200px);
+    justify-content: center;
     gap: 10px;
 }
 
 .panel div a {
     border-radius: 10px;
-    padding: 70px;
+    padding: 50px;
     text-decoration: none;
     font-family: var(--font-family-title);
     font-size: 1.5em;
-    justify-content: center;
+    text-align: center;
     box-shadow: 4px 4px 0px black;
 }
 
@@ -327,4 +329,10 @@ footer {
     flex-direction: row;
     margin: auto;
     justify-content: center;
+}
+
+@media(max-width:640px) {
+    .panel div {
+        grid-template-columns: repeat(2, 200px);
+    }
 }
