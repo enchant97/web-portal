@@ -20,6 +20,23 @@
     }
 }
 
+body::-webkit-scrollbar {
+    width: 6px;
+    background-color: var(--bg-body);
+}
+
+body::-webkit-scrollbar-thumb {
+    background-color: #4b4b4b;
+}
+
+body::-webkit-scrollbar-thumb:hover {
+    background-color: #353535;
+}
+
+body::-webkit-scrollbar-thumb:active {
+    background-color: black;
+}
+
 footer,
 header,
 input,
@@ -44,6 +61,8 @@ h1 {
 
 body {
     background-color: var(--bg-body);
+    max-width: 1000px;
+    margin: auto;
 }
 
 header {
@@ -94,7 +113,7 @@ form h3 {
 
 form input,
 form select,
-form button {
+button {
     padding: 4px;
     border-radius: 6px;
     border-style: none;
@@ -102,11 +121,11 @@ form button {
     background-color: var(--bg-panel);
 }
 
-form button {
+button {
     background-color: var(--bg-bnt);
 }
 
-form button:hover {
+button:hover {
     cursor: pointer;
     transition-duration: 400ms;
     background-color: black;
@@ -120,6 +139,15 @@ footer {
     padding-top: 10px;
 }
 
+.feather-icon {
+    width: 24px;
+    height: 18px;
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    fill: none;
+  }
 
 .panel {
     border-radius: 6px;
@@ -279,4 +307,11 @@ footer {
     background-size: auto;
     height: 35px;
     width: 65px;
+}
+
+#theme-picker-selector {
+    display: flex;
+    flex-direction: row;
+    margin: auto;
+    justify-content: center;
 }
