@@ -1,28 +1,32 @@
-FROM python:3.9-slim as builder
+ARG PYTHON_VERSION=3.10
 
-WORKDIR /app
+FROM python:${PYTHON_VERSION}-slim as builder
 
-COPY requirements.txt requirements.txt
+    WORKDIR /app
 
-RUN python -m venv .venv
+    COPY requirements.txt requirements.txt
 
-# also allow for DOCKER_BUILDKIT=1 to be used
-RUN --mount=type=cache,target=/root/.cache ./.venv/bin/pip install -r requirements.txt
+    RUN python -m venv .venv
+    ENV PATH="/app/.venv/bin:$PATH"
 
-FROM python:3.9-alpine3.14
+    # caching with DOCKER_BUILDKIT=1
+    RUN --mount=type=cache,target=/root/.cache pip install -r requirements.txt
 
-WORKDIR /app
-EXPOSE 8000
-ENV WORKERS=1
-ENV LOG_LEVEL="INFO"
-ENV HOST="0.0.0.0"
-ENV PORT="8000"
+FROM python:${PYTHON_VERSION}-alpine
 
-COPY --from=builder /app/.venv .venv
+    WORKDIR /app
+    EXPOSE 8000
+    ENV PATH="/app/.venv/bin:$PATH"
+    ENV WORKERS=1
+    ENV LOG_LEVEL="INFO"
+    ENV HOST="0.0.0.0"
+    ENV PORT="8000"
 
-COPY src/web_portal web_portal
+    COPY --from=builder /app/.venv .venv
 
-CMD ./.venv/bin/hypercorn 'web_portal.main:create_app()' --bind "$HOST:$PORT" --workers "$WORKERS" --log-level "$LOG_LEVEL"
+    COPY src/web_portal web_portal
 
-HEALTHCHECK --interval=1m --start-period=30s \
-    CMD ./.venv/bin/python -m web_health_checker 'http://127.0.0.1:8000/is-healthy'
+    CMD hypercorn 'web_portal.main:create_app()' --bind "$HOST:$PORT" --workers "$WORKERS" --log-level "$LOG_LEVEL"
+
+    HEALTHCHECK --interval=1m --start-period=30s \
+        CMD python -m web_health_checker 'http://127.0.0.1:$PORT/is-healthy'
