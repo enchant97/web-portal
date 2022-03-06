@@ -25,7 +25,7 @@ FROM python:${PYTHON_VERSION}-alpine
 
     COPY --from=builder /app/.venv .venv
 
-    COPY src/web_portal web_portal
+    COPY web_portal web_portal
 
     CMD hypercorn 'web_portal.main:create_app()' --bind "$HOST:$PORT" --workers "$WORKERS" --log-level "$LOG_LEVEL"
 
