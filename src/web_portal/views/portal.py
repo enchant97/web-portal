@@ -18,4 +18,4 @@ async def portal():
     return await render_template(
         "portal.jinja2",
         widget_panels=widget_panels,
-        show_panel_headers=get_settings().SHOW_PANEL_HEADERS)
+    )

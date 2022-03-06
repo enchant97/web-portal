@@ -1,6 +1,6 @@
 {% for group in widgets_grouped %}
 <div class="panel">
-    {% if show_panel_headers is true %}
+    {% if config.SHOW_PANEL_HEADERS %}
     <h3>{{ group.group_prefix }}</h3>
     {% endif %}
     <div>
