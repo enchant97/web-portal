@@ -12,6 +12,7 @@ class Settings(BaseSettings):
     PORTAL_SECURED: Optional[bool] = False
     SHOW_PANEL_HEADERS: Optional[bool] = True
     SEARCH_URL: Optional[str] = None
+    COMPACT_VIEW: Optional[bool] = False
     LOG_LEVEL: Optional[str] = "INFO"
 
     class Config:

@@ -37,6 +37,7 @@ def create_app():
     app.config["QUART_AUTH_COOKIE_SECURE"] = not get_settings().UNSECURE_LOGIN
     app.config["SEARCH_URL"] = get_settings().SEARCH_URL
     app.config["SHOW_PANEL_HEADERS"] = get_settings().SHOW_PANEL_HEADERS
+    app.config["COMPACT_VIEW"] = get_settings().COMPACT_VIEW
     logging.debug("registering blueprints")
     # register blueprints
     app.register_blueprint(health_check.blueprint, url_prefix="/")

@@ -1,5 +1,6 @@
 :root {
-    --font-dark: black;
+    --font-dark-no-adjust: black;
+    --font-dark: var(--font-dark-no-adjust);
     --font-light: #f0f0f0;
     --bg-bnt: #adadad;
     --bg-body: #9299a5;
@@ -136,8 +137,13 @@ button:hover {
 footer {
     text-align: center;
     margin-top: 100px;
-    border-top-style: solid;
+    border-top: var(--font-light) solid;
     padding-top: 10px;
+}
+
+footer a {
+    color: #4e9df8;
+    text-decoration: none;
 }
 
 .feather-icon {
@@ -148,7 +154,7 @@ footer {
     stroke-linecap: round;
     stroke-linejoin: round;
     fill: none;
-  }
+}
 
 .panel {
     border-radius: 6px;
@@ -170,12 +176,16 @@ footer {
 
 .panel div a {
     border-radius: 10px;
-    padding: 50px;
+    padding: 3rem;
     text-decoration: none;
     font-family: var(--font-family-title);
     font-size: 1.5em;
     text-align: center;
     box-shadow: 4px 4px 0px black;
+}
+
+.panel.compact div a {
+    padding: 1rem 3rem;
 }
 
 .panel div a:hover {
@@ -208,6 +218,10 @@ footer {
 
 .search-box input {
     width: 50%;
+}
+
+.search-box input:focus {
+    outline: solid black 2px;
 }
 
 /* flash styles */
@@ -247,7 +261,7 @@ footer {
 /* colors for widgets */
 .white {
     background-color: #e4e4e4;
-    color: var(--font-dark);
+    color: var(--font-dark-no-adjust);
 }
 
 .grey {
@@ -276,8 +290,8 @@ footer {
 }
 
 .yellow {
-    background-color: #bbca2d;
-    color: var(--font-dark);
+    background-color: #8b971e;
+    color: var(--font-light);
 }
 
 .green {
@@ -291,8 +305,8 @@ footer {
 }
 
 .cyan {
-    background-color: #36aace;
-    color: var(--font-black);
+    background-color: #0e7b9d;
+    color: var(--font-light);
 }
 
 .blue {

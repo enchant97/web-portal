@@ -1,5 +1,5 @@
 {% for group in widgets_grouped %}
-<div class="panel">
+<div class="panel{% if config.COMPACT_VIEW %} compact{% else %}{%endif%}">
     {% if config.SHOW_PANEL_HEADERS %}
     <h3>{{ group.group_prefix }}</h3>
     {% endif %}

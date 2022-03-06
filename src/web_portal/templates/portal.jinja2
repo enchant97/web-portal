@@ -3,7 +3,7 @@
 {% block main %}
 {% if config.SEARCH_URL != None %}
 <form class="search-box" action="{{ config.SEARCH_URL }}" method="get">
-    <input type="text" name="q" placeholder="search..." required>
+    <input type="text" name="q" placeholder="search..." required autofocus>
     <button type="submit" title="Search">{{ macros.feather_img('search') }}</button>
 </form>
 {% endif %}
