@@ -40,7 +40,8 @@ async def create_default_admin(override=False):
                      exists, defaults to False
     """
     if override:
-        raise NotImplementedError("this has not been implemented yet")
+        if user := await User.filter(username="admin").first():
+            await user.delete()
 
     if not await User.filter(username="admin").first():
         account = User(username="admin", is_admin=True)
