@@ -6,10 +6,13 @@ services:
     build: .
     restart: unless-stopped
     volumes:
-      - ./.env:/.env:ro
       - web-portal:/data
     ports:
       - 8000:8000
+    environment:
+      - "DB_URI=sqlite:///data/db.sqlite"
+      # This must be secure
+      - "SECRET_KEY=my_super_secret_123"
 
 volumes:
   web-portal:
