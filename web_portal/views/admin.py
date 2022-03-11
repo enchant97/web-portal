@@ -1,10 +1,12 @@
 import logging
 
-from quart import Blueprint, flash, redirect, render_template, request, url_for
+from quart import (Blueprint, flash, jsonify, redirect, render_template,
+                   request, url_for)
 from tortoise.exceptions import DoesNotExist, IntegrityError
 
 from ..database import crud
 from ..helpers import PasswordStrength, login_admin_required
+from ..import_export import export_to_v1_widgets
 
 blueprint = Blueprint("admin", __name__)
 
@@ -165,3 +167,10 @@ async def change_user_password():
     except PasswordStrength as err:
         await flash(err.args[0], "red")
     return redirect(url_for("admin.index"))
+
+
+@blueprint.get("/export/v1")
+@login_admin_required
+async def export_v1_widgets():
+    widgets = [widget.dict() async for widget in export_to_v1_widgets()]
+    return jsonify(widgets)

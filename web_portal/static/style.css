@@ -115,7 +115,8 @@ form h3 {
 
 form input,
 form select,
-button {
+button,
+.bnt {
     padding: 4px;
     border-radius: 6px;
     border-style: none;
@@ -123,11 +124,15 @@ button {
     background-color: var(--bg-panel);
 }
 
-button {
+button,
+.bnt {
+    color: var(--font-dark);
+    text-decoration: none;
     background-color: var(--bg-bnt);
 }
 
-button:hover {
+button:hover,
+.bnt:hover {
     cursor: pointer;
     transition-duration: 400ms;
     background-color: black;
