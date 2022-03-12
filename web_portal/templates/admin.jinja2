@@ -124,6 +124,14 @@
 </div>
 <div class="form-group">
     <h2>Export</h2>
-    <a class="bnt" href="{{ url_for('admin.export_v1_widgets') }}" download="widgets_v1.json">Download V1</a>
+    <a class="bnt" href="{{ url_for('admin.get_export_v1_widgets') }}" download="widgets_v1.json">Download V1</a>
+</div>
+<div class="form-group">
+    <h2>Import</h2>
+    <form enctype="multipart/form-data" action="{{ url_for('admin.post_import_v1_widgets') }}" method="post">
+        <h3>V1 Import</h3>
+        <input type="file" name="file" accept="application/json" aria-label="v1 file to upload" required>
+        <button type="submit">Upload</button>
+    </form>
 </div>
 {% endblock %}

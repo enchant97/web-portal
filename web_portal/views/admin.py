@@ -1,3 +1,4 @@
+import json
 import logging
 
 from quart import (Blueprint, flash, jsonify, redirect, render_template,
@@ -6,7 +7,7 @@ from tortoise.exceptions import DoesNotExist, IntegrityError
 
 from ..database import crud
 from ..helpers import PasswordStrength, login_admin_required
-from ..import_export import export_to_v1_widgets
+from ..import_export import Widget_V1, export_to_v1_widgets, import_v1_widgets
 
 blueprint = Blueprint("admin", __name__)
 
@@ -171,6 +172,19 @@ async def change_user_password():
 
 @blueprint.get("/export/v1")
 @login_admin_required
-async def export_v1_widgets():
+async def get_export_v1_widgets():
     widgets = [widget.dict() async for widget in export_to_v1_widgets()]
     return jsonify(widgets)
+
+
+@blueprint.post("/import/v1")
+@login_admin_required
+async def post_import_v1_widgets():
+    file = (await request.files)["file"]
+    loaded_json = json.load(file.stream)
+    if not isinstance(loaded_json, list):
+        raise ValueError()
+    widgets = [Widget_V1.parse_obj(widget) for widget in loaded_json]
+    await import_v1_widgets(widgets)
+    await flash("Importing widgets", "green")
+    return redirect(url_for("admin.index"))
