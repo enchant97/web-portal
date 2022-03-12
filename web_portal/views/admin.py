@@ -12,17 +12,39 @@ from ..import_export import Widget_V1, export_to_v1_widgets, import_v1_widgets
 blueprint = Blueprint("admin", __name__)
 
 
-@blueprint.route("/")
+@blueprint.get("/")
 @login_admin_required
-async def index():
+async def get_index():
     groups = await crud.get_panel_groups()
     widgets = await crud.get_widgets()
     users = await crud.get_users()
     return await render_template(
-        "admin.jinja2",
+        "admin/index.jinja2",
         groups=groups,
         widgets=widgets,
         users=users)
+
+
+@blueprint.get("/portal")
+@login_admin_required
+async def get_widgets():
+    groups = await crud.get_panel_groups()
+    widgets = await crud.get_widgets()
+    return await render_template(
+        "admin/widgets.jinja2",
+        groups=groups,
+        widgets=widgets,
+    )
+
+
+@blueprint.get("/users")
+@login_admin_required
+async def get_users():
+    users = await crud.get_users()
+    return await render_template(
+        "admin/users.jinja2",
+        users=users,
+    )
 
 
 @blueprint.route("/new-widget", methods=["POST"])
@@ -41,7 +63,7 @@ async def new_widget():
     except IntegrityError:
         logging.exception("new_widget IntegrityError")
         await flash("form field id's are invalid", "red")
-    return redirect(url_for("admin.index"))
+    return redirect(url_for("admin.get_widgets"))
 
 
 @blueprint.route("/new-group", methods=["POST"])
@@ -50,10 +72,10 @@ async def new_group():
     prefix = (await request.form)["prefix"]
     await crud.new_panel_group(prefix)
     await flash("created new widget group", "green")
-    return redirect(url_for("admin.index"))
+    return redirect(url_for("admin.get_widgets"))
 
 
-@blueprint.route("/re-goup-widget", methods=["POST"])
+@blueprint.route("/re-group-widget", methods=["POST"])
 @login_admin_required
 async def re_group_widget():
     try:
@@ -67,7 +89,7 @@ async def re_group_widget():
     except IntegrityError:
         logging.exception("new_widget IntegrityError")
         await flash("form field id's are invalid", "red")
-    return redirect(url_for("admin.index"))
+    return redirect(url_for("admin.get_widgets"))
 
 
 @blueprint.route("/delete-widget", methods=["POST"])
@@ -79,7 +101,7 @@ async def delete_widget():
     else:
         await crud.delete_widget_by_id(widget_id)
         await flash("deleted widget", "green")
-    return redirect(url_for("admin.index"))
+    return redirect(url_for("admin.get_widgets"))
 
 
 @blueprint.route("/change-widget-color", methods=["POST"])
@@ -92,7 +114,7 @@ async def change_widget_color():
     else:
         await crud.modify_widget_color(widget_id, color_name)
         await flash("changed widget color", "green")
-    return redirect(url_for("admin.index"))
+    return redirect(url_for("admin.get_widgets"))
 
 
 @blueprint.route("/change-widget-url", methods=["POST"])
@@ -105,7 +127,7 @@ async def change_widget_url():
     else:
         await crud.modify_widget_url(widget_id, url)
         await flash("changed widget url", "green")
-    return redirect(url_for("admin.index"))
+    return redirect(url_for("admin.get_widgets"))
 
 
 @blueprint.route("/new-user", methods=["POST"])
@@ -121,7 +143,7 @@ async def new_user():
         await flash("created new user", "green")
     except PasswordStrength as err:
         await flash(err.args[0], "red")
-    return redirect(url_for("admin.index"))
+    return redirect(url_for("admin.get_users"))
 
 
 @blueprint.route("/delete-user", methods=["POST"])
@@ -133,7 +155,7 @@ async def delete_user():
     else:
         await crud.delete_user(user_id)
         await flash("deleted user", "green")
-    return redirect(url_for("admin.index"))
+    return redirect(url_for("admin.get_users"))
 
 
 @blueprint.route("/modify-user-permissions", methods=["POST"])
@@ -146,7 +168,7 @@ async def modify_user_permissions():
     else:
         await crud.modify_user_permissions(user_id, is_admin)
         await flash("modified permissions", "green")
-    return redirect(url_for("admin.index"))
+    return redirect(url_for("admin.get_users"))
 
 
 @blueprint.route("/change-password", methods=["POST"])
@@ -167,7 +189,7 @@ async def change_user_password():
         await flash("user does not exist with given id", "red")
     except PasswordStrength as err:
         await flash(err.args[0], "red")
-    return redirect(url_for("admin.index"))
+    return redirect(url_for("admin.get_users"))
 
 
 @blueprint.get("/export/v1")
@@ -187,4 +209,4 @@ async def post_import_v1_widgets():
     widgets = [Widget_V1.parse_obj(widget) for widget in loaded_json]
     await import_v1_widgets(widgets)
     await flash("Importing widgets", "green")
-    return redirect(url_for("admin.index"))
+    return redirect(url_for("admin.get_index"))

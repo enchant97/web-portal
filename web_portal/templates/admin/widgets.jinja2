@@ -2,7 +2,7 @@
 {% block title %}Admin{% endblock %}
 {% block main %}
 <div class="form-group">
-    <h2>Portal Customisation</h2>
+    <h2>Widget Customisation</h2>
     <form action="{{ url_for('admin.new_widget') }}" method="post">
         <h3>New Widget</h3>
         <label for="new-widget-url">URL</label>
@@ -75,63 +75,6 @@
         </select>
         <input type="text" name="url" id="widget-url-url" required maxlength="255">
         <button type="submit">Save</button>
-    </form>
-</div>
-<div class="form-group">
-    <h2>User Customisation</h2>
-    <form action="{{ url_for('admin.new_user') }}" method="post">
-        <h3>New User</h3>
-        <label for="new-user-username">Username</label>
-        <input type="text" name="username" id="new-user-username" required placeholder="username...">
-        <label for="new-user-password">Password</label>
-        <input type="password" name="password" id="new-user-password" required placeholder="password..." minlength="8">
-        <label for="new-user-is-admin">Has Admin</label>
-        <input type="checkbox" name="is_admin" id="new-user-is-admin" value="1">
-        <button type="submit">Save</button>
-    </form>
-
-    <form action="{{ url_for('admin.delete_user') }}" method="post">
-        <h3>Delete User</h3>
-        <label for="delete-user-user-id">User</label>
-        <select name="user_id" id="delete-user-user-id" required>
-            {% include "/shared/includes/options-users.jinja2" %}
-        </select>
-        <button type="submit">Save</button>
-    </form>
-
-    <form action="{{ url_for('admin.modify_user_permissions') }}" method="post">
-        <h3>Modify User Permissions</h3>
-        <label for="modify-user-permissions-user-id">User</label>
-        <select name="user_id" id="modify-user-permissions-user-id" required>
-            {% include "/shared/includes/options-users.jinja2" %}
-        </select>
-        <label for="modify-permissions-is-admin">Has Admin</label>
-        <input type="checkbox" name="is_admin" id="modify-permissions-is-admin" value="1">
-        <button type="submit">Save</button>
-    </form>
-
-    <form action="{{ url_for('admin.change_user_password') }}" method="post">
-        <h3>Change User Password</h3>
-        <label for="change-password-user-id">User</label>
-        <select name="user_id" id="change-password-user-id" required>
-            {% include "/shared/includes/options-users.jinja2" %}
-        </select>
-        <label for="change-password-password">New Password</label>
-        <input type="password" name="new_password" id="change-password-password" required placeholder="new password..."
-            minlength="8">
-        <button type="submit">Save</button>
-    </form>
-</div>
-<div class="form-group">
-    <h2>Export</h2>
-    <a class="bnt" href="{{ url_for('admin.get_export_v1_widgets') }}" download="widgets_v1.json">Download V1</a>
-</div>
-<div class="form-group">
-    <h2>Import</h2>
-    <form enctype="multipart/form-data" action="{{ url_for('admin.post_import_v1_widgets') }}" method="post">
-        <h3>V1 Import</h3>
-        <input type="file" name="file" accept="application/json" aria-label="v1 file to upload" required>
-        <button type="submit">Upload</button>
     </form>
 </div>
 {% endblock %}
