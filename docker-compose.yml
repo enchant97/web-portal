@@ -3,7 +3,7 @@ version: "3.3"
 services:
   web-portal:
     container_name: web-portal
-    build: .
+    image: ghcr.io/enchant97/web-portal:1
     restart: unless-stopped
     volumes:
       - web-portal:/data

@@ -15,11 +15,22 @@ It has been designed to run through docker and it is recommended to put it behin
 - Optional Compact view
 - Password protection for admin modification
 - Optionally secure the portal with user accounts & passwords
+- Import/Export widgets using JSON
 - MySQL/MariaDB and sqlite support
 
 ## About The Repo
 - This repo uses 'master' as the develop branch and should be treating unstable or unfinished. If you want a stable release please use the tags/releases.
 - The [CHANGELOG](CHANGELOG.md) contains a history of changes that happened with each release.
+
+## Install
+### Docker
+You will need to either pull a already built image or build your own. Pre-built images are hosted at the GitHub Container Repository.
+
+> Use a specific version number tag instead of latest for production as major version changes will have incompatibilities.
+
+```
+docker pull ghcr.io/enchant97/web-portal:1
+```
 
 ## Config
 You can configure the app using a .env file or through environment variables.
@@ -38,6 +49,11 @@ You can configure the app using a .env file or through environment variables.
 | WORKERS               | Number of separate processes to spawn         | 1         | Yes         |
 
 > Default values indicated with '-' are not required
+
+## Import / Export
+This program features an import/export ability; that allows data to be exported into a friendly format (JSON) and then re-imported.
+
+This can feature as a backup without the need for a database. It can also allow for migrating from or to another program. It could also be used to allow mass adding of widgets.
 
 ## License
 The licenses for this project can be found in the `LICENSE` file.
