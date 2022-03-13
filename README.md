@@ -18,6 +18,9 @@ It has been designed to run through docker and it is recommended to put it behin
 - Import/Export widgets using JSON
 - MySQL/MariaDB and sqlite support
 
+## Showcase
+[![web-portal showcase image, showing dark and light themes](docs/assets/portal-view.png)](docs/assets/portal-view.png)
+
 ## About The Repo
 - This repo uses 'master' as the develop branch and should be treating unstable or unfinished. If you want a stable release please use the tags/releases.
 - The [CHANGELOG](CHANGELOG.md) contains a history of changes that happened with each release.
