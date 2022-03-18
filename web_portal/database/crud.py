@@ -1,7 +1,7 @@
 from typing import List
 
 from quart import render_template
-from tortoise.exceptions import DoesNotExist
+from tortoise.exceptions import DoesNotExist, IntegrityError
 
 from ..cache import CachedData
 from .models import Panel_Group, Panel_Widget, User
@@ -249,3 +249,17 @@ async def delete_widget_by_id(widget_id: int):
     """
     await Panel_Widget.filter(id=widget_id).delete()
     cached_panels.reset_cache()
+
+
+async def delete_panel_group_by_id(group_id: int):
+    """
+    delete a widget's group, only if there
+    are no widgets assigned to it
+
+        :param group_id: the group id
+        :raises IntegrityError: raised when there are widgets assigned
+    """
+    group = await Panel_Group.get(id=group_id)
+    if await Panel_Widget.filter(group=group).first():
+        raise IntegrityError("Panel Group has widgets assigned")
+    await group.delete()

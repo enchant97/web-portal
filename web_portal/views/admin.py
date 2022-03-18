@@ -75,6 +75,18 @@ async def new_group():
     return redirect(url_for("admin.get_widgets"))
 
 
+@blueprint.post("/delete-group")
+@login_admin_required
+async def post_delete_group():
+    try:
+        group_id = int((await request.form)["group_id"])
+        await crud.delete_panel_group_by_id(group_id)
+        await flash("deleted group", "green")
+    except IntegrityError:
+        await flash("cannot delete group as widgets are assigned", "red")
+    return redirect(url_for("admin.get_widgets"))
+
+
 @blueprint.route("/re-group-widget", methods=["POST"])
 @login_admin_required
 async def re_group_widget():

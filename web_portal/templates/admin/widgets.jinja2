@@ -29,6 +29,18 @@
         <button type="submit">Save</button>
     </form>
 
+    <form action="{{ url_for('admin.post_delete_group') }}" method="post">
+        <h3>Delete Group</h3>
+        <label for="delete-group-id">Group</label>
+        <select name="group_id" id="delete-group-id" required>
+            <option value=""></option>
+            {% for group in groups %}
+            <option value="{{ group.id }}">{{ group.prefix }}</option>
+            {% endfor %}
+        </select>
+        <button type="submit">Save</button>
+    </form>
+
     <form action="{{ url_for('admin.re_group_widget') }}" method="post">
         <h3>Re-Group Widget</h3>
         <label for="re-group-widget-widget">Widget</label>
