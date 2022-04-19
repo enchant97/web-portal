@@ -21,6 +21,11 @@ It has been designed to run through docker and it is recommended to put it behin
 ## Showcase
 [![web-portal showcase image, showing dark and light themes](docs/assets/portal-view.png)](docs/assets/portal-view.png)
 
+### Demo Video
+[![Demo Video](https://img.youtube.com/vi/VIWvmfFK5V0/0.jpg)](https://youtu.be/VIWvmfFK5V0 "Demo Video")
+
+<https://youtu.be/VIWvmfFK5V0>
+
 ## About The Repo
 - This repo uses 'master' as the develop branch and should be treating unstable or unfinished. If you want a stable release please use the tags/releases.
 - The [CHANGELOG](CHANGELOG.md) contains a history of changes that happened with each release.
@@ -38,20 +43,26 @@ docker pull ghcr.io/enchant97/web-portal:1
 ## Config
 You can configure the app using a .env file or through environment variables.
 
-| Name                  | Description                                   | Default   | Docker Only |
-| :-------------------- | :-------------------------------------------- | :-------- | :---------- |
-| DB_URI                | URI of where db is stored                     |           | No          |
-| SECRET_KEY            | Your app secret (use something secure)        |           | No          |
-| ADMIN_CREATE_OVERRIDE | Create a new admin account even if one exists | False     | No          |
-| UNSECURE_LOGIN        | Whether to allow http for cookies             | False     | No          |
-| PORTAL_SECURED        | Whether the portal requires a login           | False     | No          |
-| SHOW_PANEL_HEADERS    | Show the panel header names                   | True      | No          |
-| SEARCH_URL            | Search engine url (assumes ?q= is param name) | -         | No          |
-| COMPACT_VIEW          | Use the compact styling                       | False     | No          |
-| LOG_LEVEL             | What log level to use                         | "INFO"    | No          |
-| WORKERS               | Number of separate processes to spawn         | 1         | Yes         |
+| Name                  | Description                                   | Default | Docker Only |
+| :-------------------- | :-------------------------------------------- | :------ | :---------- |
+| DB_URI                | URI of where db is stored                     |         | No          |
+| SECRET_KEY            | Your app secret (use something secure)        |         | No          |
+| ADMIN_CREATE_OVERRIDE | Create a new admin account even if one exists | False   | No          |
+| UNSECURE_LOGIN        | Whether to allow http for cookies             | False   | No          |
+| PORTAL_SECURED        | Whether the portal requires a login           | False   | No          |
+| SHOW_PANEL_HEADERS    | Show the panel header names                   | True    | No          |
+| SEARCH_URL            | Search engine url (assumes ?q= is param name) | -       | No          |
+| COMPACT_VIEW          | Use the compact styling                       | False   | No          |
+| LOG_LEVEL             | What log level to use                         | "INFO"  | No          |
+| WORKERS               | Number of separate processes to spawn         | 1       | Yes         |
 
 > Default values indicated with '-' are not required
+
+### Supported Databases
+| Database | URI Format                              |
+| :------- | :-------------------------------------- |
+| SQLite   | mysql://user:password@hostname/database |
+| MySQL    | sqlite://path-to-database               |
 
 ## Import / Export
 This program features an import/export ability; that allows data to be exported into a friendly format (JSON) and then re-imported.
