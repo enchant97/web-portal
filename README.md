@@ -21,7 +21,7 @@ It has been designed to run through docker and it is recommended to put it behin
 ## Showcase
 [![web-portal showcase image, showing dark and light themes](docs/assets/portal-view.png)](docs/assets/portal-view.png)
 
-### Demo Video
+## Demo Video
 [![Demo Video](https://img.youtube.com/vi/VIWvmfFK5V0/0.jpg)](https://youtu.be/VIWvmfFK5V0 "Demo Video")
 
 <https://youtu.be/VIWvmfFK5V0>
@@ -61,8 +61,8 @@ You can configure the app using a .env file or through environment variables.
 ### Supported Databases
 | Database | URI Format                              |
 | :------- | :-------------------------------------- |
-| SQLite   | mysql://user:password@hostname/database |
-| MySQL    | sqlite://path-to-database               |
+| MySQL    | mysql://user:password@hostname/database |
+| SQLite   | sqlite://path-to-database.db            |
 
 ## Import / Export
 This program features an import/export ability; that allows data to be exported into a friendly format (JSON) and then re-imported.
