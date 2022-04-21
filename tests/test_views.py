@@ -51,3 +51,12 @@ class TestLogin:
 
         response = await client.get("/auth/logout", follow_redirects=True)
         assert "You need to be logged in to view this page" in await response.get_data(as_text=True)
+
+
+class TestPortal:
+    @pytest.mark.asyncio
+    async def test_portal(self, app: Quart):
+        client = app.test_client()
+        response = await client.get("/")
+        assert response.status_code == 200
+        assert "Portal" in await response.get_data(as_text=True)
