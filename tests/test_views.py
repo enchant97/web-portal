@@ -3,6 +3,13 @@ from quart import Quart
 
 
 class TestLogin:
+    @staticmethod
+    def create_login_form(username: str, password: str):
+        return {
+            "username": username,
+            "password": password,
+        }
+
     @pytest.mark.asyncio
     async def test_get_login(self, app: Quart):
         client = app.test_client()
@@ -15,10 +22,7 @@ class TestLogin:
         client = app.test_client()
         response = await client.post(
             "/auth/login",
-            form = {
-                "username": "admin",
-                "password": "admin",
-            },
+            form=self.create_login_form("admin", "admin"),
             follow_redirects=True,
         )
         assert "Log Out" in await response.get_data(as_text=True)
@@ -28,10 +32,7 @@ class TestLogin:
         client = app.test_client()
         response = await client.post(
             "/auth/login",
-            form = {
-                "username": "admin",
-                "password": "wrong password 1234",
-            },
+            form=self.create_login_form("admin", "wrong password 1234"),
             follow_redirects=True,
         )
         assert "username or password incorrect" in await response.get_data(as_text=True)
@@ -41,10 +42,7 @@ class TestLogin:
         client = app.test_client()
         response = await client.post(
             "/auth/login",
-            form = {
-                "username": "admin",
-                "password": "admin",
-            },
+            form=self.create_login_form("admin", "admin"),
             follow_redirects=True,
         )
 
