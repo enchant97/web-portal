@@ -31,6 +31,7 @@ button,
 label,
 div {
     color: var(--font-dark);
+    font-size: 1rem;
     font-family: var(--font-family-main);
 }
 
@@ -330,13 +331,33 @@ footer a {
 
 #theme-picker-selector {
     display: flex;
-    flex-direction: row;
-    margin: auto;
     justify-content: center;
+    align-items: center;
+    gap: .3rem;
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    background-color: #00000091;
+    backdrop-filter: blur(4px);
+    z-index: 99;
+}
+
+#theme-picker-selector button {
+    padding: 1rem 2rem;
 }
 
 @media(max-width:640px) {
     .panel div {
         grid-template-columns: repeat(2, 200px);
+    }
+
+    #theme-picker-selector {
+        flex-direction: column;
+    }
+
+    #theme-picker-selector button {
+        min-width: 50%;
     }
 }
