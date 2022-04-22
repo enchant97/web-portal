@@ -25,7 +25,7 @@
             {% else %}
             <a href="{{ url_for('login.login') }}">{{ macros.feather_img('log-in') }}Log In</a>
             {% endif %}
-            <button id="themeToggleBnt" title="Theme Picker"></button>
+            <button id="themeToggleBnt" title="Theme Picker">{{ macros.feather_img('sun') }}|{{ macros.feather_img('moon') }}</button>
         </nav>
     </header>
     <main>
