@@ -6,6 +6,7 @@ ThemeChanger.themes = {
     light: {
         name: "Light",
         css: [
+            ["color-scheme", "light"],
             ["--font-dark", "black"],
             ["--font-light", "#f0f0f0"],
             ["--bg-bnt", "#adadad"],
@@ -17,6 +18,7 @@ ThemeChanger.themes = {
     dark: {
         name: "Dark",
         css: [
+            ["color-scheme", "dark"],
             ["--font-dark", "var(--font-light)"],
             ["--font-light", "#bcbcbc"],
             ["--bg-bnt", "#003d4b"],
