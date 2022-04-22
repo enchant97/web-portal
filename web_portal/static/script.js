@@ -7,24 +7,24 @@ ThemeChanger.themes = {
         name: "Light",
         css: [
             ["color-scheme", "light"],
-            ["--font-dark", "black"],
-            ["--font-light", "#f0f0f0"],
-            ["--bg-bnt", "#adadad"],
-            ["--bg-body", "#9299a5"],
-            ["--bg-sub-body", "#8c93a0"],
-            ["--bg-panel", "#848a94"],
+            ["--font-dark", "var(--font-dark--light)"],
+            ["--font-light", "var(--font-light--light)"],
+            ["--bg-bnt", "var(--bg-bnt--light)"],
+            ["--bg-body", "var(--bg-body--light)"],
+            ["--bg-sub-body", "var(--bg-sub-body--light)"],
+            ["--bg-panel", "var(--bg-panel--light)"],
         ]
     },
     dark: {
         name: "Dark",
         css: [
             ["color-scheme", "dark"],
-            ["--font-dark", "var(--font-light)"],
-            ["--font-light", "#bcbcbc"],
-            ["--bg-bnt", "#003d4b"],
-            ["--bg-body", "#002b36"],
-            ["--bg-sub-body", "#073540"],
-            ["--bg-panel", "#083b47"],
+            ["--font-dark", "var(--font-dark--dark)"],
+            ["--font-light", "var(--font-light--dark)"],
+            ["--bg-bnt", "var(--bg-bnt--dark)"],
+            ["--bg-body", "var(--bg-body--dark)"],
+            ["--bg-sub-body", "var(--bg-sub-body--dark)"],
+            ["--bg-panel", "var(--bg-panel--dark)"],
         ]
     },
 };
