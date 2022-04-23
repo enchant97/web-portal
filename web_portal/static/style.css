@@ -66,11 +66,10 @@ body {
     background-color: var(--bg-body);
     max-width: 1000px;
     margin: auto;
-    padding: 10px;
+    padding: 1rem;
 }
 
 header {
-    padding: 0 10px;
     display: flex;
     align-items: center;
     margin-bottom: 1rem;
@@ -363,6 +362,10 @@ footer a {
         grid-template-columns: repeat(2, 200px);
     }
 
+    .form-group {
+        width: initial;
+    }
+
     #theme-picker-selector {
         flex-direction: column;
     }
@@ -373,7 +376,6 @@ footer a {
 }
 
 @media(max-width:500px) {
-
     header,
     header nav {
         flex-direction: column;
