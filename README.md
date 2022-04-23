@@ -53,6 +53,7 @@ You can configure the app using a .env file or through environment variables.
 | SHOW_PANEL_HEADERS    | Show the panel header names                   | True    | No          |
 | SEARCH_URL            | Search engine url (assumes ?q= is param name) | -       | No          |
 | COMPACT_VIEW          | Use the compact styling                       | False   | No          |
+| OPEN_TO_NEW_TAB       | Open portal links to a new tab                | True    | No          |
 | LOG_LEVEL             | What log level to use                         | "INFO"  | No          |
 | WORKERS               | Number of separate processes to spawn         | 1       | Yes         |
 

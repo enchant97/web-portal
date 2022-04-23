@@ -13,6 +13,7 @@ class Settings(BaseSettings):
     SHOW_PANEL_HEADERS: Optional[bool] = True
     SEARCH_URL: Optional[str] = None
     COMPACT_VIEW: Optional[bool] = False
+    OPEN_TO_NEW_TAB: Optional[bool] = True
     LOG_LEVEL: Optional[str] = "INFO"
 
     class Config:

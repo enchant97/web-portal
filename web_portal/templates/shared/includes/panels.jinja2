@@ -5,7 +5,7 @@
     {% endif %}
     <div>
         {% for widget in group.widgets %}
-        <a class="{{ widget.color_name }}" href="{{ widget.url }}" target="_blank" rel="noopener noreferrer">{{
+        <a class="{{ widget.color_name }}" href="{{ widget.url }}" {% if config.OPEN_TO_NEW_TAB %}target="_blank"{% endif %} rel="noopener noreferrer">{{
             widget.prefix }}</a>
         {% endfor %}
     </div>
