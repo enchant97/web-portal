@@ -4,6 +4,22 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.5.0] - 2022-04-23
+### Added
+- Group deletion
+- Unit tests
+- New config for controlling whether to open links in new tab
+### Changed
+- Improve link color
+- Update pip requirements
+- Update theme-changer.js to V1
+- Theme changer is now a large popup
+- Optimise css theme variables
+- Placeholder for input elements
+- Improve nav, heading and mobile styling
+### Removed
+- Custom scrollbar in favour for css "color-scheme"
+
 ## [1.4.0] - 2022-03-12
 ### Added
 - Export widgets into JSON
