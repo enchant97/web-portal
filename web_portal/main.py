@@ -1,7 +1,7 @@
 import logging
 
 from quart import Quart, flash, redirect, url_for
-from quart_auth import AuthManager, Unauthorized
+from quart_auth import AuthManager
 from tortoise.contrib.quart import register_tortoise
 from web_health_checker.contrib import quart as health_check
 from werkzeug.security import generate_password_hash
@@ -16,7 +16,7 @@ app = Quart(__name__)
 auth_manager = AuthManager()
 
 
-@app.errorhandler(Unauthorized)
+@app.errorhandler(401)
 async def redirect_to_login(*_):
     await flash("You need to be logged in to view this page", "red")
     return redirect(url_for("login.login"))
