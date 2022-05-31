@@ -4,11 +4,11 @@ from quart import Quart, flash, redirect, url_for
 from quart_auth import AuthManager, Unauthorized
 from tortoise.contrib.quart import register_tortoise
 from web_health_checker.contrib import quart as health_check
+from werkzeug.security import generate_password_hash
 
 from . import __version__
 from .config import get_settings
 from .database import models
-from .database.crud import create_default_admin, create_default_panel_group
 from .helpers import PluginHandler, make_combined_widget_name
 from .views import login, portal
 
@@ -24,8 +24,14 @@ async def redirect_to_login(*_):
 
 @app.before_first_request
 async def first_request():
-    await create_default_admin(get_settings().ADMIN_CREATE_OVERRIDE)
-    await create_default_panel_group()
+    # TODO move into app setup wizard will provide this instead
+    await models.User.get_or_create(username="admin", defaults={
+        "password_hash": generate_password_hash("admin").encode(),
+        "is_admin": True,
+    })
+    await models.User.get_or_create(username="guest", defaults={
+        "password_hash": generate_password_hash("guest").encode(),
+    })
 
     # NOTE this ensures plugins and widgets are registed in database
     for plugin in PluginHandler.loaded_plugins().values():
