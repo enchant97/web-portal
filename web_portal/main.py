@@ -9,11 +9,8 @@ from . import __version__
 from .config import get_settings
 from .database import models
 from .database.crud import create_default_admin, create_default_panel_group
+from .helpers import PluginHandler, make_combined_widget_name
 from .views import login, portal
-
-# HACK
-from .plugins.web_links.views import blueprint as web_links_blueprint
-from .plugins.web_links import models as web_links_models
 
 app = Quart(__name__)
 auth_manager = AuthManager()
@@ -30,12 +27,15 @@ async def first_request():
     await create_default_admin(get_settings().ADMIN_CREATE_OVERRIDE)
     await create_default_panel_group()
 
-    # HACK
-    plugin, created = await models.Plugin.update_or_create(internal_name="web_links")
-    if created:
-        await models.Widget.update_or_create(internal_name="web_links__links", defaults={
-            "plugin":plugin
-        })
+    # NOTE this ensures plugins and widgets are registed in database
+    for plugin in PluginHandler.loaded_plugins().values():
+        plugin_model, _ = await models.Plugin.update_or_create(internal_name=plugin.internal_name)
+
+        for widget_name in plugin.widgets:
+            name = make_combined_widget_name(plugin.internal_name, widget_name)
+            await models.Widget.update_or_create(internal_name=name, defaults={
+                "plugin":plugin_model
+            })
 
 
 def create_app():
@@ -56,18 +56,25 @@ def create_app():
     app.register_blueprint(portal.blueprint, url_prefix="/")
     app.register_blueprint(login.blueprint, url_prefix="/auth")
 
-    # HACK
-    app.register_blueprint(web_links_blueprint, url_prefix="/plugins/web_links")
+    db_models = {"models": [models]}
+
+    logging.debug("loading plugins")
+    for plugin in PluginHandler.load_plugins():
+        for blueprint in plugin.blueprints:
+            url_prefix = f"/plugins/{plugin.internal_name}"
+            if blueprint.url_prefix:
+                url_prefix += blueprint.url_prefix
+            app.register_blueprint(blueprint, url_prefix=url_prefix)
+
+        if plugin.db_models:
+            db_models[plugin.internal_name] = plugin.db_models
 
     logging.debug("registering tortoise-orm")
-    # other setup
+        # other setup
     register_tortoise(
         app,
         db_url=get_settings().DB_URI,
-        modules={
-            "models": [models],
-            # HACK
-            "web_links": [web_links_models]},
+        modules=db_models,
         generate_schemas=True)
     logging.debug("init auth manager")
     auth_manager.init_app(app)
