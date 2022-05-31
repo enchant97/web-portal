@@ -58,6 +58,6 @@ class Dashboard(Model):
 class DashboardWidget(Model):
     id = IntField(pk=True)
     name = CharField(128)
-    dashboard: ForeignKeyRelation[Dashboard] = ForeignKeyField("models.Dashboard")
-    widget: ForeignKeyRelation[Widget] = ForeignKeyField("models.Widget", "widgets")
+    dashboard: ForeignKeyRelation[Dashboard] = ForeignKeyField("models.Dashboard", "widgets")
+    widget: ForeignKeyRelation[Widget] = ForeignKeyField("models.Widget")
     config = JSONField(null=True)

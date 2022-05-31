@@ -66,6 +66,10 @@ class PluginHandler:
     def loaded_plugins() -> dict[LoadedPlugin]:
         return PluginHandler._loaded_plugins
 
+    @staticmethod
+    def get_loaded_plugin(name: str) -> LoadedPlugin:
+        return PluginHandler._loaded_plugins[name]
+
 
 class NotAdmin(Unauthorized):
     pass
@@ -77,6 +81,10 @@ class PasswordStrength(ValueError):
 
 def make_combined_widget_name(plugin_name: str, widget_name: str) -> str:
     return f"{plugin_name}__{widget_name}"
+
+
+def deconstruct_widget_name(plugin_name: str, combined_name: str) -> str:
+    return combined_name.removeprefix(f"{plugin_name}__")
 
 
 def login_admin_required(func: Callable) -> Callable:

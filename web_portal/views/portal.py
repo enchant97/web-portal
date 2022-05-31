@@ -2,10 +2,8 @@ from quart import Blueprint, flash, redirect, render_template, url_for
 from quart_auth import current_user
 
 from ..config import get_settings
-
-# HACK
-from web_portal.plugins.web_links.widgets import render_widget
 from ..database import models
+from ..helpers import PluginHandler, deconstruct_widget_name
 
 blueprint = Blueprint("portal", __name__)
 
@@ -18,13 +16,34 @@ async def portal():
             await flash("You need to be logged in to view this page", "red")
             return redirect(url_for("login.login"))
 
-    # HACK
+    user_id =  current_user.auth_id
+    dashboard = None
+    is_personal_dash = False
+
+    # load either personal dashboard or 'guest' as a fallback
+    if user_id is not None:
+        dashboard = await models.Dashboard.get_or_none(owner_id=user_id).prefetch_related(
+            "widgets", "widgets__widget", "widgets__widget__plugin")
+        if dashboard:
+            is_personal_dash = True
+    if dashboard is None:
+        guest = await models.User.filter(username="guest").get()
+        dashboard = (await models.Dashboard.get_or_create(owner=guest))[0]
+        await dashboard.fetch_related("widgets")
+
     rendered_widgets = []
-    widget = await models.DashboardWidget.first()
-    if widget is not None:
-        rendered_widgets.append((widget, await render_widget(widget)))
+
+    # TODO handle either plugin in widget not existing
+    for dashboard_widget in dashboard.widgets:
+        widget = dashboard_widget.widget
+        plugin_name = widget.plugin.internal_name
+        widget_name = deconstruct_widget_name(plugin_name, widget.internal_name)
+        loaded_plugin = PluginHandler.get_loaded_plugin(plugin_name)
+        rendered_widget = await loaded_plugin.module.render_widget(widget_name, dashboard_widget.config)
+        rendered_widgets.append((dashboard_widget, rendered_widget))
 
     return await render_template(
         "portal.jinja2",
         rendered_widgets=rendered_widgets,
+        is_personal_dash=is_personal_dash,
     )
