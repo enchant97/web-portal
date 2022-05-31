@@ -1,6 +1,6 @@
 from tortoise.fields import (BinaryField, BooleanField, CharField,
                              ForeignKeyField, ForeignKeyRelation, IntField,
-                             ReverseRelation)
+                             JSONField, ReverseRelation)
 from tortoise.models import Model
 from werkzeug.security import check_password_hash, generate_password_hash
 
@@ -33,3 +33,31 @@ class Panel_Widget(Model):
     group: ForeignKeyRelation[Panel_Group] = ForeignKeyField(
         "models.Panel_Group", related_name="panel_widgets"
     )
+
+
+class Plugin(Model):
+    id = IntField(pk=True)
+    internal_name = CharField(128, unique=True)
+
+    widgets = ReverseRelation["Widget"]
+
+
+class Widget(Model):
+    id = IntField(pk=True)
+    internal_name = CharField(128, unique=True)
+    plugin: ForeignKeyRelation[Plugin] = ForeignKeyField("models.Plugin", "widgets")
+
+
+class Dashboard(Model):
+    id = IntField(pk=True)
+    owner: ForeignKeyRelation[User] = ForeignKeyField("models.User")
+
+    widgets = ReverseRelation["DashboardWidget"]
+
+
+class DashboardWidget(Model):
+    id = IntField(pk=True)
+    name = CharField(128)
+    dashboard: ForeignKeyRelation[Dashboard] = ForeignKeyField("models.Dashboard")
+    widget: ForeignKeyRelation[Widget] = ForeignKeyField("models.Widget", "widgets")
+    config = JSONField(null=True)

@@ -1,0 +1,16 @@
+{% extends "/shared/base.jinja2" %}
+{% block title %}Web Links - New{% endblock %}
+{% block main %}
+<form action="{{ url_for('.post_link_new') }}" method="post">
+        <h3>New Widget</h3>
+        <label for="web_links-link-url">URL</label>
+        <input type="text" name="url" id="web_links-link-url" required placeholder="https://...">
+        <label for="web_links-link-name">Name</label>
+        <input type="text" name="name" id="web_links-link-name" required placeholder="name...">
+        <label for="web_links-link-color-name">Color</label>
+        <select name="color_name" id="web_links-link-color-name">
+            {% include "/shared/includes/options-color.jinja2" %}
+        </select>
+        <button type="submit">Save</button>
+</form>
+{% endblock %}

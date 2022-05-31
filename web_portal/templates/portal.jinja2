@@ -7,5 +7,16 @@
     <button type="submit" title="Search">{{ macros.feather_img('search') }}</button>
 </form>
 {% endif %}
-{{ widget_panels|safe }}
+
+<div id="widgets">
+    {% for widget in rendered_widgets %}
+    <div class="widget-outer {{ widget[0].widget.internal_name }}" id="widget-{{ widget[0].id }}">
+        <h2 class="widget-heading {{ widget[0].widget.internal_name }}">{{ widget[0].name }}</h2>
+        <div class="widget-inner {{ widget[0].widget.internal_name }}">
+            {{ widget[1]|safe }}
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
 {% endblock %}

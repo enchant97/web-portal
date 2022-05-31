@@ -1,0 +1,11 @@
+{% extends "/shared/base.jinja2" %}
+{% block title %}Web Links{% endblock %}
+{% block main %}
+<a class="bnt" href="{{ url_for('.get_link_new') }}">New</a>
+<ul>
+    {% for link in links %}
+    <li>{{ link.name }}, {{ link.url }}</li>
+    {% endfor %}
+</ul>
+
+{% endblock %}
