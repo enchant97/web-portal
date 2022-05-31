@@ -19,9 +19,11 @@ async def render_link_widget(link_ids: tuple[int]) -> str:
     )
 
 
-async def render_widget(internal_name, config: dict) -> str:
+async def render_widget(internal_name, config: dict | None) -> str:
+    if config is None:
+        config = {}
     match internal_name:
         case "links":
-            return await render_link_widget(config["links"])
+            return await render_link_widget(config.get("links", []))
         case _:
             raise ValueError("Unknown widget internal name")

@@ -1,5 +1,5 @@
-from quart import Blueprint, flash, redirect, render_template, url_for
-from quart_auth import current_user
+from quart import Blueprint, flash, redirect, render_template, request, url_for
+from quart_auth import current_user, login_required
 
 from ..config import get_settings
 from ..database import models
@@ -47,3 +47,50 @@ async def portal():
         rendered_widgets=rendered_widgets,
         is_personal_dash=is_personal_dash,
     )
+
+
+@blueprint.get("/dashboard/edit")
+@login_required
+async def get_edit_dashboard():
+    widgets = await models.Widget.all()
+    dashboard = (await models.Dashboard
+        .filter(owner_id=current_user.auth_id)
+        .get()
+    )
+    placed_widgets = await dashboard.widgets.all().prefetch_related("widget")
+
+    return await render_template(
+        "edit.jinja",
+        widgets=widgets,
+        placed_widgets=placed_widgets
+        )
+
+
+@blueprint.post("/dashboard/add-widget")
+@login_required
+async def post_add_widget():
+    form = await request.form
+
+    name = form["name"].strip()
+    widget_id = form["widget-id"]
+
+    dashboard = (await models.Dashboard
+        .filter(owner_id=current_user.auth_id)
+        .get()
+    )
+
+    await models.DashboardWidget.create(
+        name=name,
+        dashboard=dashboard,
+        widget_id=widget_id,
+    )
+
+    return redirect(url_for(".get_edit_dashboard"))
+
+
+@blueprint.get("/dashboard/restore-defaults")
+@login_required
+async def get_restore_defaults():
+    await models.Dashboard.filter(owner_id=current_user.auth_id).delete()
+    await flash("Reset dashboard for account", "green")
+    return redirect(url_for(".portal"))

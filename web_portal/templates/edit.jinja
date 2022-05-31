@@ -1,0 +1,23 @@
+{% extends "/shared/base.jinja2" %}
+{% block title %}Dashboard Edit{% endblock %}
+{% block main %}
+<a class="bnt" href="{{ url_for('.get_restore_defaults') }}">Restore To Default</a>
+<form action="{{ url_for('.post_add_widget') }}" method="post">
+    <h2>Add Widget</h2>
+    <label for="widget-name">Name</label>
+    <input type="text" name="name" id="widget-name" required placeholder="Name..." maxlength="128">
+    <label for="widget-widget-id">Widget</label>
+    <select name="widget-id" id="widget-widget-id">
+        {% for widget in widgets %}
+        <option value="{{ widget.id }}">{{ widget.internal_name }}</option>
+        {% endfor %}
+    </select>
+    <button type="submit">Add</button>
+</form>
+
+<ul>
+    {% for widget in placed_widgets %}
+    <li>{{ widget.name }}, {{ widget.widget.internal_name }}</li>
+    {% endfor %}
+</ul>
+{% endblock %}
