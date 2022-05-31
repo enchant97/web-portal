@@ -29,7 +29,7 @@ async def portal():
     if dashboard is None:
         guest = await models.User.filter(username="guest").get()
         dashboard = (await models.Dashboard.get_or_create(owner=guest))[0]
-        await dashboard.fetch_related("widgets")
+        await dashboard.fetch_related("widgets", "widgets__widget", "widgets__widget__plugin")
 
     rendered_widgets = []
 
