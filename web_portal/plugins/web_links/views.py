@@ -45,6 +45,7 @@ async def post_link_new():
     return redirect(url_for(".get_links"))
 
 
+# HACK this does not handle any other widget that 'link'
 @blueprint.get("/widget/<int:widget_id>")
 @login_required
 async def get_widget(widget_id: int):
@@ -64,6 +65,7 @@ async def get_widget(widget_id: int):
     )
 
 
+# HACK this does not handle any other widget that 'link'
 @blueprint.post("/widget/<int:widget_id>/add-link")
 @login_required
 async def post_widget_add_link(widget_id: int):

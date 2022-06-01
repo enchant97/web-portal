@@ -12,13 +12,16 @@ from .database.crud import check_is_admin
 
 
 @dataclass
-class LoadedPlugin:
-    internal_name: str
+class PluginMeta:
     human_name: str
-    # internal_name: human_name
     widgets: dict[str, str]
-    blueprints: tuple[Blueprint]
     db_models: tuple[str | ModuleType]
+    blueprints: tuple[Blueprint]
+
+
+@dataclass
+class LoadedPlugin(PluginMeta):
+    internal_name: str
     module: ModuleType
 
 
@@ -42,14 +45,14 @@ class PluginHandler:
     @staticmethod
     def load_plugin(name: str) -> LoadedPlugin:
         imported_module = import_module("." + name, "web_portal.plugins")
-        imported_meta = imported_module.Meta
+        plugin_meta: PluginMeta = imported_module.PLUGIN_META
         return LoadedPlugin(
-            name,
-            imported_meta.human_name,
-            imported_meta.widgets,
-            imported_meta.blueprints,
-            imported_meta.db_models,
-            imported_module,
+            human_name=plugin_meta.human_name,
+            widgets=plugin_meta.widgets,
+            db_models=plugin_meta.db_models,
+            blueprints=plugin_meta.blueprints,
+            internal_name=name,
+            module=imported_module,
         )
 
     @staticmethod

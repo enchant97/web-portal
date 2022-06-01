@@ -1,13 +1,14 @@
 from quart import render_template
+from web_portal.helpers import PluginMeta
 
 from . import models, views
 
-
-class Meta:
-    human_name = "web links"
-    db_models = [models]
-    blueprints = [views.blueprint]
-    widgets = {"links": "links"}
+PLUGIN_META = PluginMeta(
+    human_name="web links",
+    widgets={"links": "links"},
+    db_models=[models],
+    blueprints=[views.blueprint],
+)
 
 
 async def render_link_widget(link_ids: tuple[int]) -> str:
