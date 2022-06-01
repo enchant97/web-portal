@@ -1,13 +1,6 @@
 {% extends "/shared/base.jinja2" %}
 {% block title %}Portal{% endblock %}
 {% block main %}
-{% if config.SEARCH_URL != None %}
-<form class="search-box" action="{{ config.SEARCH_URL }}" method="get">
-    <input type="text" name="q" placeholder="search..." required autofocus>
-    <button type="submit" title="Search">{{ macros.feather_img('search') }}</button>
-</form>
-{% endif %}
-
 <div id="widgets">
     {% for widget in rendered_widgets %}
     <div class="widget-outer {{ widget[0].widget.internal_name }}" id="widget-{{ widget[0].id }}">

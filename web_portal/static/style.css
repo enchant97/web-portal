@@ -183,23 +183,6 @@ footer a {
     margin-bottom: 15px;
 }
 
-.search-box {
-    max-width: none;
-    width: 100%;
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    margin-bottom: 10px;
-}
-
-.search-box input {
-    width: 50%;
-}
-
-.search-box input:focus {
-    outline: solid black 2px;
-}
-
 /* flash styles */
 .flashes {
     display: flex;

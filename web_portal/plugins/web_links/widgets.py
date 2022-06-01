@@ -9,7 +9,10 @@ from . import models, views
 
 PLUGIN_META = PluginMeta(
     human_name="web links",
-    widgets={"links": "links"},
+    widgets={
+        "links": "links",
+        "search": "search",
+        },
     db_models=[models],
     blueprints=[views.blueprint],
     plugin_settings = True,
@@ -18,6 +21,8 @@ PLUGIN_META = PluginMeta(
 
 
 class PluginSettings(BaseSettings):
+    SEARCH_URL: str
+    SEARCH_METHOD: Optional[str] = "GET"
     OPEN_TO_NEW_TAB: Optional[bool] = True
 
 
@@ -41,6 +46,8 @@ async def render_widget(internal_name, config: dict | None) -> str:
     match internal_name:
         case "links":
             return await render_widget_link(config.get("links", []))
+        case "search":
+            return await render_template("web_links/includes/search-widget.jinja")
         case _:
             raise ValueError("Unknown widget internal name")
 
@@ -73,6 +80,8 @@ async def render_widget_edit(
     match internal_name:
         case "links":
             return await render_widget_edit_link(dash_widget_id, config, back_to_url)
+        case "search":
+            return "No editor available"
         case _:
             raise ValueError("Unknown widget internal name")
 
