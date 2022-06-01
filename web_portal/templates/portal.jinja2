@@ -11,9 +11,11 @@
 <div id="widgets">
     {% for widget in rendered_widgets %}
     <div class="widget-outer {{ widget[0].widget.internal_name }}" id="widget-{{ widget[0].id }}">
+        {% if config.SHOW_PANEL_HEADERS %}
         <h2 class="widget-heading {{ widget[0].widget.internal_name }}">{{ widget[0].name }}</h2>
+        {% endif %}
         <div class="widget-inner {{ widget[0].widget.internal_name }}">
-            {{ widget[1]|safe }}
+            {{ widget[1] | safe }}
         </div>
     </div>
     {% endfor %}

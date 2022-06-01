@@ -6,13 +6,11 @@ from pydantic import BaseSettings
 
 class Settings(BaseSettings):
     DB_URI: str
-    ADMIN_CREATE_OVERRIDE: Optional[bool] = False
     SECRET_KEY: str
     UNSECURE_LOGIN: Optional[bool] = False
     PORTAL_SECURED: Optional[bool] = False
     SHOW_PANEL_HEADERS: Optional[bool] = True
     SEARCH_URL: Optional[str] = None
-    COMPACT_VIEW: Optional[bool] = False
     LOG_LEVEL: Optional[str] = "INFO"
 
     class Config:
