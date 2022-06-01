@@ -8,6 +8,7 @@ PLUGIN_META = PluginMeta(
     widgets={"links": "links"},
     db_models=[models],
     blueprints=[views.blueprint],
+    head_injection = True,
 )
 
 
@@ -39,7 +40,7 @@ async def render_widget_edit_link(
 
     added_links = await models.Link.filter(id__in=config.get("links", [])).all()
     return await render_template(
-        "web_links/includes/link-widget-edit.jinja",
+        "link-widget-edit.jinja",
         dash_widget_id=dash_widget_id,
         links=links,
         added_links=added_links,
@@ -60,3 +61,7 @@ async def render_widget_edit(
             return await render_widget_edit_link(dash_widget_id, config, back_to_url)
         case _:
             raise ValueError("Unknown widget internal name")
+
+
+async def render_injected_head() -> str:
+    return await render_template("web_links/includes/head.jinja")

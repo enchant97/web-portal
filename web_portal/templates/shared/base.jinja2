@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <script src="{{ url_for('static', filename='theme-changer.js') }}"></script>
     <script src="{{ url_for('static', filename='script.js') }}" defer></script>
+    {% for injection in get_head_injects() %}{{ injection | safe }}{% endfor %}
 </head>
 
 <body>

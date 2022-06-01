@@ -6,7 +6,7 @@ from web_portal.helpers import login_admin_required
 
 from . import models
 
-blueprint = Blueprint("web_links", __name__, template_folder="templates")
+blueprint = Blueprint("web_links", __name__, static_folder="static", template_folder="templates")
 
 
 @blueprint.get("/links")

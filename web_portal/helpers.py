@@ -17,6 +17,7 @@ class PluginMeta:
     widgets: dict[str, str]
     db_models: tuple[str | ModuleType]
     blueprints: tuple[Blueprint]
+    head_injection: bool
 
 
 @dataclass
@@ -51,6 +52,7 @@ class PluginHandler:
             widgets=plugin_meta.widgets,
             db_models=plugin_meta.db_models,
             blueprints=plugin_meta.blueprints,
+            head_injection=plugin_meta.head_injection,
             internal_name=name,
             module=imported_module,
         )
@@ -72,6 +74,11 @@ class PluginHandler:
     @staticmethod
     def get_loaded_plugin(name: str) -> LoadedPlugin:
         return PluginHandler._loaded_plugins[name]
+
+    @staticmethod
+    def get_loaded_plugin_values() -> Generator[LoadedPlugin, None, None]:
+        for plugin in PluginHandler._loaded_plugins.values():
+            yield plugin
 
 
 class NotAdmin(Unauthorized):

@@ -44,6 +44,16 @@ async def first_request():
             })
 
 
+@app.context_processor
+def context_get_head_injects():
+    # TODO store rendered output in variable instead at app launch (performance improvement)
+    async def get_head_injects():
+        for plugin in PluginHandler.get_loaded_plugin_values():
+            if plugin.head_injection:
+                yield await plugin.module.render_injected_head()
+    return dict(get_head_injects=get_head_injects)
+
+
 def create_app():
     logging.basicConfig(
         level=logging.getLevelName(get_settings().LOG_LEVEL))
