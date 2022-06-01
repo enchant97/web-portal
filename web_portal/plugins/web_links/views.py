@@ -45,28 +45,7 @@ async def post_link_new():
     return redirect(url_for(".get_links"))
 
 
-# HACK this does not handle any other widget that 'link'
-@blueprint.get("/widget/<int:widget_id>")
-@login_required
-async def get_widget(widget_id: int):
-    widget = await app_models.DashboardWidget.get(id=widget_id).prefetch_related("dashboard")
-
-    if widget.dashboard.owner_id != current_user.auth_id:
-        abort(401)
-
-    links = await models.Link.all()
-    added_links = await models.Link.filter(id__in=widget.config["links"]).all()
-
-    return await render_template(
-        "web_links/widget.jinja",
-        added_links=added_links,
-        links=links,
-        widget_id=widget_id,
-    )
-
-
-# HACK this does not handle any other widget that 'link'
-@blueprint.post("/widget/<int:widget_id>/add-link")
+@blueprint.post("/widget/links/<int:widget_id>/add")
 @login_required
 async def post_widget_add_link(widget_id: int):
     widget = await app_models.DashboardWidget.get(id=widget_id).prefetch_related("dashboard")
@@ -74,8 +53,8 @@ async def post_widget_add_link(widget_id: int):
     if widget.dashboard.owner_id != current_user.auth_id:
         abort(401)
 
-    link_id = await request.form["link-id"]
-    _ = await models.Link.get(id=link_id)
+    link_id = (await request.form)["link-id"]
+    link = await models.Link.get(id=link_id)
 
     if widget.config is None:
         widget.config = {"links": []}
@@ -84,4 +63,8 @@ async def post_widget_add_link(widget_id: int):
 
     await widget.save()
 
-    return redirect(url_for(".get_widget", widget_id=widget_id))
+    await flash(f"added new link '{link.name}' to widget '{widget.name}'", "green")
+
+    if (back_to_url := request.args.get("back_to")) is not None:
+        return redirect(back_to_url)
+    return redirect(url_for("portal.portal"))

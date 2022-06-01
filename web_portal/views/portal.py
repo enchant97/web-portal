@@ -57,12 +57,14 @@ async def get_edit_dashboard():
         .filter(owner_id=current_user.auth_id)
         .get()
     )
-    placed_widgets = await dashboard.widgets.all().prefetch_related("widget")
+    placed_widgets = await dashboard.widgets.all().prefetch_related("widget", "widget__plugin")
 
     return await render_template(
         "edit.jinja",
         widgets=widgets,
-        placed_widgets=placed_widgets
+        placed_widgets=placed_widgets,
+        get_loaded_plugin=PluginHandler.get_loaded_plugin,
+        deconstruct_widget_name=deconstruct_widget_name,
         )
 
 

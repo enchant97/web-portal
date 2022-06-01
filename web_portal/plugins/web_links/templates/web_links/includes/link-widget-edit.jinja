@@ -1,8 +1,5 @@
-{% extends "/shared/base.jinja2" %}
-{% block title %}Web Links - Customise Widget{% endblock %}
-{% block main %}
-<form action="{{ url_for('.post_widget_add_link', widget_id=widget_id) }}" method="post">
-    <h2>Add Link</h2>
+<form action="{{ url_for('web_links.post_widget_add_link', widget_id=dash_widget_id, back_to=back_to_url) }}" method="post">
+    <h3>Add Link</h3>
     <label for="web_links-widget-link">Link</label>
     <select name="link-id" id="web_links-widget-link-id">
         {% for link in links %}
@@ -11,11 +8,9 @@
     </select>
     <button type="submit">Add</button>
 </form>
-
+<h3>Links</h3>
 <ul>
     {% for link in added_links %}
     <li>{{ link.name }}, {{ link.url }}</li>
     {% endfor %}
 </ul>
-
-{% endblock %}

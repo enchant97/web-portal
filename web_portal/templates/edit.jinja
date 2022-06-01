@@ -15,9 +15,19 @@
     <button type="submit">Add</button>
 </form>
 
-<ul>
+<div>
+    <h2>Placed Widgets</h2>
     {% for widget in placed_widgets %}
-    <li>{{ widget.name }}, {{ widget.widget.internal_name }}</li>
+    <div>
+        <h3>{{ widget.name }}, {{ widget.widget.internal_name }}</h3>
+        {% set render_func=get_loaded_plugin(widget.widget.plugin.internal_name).module.render_widget_edit %}
+        {% set widget_name=deconstruct_widget_name(widget.widget.plugin.internal_name, widget.widget.internal_name) %}
+        {% set back_url=url_for('.get_edit_dashboard') %}
+        <div>
+            {{ render_func(widget_name, widget.id, widget.config, back_url) | safe }}
+        </div>
+    </div>
     {% endfor %}
-</ul>
+</div>
+
 {% endblock %}
