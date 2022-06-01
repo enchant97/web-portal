@@ -40,7 +40,7 @@ async def render_widget_edit_link(
 
     added_links = await models.Link.filter(id__in=config.get("links", [])).all()
     return await render_template(
-        "link-widget-edit.jinja",
+        "web_links/includes/link-widget-edit.jinja",
         dash_widget_id=dash_widget_id,
         links=links,
         added_links=added_links,

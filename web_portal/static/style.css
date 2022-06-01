@@ -39,6 +39,7 @@
     }
 }
 
+main,
 footer,
 header,
 input,
@@ -113,10 +114,6 @@ form {
     max-width: 500px;
 }
 
-form h3 {
-    text-align: center;
-}
-
 form input,
 form select,
 button,
@@ -165,42 +162,16 @@ footer a {
     fill: none;
 }
 
-.panel {
+.panel,
+.widget-outer {
     border-radius: 6px;
     background-color: var(--bg-panel);
     padding: 10px;
     margin-bottom: 8px;
 }
 
-.panel h3 {
+.widget-heading {
     text-align: center;
-}
-
-.panel div {
-    display: grid;
-    grid-template-columns: repeat(3, 200px);
-    justify-content: center;
-    gap: 10px;
-}
-
-.panel div a {
-    border-radius: 10px;
-    padding: 3rem;
-    text-decoration: none;
-    font-family: var(--font-family-title);
-    font-size: 1.5em;
-    text-align: center;
-    box-shadow: 4px 4px 0px black;
-}
-
-.panel.compact div a {
-    padding: 1rem 3rem;
-}
-
-.panel div a:hover {
-    transition-duration: 400ms;
-    background-color: black;
-    color: var(--font-light);
 }
 
 .form-group {
@@ -210,10 +181,6 @@ footer a {
     margin: auto;
     padding: 10px;
     margin-bottom: 15px;
-}
-
-.form-group h2 {
-    text-align: center;
 }
 
 .search-box {
@@ -358,9 +325,6 @@ footer a {
 }
 
 @media(max-width:640px) {
-    .panel div {
-        grid-template-columns: repeat(2, 200px);
-    }
 
     .form-group {
         width: initial;
@@ -376,19 +340,12 @@ footer a {
 }
 
 @media(max-width:500px) {
+
     header,
     header nav {
         flex-direction: column;
         width: 100%;
     }
-
-    .panel div a {
-        padding: 2rem 1rem;
-    }
 }
 
-@media(max-width:490px) {
-    .panel div {
-        grid-template-columns: 100%;
-    }
-}
+@media(max-width:490px) {}
