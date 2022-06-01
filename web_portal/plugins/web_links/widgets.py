@@ -1,3 +1,7 @@
+from functools import lru_cache
+from typing import Optional
+
+from pydantic import BaseSettings
 from quart import render_template
 from web_portal.helpers import PluginMeta
 
@@ -8,8 +12,18 @@ PLUGIN_META = PluginMeta(
     widgets={"links": "links"},
     db_models=[models],
     blueprints=[views.blueprint],
+    plugin_settings = True,
     head_injection = True,
 )
+
+
+class PluginSettings(BaseSettings):
+    OPEN_TO_NEW_TAB: Optional[bool] = True
+
+
+@lru_cache
+def get_settings():
+    return PluginSettings()
 
 
 async def render_widget_link(link_ids: tuple[int]) -> str:

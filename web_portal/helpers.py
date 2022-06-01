@@ -17,6 +17,7 @@ class PluginMeta:
     widgets: dict[str, str]
     db_models: tuple[str | ModuleType]
     blueprints: tuple[Blueprint]
+    plugin_settings: bool
     head_injection: bool
 
 
@@ -52,6 +53,7 @@ class PluginHandler:
             widgets=plugin_meta.widgets,
             db_models=plugin_meta.db_models,
             blueprints=plugin_meta.blueprints,
+            plugin_settings=plugin_meta.plugin_settings,
             head_injection=plugin_meta.head_injection,
             internal_name=name,
             module=imported_module,

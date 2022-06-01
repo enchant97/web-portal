@@ -1,3 +1,4 @@
 {% for link in links %}
-<a class="{{ link.color_name }}" href="{{ link.url }}" rel="noopener noreferrer">{{ link.name }}</a>
+<a class="{{ link.color_name }}" href="{{ link.url }}" {%- if config.plugin__web_links.OPEN_TO_NEW_TAB -%}target="_blank"
+    {%- endif -%} rel="noopener noreferrer">{{ link.name }}</a>
 {% endfor %}

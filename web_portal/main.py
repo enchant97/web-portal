@@ -65,7 +65,6 @@ def create_app():
     app.config["SEARCH_URL"] = get_settings().SEARCH_URL
     app.config["SHOW_PANEL_HEADERS"] = get_settings().SHOW_PANEL_HEADERS
     app.config["COMPACT_VIEW"] = get_settings().COMPACT_VIEW
-    app.config["OPEN_TO_NEW_TAB"] = get_settings().OPEN_TO_NEW_TAB
     logging.debug("registering blueprints")
     # register blueprints
     app.register_blueprint(health_check.blueprint, url_prefix="/")
@@ -76,12 +75,16 @@ def create_app():
 
     logging.debug("loading plugins")
     for plugin in PluginHandler.load_plugins():
+        # register plugin settings
+        if plugin.plugin_settings:
+            app.config[f"plugin__{plugin.internal_name}"] = plugin.module.get_settings()
+        # register quart blueprints
         for blueprint in plugin.blueprints:
             url_prefix = f"/plugins/{plugin.internal_name}"
             if blueprint.url_prefix:
                 url_prefix += blueprint.url_prefix
             app.register_blueprint(blueprint, url_prefix=url_prefix)
-
+        # register database models
         if plugin.db_models:
             db_models[plugin.internal_name] = plugin.db_models
 
