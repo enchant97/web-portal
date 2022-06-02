@@ -1,6 +1,10 @@
 {% extends "/shared/base.jinja2" %}
 {% block title %}Settings{% endblock %}
 {% block main %}
+{% if current_user.is_authenticated_admin %}
+<a class="bnt" href="{{ url_for('admin.get_index') }}">Administration</a>
+{% endif %}
+
 <div>
     <h2>Dashboard</h2>
     {% if is_personal_dash %}
@@ -10,4 +14,5 @@
     <a class="bnt" href="{{ url_for('.get_edit_dashboard') }}">Create Custom</a>
     {% endif %}
 </div>
+
 {% endblock %}

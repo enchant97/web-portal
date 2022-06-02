@@ -1,13 +1,9 @@
-import json
-import logging
+from quart import Blueprint, flash, redirect, render_template, request, url_for
+from quart_auth import current_user
+from tortoise.exceptions import IntegrityError
 
-from quart import (Blueprint, flash, jsonify, redirect, render_template,
-                   request, url_for)
-from tortoise.exceptions import DoesNotExist, IntegrityError
-
-from ..database import crud
-from ..helpers import PasswordStrength, login_admin_required
-from ..import_export import Widget_V1, export_to_v1_widgets, import_v1_widgets
+from ..database import models
+from ..helpers import is_username_allowed, login_admin_required
 
 blueprint = Blueprint("admin", __name__)
 
@@ -15,210 +11,82 @@ blueprint = Blueprint("admin", __name__)
 @blueprint.get("/")
 @login_admin_required
 async def get_index():
-    groups = await crud.get_panel_groups()
-    widgets = await crud.get_widgets()
-    users = await crud.get_users()
-    return await render_template(
-        "admin/index.jinja2",
-        groups=groups,
-        widgets=widgets,
-        users=users)
+    return await render_template("admin/index.jinja")
 
 
-@blueprint.get("/portal")
-@login_admin_required
-async def get_widgets():
-    groups = await crud.get_panel_groups()
-    widgets = await crud.get_widgets()
-    return await render_template(
-        "admin/widgets.jinja2",
-        groups=groups,
-        widgets=widgets,
-    )
-
-
-@blueprint.get("/users")
+@blueprint.get("/users/")
 @login_admin_required
 async def get_users():
-    users = await crud.get_users()
-    return await render_template(
-        "admin/users.jinja2",
-        users=users,
-    )
+    users = await models.User.all()
+
+    return await render_template("admin/users.jinja", users=users)
 
 
-@blueprint.route("/new-widget", methods=["POST"])
+@blueprint.post("/users/new")
 @login_admin_required
-async def new_widget():
-    try:
-        url = (await request.form)["url"]
-        group_id = (await request.form)["group_id"]
-        if not group_id.isnumeric():
-            await flash("form field type error", "red")
-        else:
-            prefix = (await request.form)["prefix"]
-            color_name = (await request.form)["color_name"]
-            await crud.new_panel_widget(url, prefix, color_name, group_id)
-            await flash("created new widget", "green")
-    except IntegrityError:
-        logging.exception("new_widget IntegrityError")
-        await flash("form field id's are invalid", "red")
-    return redirect(url_for("admin.get_widgets"))
+async def post_users_new():
+    form = await request.form
 
+    username = form["username"].strip()
+    password = form["password"]
+    is_admin = form.get("is-admin", False, bool)
 
-@blueprint.route("/new-group", methods=["POST"])
-@login_admin_required
-async def new_group():
-    prefix = (await request.form)["prefix"]
-    await crud.new_panel_group(prefix)
-    await flash("created new widget group", "green")
-    return redirect(url_for("admin.get_widgets"))
-
-
-@blueprint.post("/delete-group")
-@login_admin_required
-async def post_delete_group():
-    try:
-        group_id = int((await request.form)["group_id"])
-        await crud.delete_panel_group_by_id(group_id)
-        await flash("deleted group", "green")
-    except IntegrityError:
-        await flash("cannot delete group as widgets are assigned", "red")
-    return redirect(url_for("admin.get_widgets"))
-
-
-@blueprint.route("/re-group-widget", methods=["POST"])
-@login_admin_required
-async def re_group_widget():
-    try:
-        widget_id = (await request.form)["widget_id"]
-        group_id = (await request.form)["group_id"]
-        if not widget_id.isnumeric() or not group_id.isnumeric():
-            await flash("form field type error", "red")
-        else:
-            await crud.modify_widget_group(widget_id, group_id)
-            await flash("changed widget group", "green")
-    except IntegrityError:
-        logging.exception("new_widget IntegrityError")
-        await flash("form field id's are invalid", "red")
-    return redirect(url_for("admin.get_widgets"))
-
-
-@blueprint.route("/delete-widget", methods=["POST"])
-@login_admin_required
-async def delete_widget():
-    widget_id = (await request.form)["widget_id"]
-    if not widget_id.isnumeric():
-        await flash("form field type error", "red")
+    if not is_username_allowed(username):
+        await flash("Entered username contains invalid characters", "red")
+    elif is_admin and len(password) < 12:
+        await flash("Password is too short, must be at least 12 characters", "red")
+    elif not is_admin and len(password) < 8:
+        await flash("Password is too short, must be at least 8 characters", "red")
+    elif len(password) > 1024:
+        await flash("Password is too long, how would you even remember this?", "red")
+    elif password.find(username) != -1:
+        await flash("Password cannot contain username", "red")
     else:
-        await crud.delete_widget_by_id(widget_id)
-        await flash("deleted widget", "green")
-    return redirect(url_for("admin.get_widgets"))
+        try:
+            user = models.User(
+                username=username,
+                is_admin=is_admin,
+            )
+            user.set_password(password)
+            await user.save()
+            await flash(f"created user '{username}'", "green")
+        except IntegrityError:
+            await flash("Username already taken", "red")
+
+    return redirect(url_for(".get_users"))
 
 
-@blueprint.route("/change-widget-color", methods=["POST"])
+@blueprint.get("/users/<int:user_id>/delete")
 @login_admin_required
-async def change_widget_color():
-    widget_id = (await request.form)["widget_id"]
-    color_name = (await request.form)["color_name"]
-    if not widget_id.isnumeric():
-        await flash("form field type error", "red")
+async def get_users_delete(user_id: int):
+    if user_id == current_user.auth_id:
+        await flash("You cannot delete yourself", "red")
     else:
-        await crud.modify_widget_color(widget_id, color_name)
-        await flash("changed widget color", "green")
-    return redirect(url_for("admin.get_widgets"))
-
-
-@blueprint.route("/change-widget-url", methods=["POST"])
-@login_admin_required
-async def change_widget_url():
-    widget_id = (await request.form)["widget_id"]
-    url = (await request.form)["url"]
-    if not widget_id.isnumeric():
-        await flash("form field type error", "red")
-    else:
-        await crud.modify_widget_url(widget_id, url)
-        await flash("changed widget url", "green")
-    return redirect(url_for("admin.get_widgets"))
-
-
-@blueprint.route("/new-user", methods=["POST"])
-@login_admin_required
-async def new_user():
-    try:
-        username = (await request.form)["username"]
-        password = (await request.form)["password"]
-        if len(password) < 8:
-            raise PasswordStrength("password less than 8 characters")
-        is_admin = (await request.form).get("is_admin", False, bool)
-        await crud.new_user(username, password, is_admin)
-        await flash("created new user", "green")
-    except PasswordStrength as err:
-        await flash(err.args[0], "red")
-    return redirect(url_for("admin.get_users"))
-
-
-@blueprint.route("/delete-user", methods=["POST"])
-@login_admin_required
-async def delete_user():
-    user_id = (await request.form)["user_id"]
-    if not user_id.isnumeric():
-        await flash("form field type error", "red")
-    else:
-        await crud.delete_user(user_id)
+        await models.User.filter(id=user_id).delete()
         await flash("deleted user", "green")
-    return redirect(url_for("admin.get_users"))
+
+    return redirect(url_for(".get_users"))
 
 
-@blueprint.route("/modify-user-permissions", methods=["POST"])
+@blueprint.get("/users/<int:user_id>/toggle-admin")
 @login_admin_required
-async def modify_user_permissions():
-    user_id = (await request.form)["user_id"]
-    is_admin = (await request.form).get("is_admin", False, bool)
-    if not user_id.isnumeric():
-        await flash("form field type error", "red")
+async def get_users_toggle_admin(user_id: int):
+    if user_id == current_user.auth_id:
+        await flash("You cannot change role of yourself", "red")
+        return redirect(url_for(".get_users"))
+
+    user = await models.User.filter(id=user_id).get()
+
+    if user.username == "guest":
+        await flash("This account cannot become an admin", "red")
+        return redirect(url_for(".get_users"))
+
+    user.is_admin = not user.is_admin
+    await user.save()
+
+    if user.is_admin:
+        await flash("User is now an admin", "green")
     else:
-        await crud.modify_user_permissions(user_id, is_admin)
-        await flash("modified permissions", "green")
-    return redirect(url_for("admin.get_users"))
+        await flash("User is no longer an admin", "green")
 
-
-@blueprint.route("/change-password", methods=["POST"])
-@login_admin_required
-async def change_user_password():
-    try:
-        user_id = (await request.form)["user_id"]
-        new_password = (await request.form)["new_password"]
-        if len(new_password) < 8:
-            raise PasswordStrength("password less than 8 characters")
-        if not user_id.isnumeric():
-            await flash("form field type error", "red")
-        else:
-            await crud.modify_user_password(user_id, new_password)
-            await flash("changed password", "green")
-    except DoesNotExist:
-        logging.exception("row with id not found")
-        await flash("user does not exist with given id", "red")
-    except PasswordStrength as err:
-        await flash(err.args[0], "red")
-    return redirect(url_for("admin.get_users"))
-
-
-@blueprint.get("/export/v1")
-@login_admin_required
-async def get_export_v1_widgets():
-    widgets = [widget.dict() async for widget in export_to_v1_widgets()]
-    return jsonify(widgets)
-
-
-@blueprint.post("/import/v1")
-@login_admin_required
-async def post_import_v1_widgets():
-    file = (await request.files)["file"]
-    loaded_json = json.load(file.stream)
-    if not isinstance(loaded_json, list):
-        raise ValueError()
-    widgets = [Widget_V1.parse_obj(widget) for widget in loaded_json]
-    await import_v1_widgets(widgets)
-    await flash("Importing widgets", "green")
-    return redirect(url_for("admin.get_index"))
+    return redirect(url_for(".get_users"))

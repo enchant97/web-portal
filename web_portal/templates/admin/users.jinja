@@ -1,0 +1,48 @@
+{% extends "/shared/base.jinja2" %}
+{% block title %}Admin - Users{% endblock %}
+{% block main %}
+<section>
+    <h2>Add User</h2>
+    <form action="{{ url_for('.post_users_new') }}" method="post">
+        <label for="new-user-username">Username</label>
+        <input type="text" name="username" id="new-user-username" maxlength="20" required>
+        <label for="new-user-password">Password</label>
+        <input type="password" name="password" id="new-user-password" required>
+        <label for="new-user-is-admin">Is Admin</label>
+        <input type="checkbox" name="is-admin" id="new-user-is-admin" value="1">
+        <button type="submit">Add</button>
+    </form>
+</section>
+
+<section>
+    <h2>Existing Users</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Username</th>
+                <th>Admin</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for user in users %}
+            <tr id="user-row-id-{{ user.id }}">
+                <td>{{ user.username }}</td>
+                <td>{{ user.is_admin }}</td>
+                <td>
+                    {% if user.username != "guest" and user.id != current_user.auth_id %}
+                    {% if user.is_admin %}
+                    <a class="bnt" href="{{ url_for('.get_users_toggle_admin', user_id=user.id) }}">Remove Admin</a>
+                    {% else %}
+                    <a class="bnt" href="{{ url_for('.get_users_toggle_admin', user_id=user.id) }}">Make Admin</a>
+                    {% endif %}
+                    <a class="bnt" href="{{ url_for('.get_users_delete', user_id=user.id) }}">Delete</a>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</section>
+
+{% endblock %}

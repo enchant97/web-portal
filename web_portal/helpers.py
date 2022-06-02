@@ -1,3 +1,4 @@
+import re
 from dataclasses import dataclass
 from functools import wraps
 from importlib import import_module
@@ -118,3 +119,10 @@ def login_admin_required(func: Callable) -> Callable:
         return await func(*args, **kwargs)
 
     return wrapper
+
+
+def is_username_allowed(username: str) -> bool:
+    if (len(username) > 0 and len(username) <= 20) and \
+            re.fullmatch(r"^[a-zA-Z0-9]+$", username) is not None:
+        return True
+    return False
