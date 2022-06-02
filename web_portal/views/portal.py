@@ -90,6 +90,21 @@ async def post_add_widget():
     return redirect(url_for(".get_edit_dashboard"))
 
 
+@blueprint.get("/dashboard/widget/<int:widget_id>/delete")
+@login_required
+async def get_delete_widget(widget_id: int):
+    dashboard = (await models.Dashboard
+        .filter(owner_id=current_user.auth_id)
+        .get()
+    )
+
+    await dashboard.widgets.filter(id=widget_id).delete()
+
+    await flash("deleted widget", "green")
+
+    return redirect(url_for(".get_edit_dashboard"))
+
+
 @blueprint.get("/dashboard/restore-defaults")
 @login_required
 async def get_restore_defaults():

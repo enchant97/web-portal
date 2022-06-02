@@ -20,6 +20,9 @@
     {% for widget in placed_widgets %}
     <div>
         <h3>{{ widget.name }}, {{ widget.widget.internal_name }}</h3>
+        <div>
+            <a class="bnt" href="{{ url_for('.get_delete_widget', widget_id=widget.id) }}">Delete</a>
+        </div>
         {% set render_func=get_loaded_plugin(widget.widget.plugin.internal_name).module.render_widget_edit %}
         {% set widget_name=deconstruct_widget_name(widget.widget.plugin.internal_name, widget.widget.internal_name) %}
         {% set back_url=url_for('.get_edit_dashboard') %}
