@@ -4,6 +4,7 @@
 {% if current_user.is_authenticated_admin %}
 <a class="bnt" href="{{ url_for('admin.get_index') }}">Administration</a>
 {% endif %}
+<a class="bnt" href="{{ url_for('portal.get_plugins_index') }}">Plugins</a>
 
 <div>
     <h2>Dashboard</h2>

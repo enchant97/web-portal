@@ -1,6 +1,7 @@
 {% extends "/shared/base.jinja2" %}
 {% block title %}Admin{% endblock %}
 {% block main %}
+<a class="bnt" href="{{ url_for('portal.get_plugins_index') }}">Plugins</a>
 <a class="bnt" href="{{ url_for('admin.get_users') }}">Users</a>
 
 {% endblock %}
