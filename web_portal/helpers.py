@@ -95,10 +95,6 @@ class AuthUserEnhanced(AuthUser):
         return False
 
 
-class PasswordStrength(ValueError):
-    pass
-
-
 def make_combined_widget_name(plugin_name: str, widget_name: str) -> str:
     return f"{plugin_name}__{widget_name}"
 

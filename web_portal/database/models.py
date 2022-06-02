@@ -18,23 +18,6 @@ class User(Model):
         self.password_hash = generate_password_hash(new_password).encode()
 
 
-class Panel_Group(Model):
-    id = IntField(pk=True)
-    prefix = CharField(128)
-
-    widgets = ReverseRelation["Panel_Widget"]
-
-class Panel_Widget(Model):
-    id = IntField(pk=True)
-    url = CharField(255)
-    prefix = CharField(128)
-    color_name = CharField(40)
-
-    group: ForeignKeyRelation[Panel_Group] = ForeignKeyField(
-        "models.Panel_Group", related_name="panel_widgets"
-    )
-
-
 class Plugin(Model):
     id = IntField(pk=True)
     internal_name = CharField(128, unique=True)
