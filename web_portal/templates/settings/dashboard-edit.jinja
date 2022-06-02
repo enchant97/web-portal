@@ -1,7 +1,6 @@
 {% extends "/shared/base.jinja2" %}
-{% block title %}Dashboard Edit{% endblock %}
+{% block title %}Dashboard Editor{% endblock %}
 {% block main %}
-<a class="bnt" href="{{ url_for('.get_restore_defaults') }}">Restore To Default</a>
 <form class="form-group" action="{{ url_for('.post_add_widget') }}" method="post">
     <h2>Add Widget</h2>
     <label for="widget-name">Name</label>

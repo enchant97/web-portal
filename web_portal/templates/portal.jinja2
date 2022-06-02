@@ -14,10 +14,4 @@
     {% endfor %}
 </div>
 
-{% if is_personal_dash %}
-<a class="bnt" href="{{ url_for('.get_edit_dashboard') }}">Edit</a>
-{% elif current_user.is_authenticated %}
-<a class="bnt" href="{{ url_for('.get_edit_dashboard') }}">Create Custom</a>
-{% endif %}
-
 {% endblock %}

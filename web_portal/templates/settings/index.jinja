@@ -1,0 +1,13 @@
+{% extends "/shared/base.jinja2" %}
+{% block title %}Settings{% endblock %}
+{% block main %}
+<div>
+    <h2>Dashboard</h2>
+    {% if is_personal_dash %}
+    <a class="bnt" href="{{ url_for('.get_edit_dashboard') }}">Editor</a>
+    <a class="bnt" href="{{ url_for('.get_restore_defaults') }}">Restore To Defaults</a>
+    {% else %}
+    <a class="bnt" href="{{ url_for('.get_edit_dashboard') }}">Create Custom</a>
+    {% endif %}
+</div>
+{% endblock %}
