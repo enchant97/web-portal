@@ -1,0 +1,10 @@
+{% extends "/shared/base.jinja2" %}
+{% block title %}Web Links{% endblock %}
+{% block main %}
+<p>Welcome to Web Links, a built-in plugin for Web-Portal.</p>
+
+{% if current_user.is_authenticated_admin %}
+<a class="bnt" href="">Links Management</a>
+{% endif %}
+
+{% endblock %}

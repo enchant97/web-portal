@@ -124,20 +124,6 @@ async def check_user(username: str, password: str) -> User:
     return None
 
 
-async def check_is_admin(user_id: int) -> bool:
-    """
-    check whether a user has admin,
-    will return False if no user exists
-
-        :param user_id: the user id to check
-        :return: whether user is admin
-    """
-    user = await User.filter(id=user_id).first()
-    if user is None:
-        return False
-    return user.is_admin
-
-
 async def get_users() -> List[User]:
     """
     get all users in database

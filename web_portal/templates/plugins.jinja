@@ -1,0 +1,17 @@
+{% extends "/shared/base.jinja2" %}
+{% block title %}Plugins{% endblock %}
+{% block main %}
+<ul>
+    {% for plugin in loaded_plugins %}
+    <li>
+        <a href="{{ url_for(plugin.index_route_url) }}">{{ plugin.human_name }}</a>
+        <ul>
+            {% for widget in plugin.widgets.values() %}
+            <li>{{ widget }}</li>
+            {% endfor %}
+        </ul>
+    </li>
+    {% endfor %}
+</ul>
+
+{% endblock %}

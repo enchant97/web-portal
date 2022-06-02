@@ -9,6 +9,12 @@ from . import models
 blueprint = Blueprint("web_links", __name__, static_folder="static", template_folder="templates")
 
 
+@blueprint.get("/")
+@login_required
+async def get_index():
+    return await render_template("web_links/index.jinja")
+
+
 @blueprint.get("/links")
 @login_admin_required
 async def get_links():

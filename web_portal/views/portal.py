@@ -49,6 +49,17 @@ async def portal():
     )
 
 
+@blueprint.get("/plugins")
+@login_required
+async def get_plugins_index():
+    loaded_plugins = PluginHandler.get_loaded_plugin_values()
+
+    return await render_template(
+        "plugins.jinja",
+        loaded_plugins=loaded_plugins,
+    )
+
+
 @blueprint.get("/dashboard/edit")
 @login_required
 async def get_edit_dashboard():

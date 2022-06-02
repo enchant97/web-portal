@@ -6,9 +6,9 @@ from types import ModuleType
 from typing import Any, Callable, Generator
 
 from quart import Blueprint
-from quart_auth import Unauthorized, current_user
+from quart_auth import AuthUser, Unauthorized, current_user
 
-from .database.crud import check_is_admin
+from .database import models
 
 
 @dataclass
@@ -19,6 +19,7 @@ class PluginMeta:
     blueprints: tuple[Blueprint]
     plugin_settings: bool
     head_injection: bool
+    index_route_url: str
 
 
 @dataclass
@@ -55,6 +56,7 @@ class PluginHandler:
             blueprints=plugin_meta.blueprints,
             plugin_settings=plugin_meta.plugin_settings,
             head_injection=plugin_meta.head_injection,
+            index_route_url=plugin_meta.index_route_url,
             internal_name=name,
             module=imported_module,
         )
@@ -83,8 +85,13 @@ class PluginHandler:
             yield plugin
 
 
-class NotAdmin(Unauthorized):
-    pass
+class AuthUserEnhanced(AuthUser):
+    @property
+    async def is_authenticated_admin(self):
+        if await self.is_authenticated:
+            if await models.User.filter(id=current_user.auth_id, is_admin=True).get_or_none():
+                return True
+        return False
 
 
 class PasswordStrength(ValueError):
@@ -106,11 +113,8 @@ def login_admin_required(func: Callable) -> Callable:
     """
     @wraps(func)
     async def wrapper(*args: Any, **kwargs: Any) -> Any:
-        if not (await current_user.is_authenticated):
+        if not (await current_user.is_authenticated_admin):
             raise Unauthorized()
-        else:
-            if not await check_is_admin(current_user.auth_id):
-                raise NotAdmin()
-            return await func(*args, **kwargs)
+        return await func(*args, **kwargs)
 
     return wrapper

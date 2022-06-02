@@ -9,11 +9,12 @@ from werkzeug.security import generate_password_hash
 from . import __version__
 from .config import get_settings
 from .database import models
-from .helpers import PluginHandler, make_combined_widget_name
+from .helpers import AuthUserEnhanced, PluginHandler, make_combined_widget_name
 from .views import login, portal
 
 app = Quart(__name__)
 auth_manager = AuthManager()
+auth_manager.user_class = AuthUserEnhanced
 
 
 @app.errorhandler(401)

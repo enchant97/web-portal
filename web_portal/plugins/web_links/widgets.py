@@ -10,13 +10,14 @@ from . import models, views
 PLUGIN_META = PluginMeta(
     human_name="web links",
     widgets={
-        "links": "links",
-        "search": "search",
+        "links": "Web Links",
+        "search": "Web Search",
         },
     db_models=[models],
     blueprints=[views.blueprint],
     plugin_settings = True,
     head_injection = True,
+    index_route_url="web_links.get_index",
 )
 
 

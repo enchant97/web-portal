@@ -1,8 +1,8 @@
 from quart import Blueprint, flash, redirect, render_template, request, url_for
-from quart_auth import (AuthUser, current_user, login_required,
-                        login_user, logout_user)
+from quart_auth import current_user, login_required, login_user, logout_user
 
 from ..database.crud import check_user
+from ..helpers import AuthUserEnhanced
 
 blueprint = Blueprint("login", __name__)
 
@@ -13,7 +13,7 @@ async def login():
         password = (await request.form).get('password', '')
         user = await check_user(username, password)
         if user:
-            login_user(AuthUser(user.id))
+            login_user(AuthUserEnhanced(user.id))
             return redirect(url_for("portal.portal"))
         await flash("username or password incorrect", "red")
 
