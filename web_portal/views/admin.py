@@ -1,9 +1,12 @@
+import json
+
 from quart import Blueprint, flash, redirect, render_template, request, url_for
 from quart_auth import current_user
 from tortoise.exceptions import IntegrityError
 
 from ..database import models
 from ..helpers import is_username_allowed, login_admin_required
+from ..import_export import Widget_V1, import_v1_widgets
 
 blueprint = Blueprint("admin", __name__)
 
@@ -12,6 +15,23 @@ blueprint = Blueprint("admin", __name__)
 @login_admin_required
 async def get_index():
     return await render_template("admin/index.jinja")
+
+
+@blueprint.post("/import-v1-widgets")
+@login_admin_required
+async def post_import_v1_widgets():
+    file = (await request.files)["file"]
+    loaded_json = json.load(file.stream)
+    if not isinstance(loaded_json, list):
+        raise ValueError()
+    widgets = [Widget_V1.parse_obj(widget) for widget in loaded_json]
+    count = await import_v1_widgets(widgets)
+    if count == -1:
+        await flash("Unable to import, are you missing the web_links plugin?", "red")
+    else:
+        await flash(f"Imported {count} widgets", "green")
+
+    return redirect(url_for(".get_index"))
 
 
 @blueprint.get("/users/")

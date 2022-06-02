@@ -4,4 +4,11 @@
 <a class="bnt" href="{{ url_for('portal.get_plugins_index') }}">Plugins</a>
 <a class="bnt" href="{{ url_for('admin.get_users') }}">Users</a>
 
+<section>
+    <h2>Import V1 Widgets</h2>
+    <form enctype="multipart/form-data" action="{{ url_for('.post_import_v1_widgets') }}" method="post">
+        <input type="file" name="file" accept="application/json" aria-label="v1 file to upload" required>
+        <button type="submit">Upload</button>
+    </form>
+</section>
 {% endblock %}
