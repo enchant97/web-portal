@@ -33,7 +33,7 @@ def get_settings():
 
 
 async def render_widget_link(link_ids: tuple[int]) -> str:
-    links = await models.Link.filter(id__in=link_ids).all()
+    links = await models.Link.filter(id__in=link_ids).order_by("name").all()
 
     return await render_template(
         "core/includes/link-widget.jinja",
