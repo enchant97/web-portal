@@ -13,6 +13,7 @@
     font-size: 1.5em;
     text-align: center;
     box-shadow: 4px 4px 0px black;
+    word-wrap: break-word;
 }
 
 .widget-inner.core__links a:hover {
