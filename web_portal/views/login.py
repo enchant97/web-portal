@@ -6,28 +6,38 @@ from ..helpers import AuthUserEnhanced
 
 blueprint = Blueprint("login", __name__)
 
-@blueprint.route("/login", methods=['GET', 'POST'])
-async def login():
-    if request.method == "POST":
-        username = (await request.form)['username']
-        password = (await request.form).get('password', '')
-
-        user = await models.User.filter(username=username).get_or_none()
-        if user and user.check_password(password):
-            login_user(AuthUserEnhanced(user.id))
-            return redirect(url_for("portal.portal"))
-
-        await flash("username or password incorrect", "red")
-
+@blueprint.get("/login")
+async def get_login():
     if (await current_user.is_authenticated):
         # if user is already logged in redirect to portal
         return redirect(url_for("portal.portal"))
 
     return await render_template("login.jinja2")
 
-@blueprint.route("/logout")
+
+@blueprint.post("/login")
+async def post_login():
+    form = await request.form
+
+    username = form["username"]
+    password = form["password"]
+
+    user = await models.User.filter(username=username).get_or_none()
+
+    if user and user.check_password(password):
+        login_user(AuthUserEnhanced(user.id))
+        return redirect(url_for("portal.portal"))
+
+    await flash("Username or password incorrect", "red")
+
+    return redirect(url_for(".get_login"))
+
+
+@blueprint.get("/logout")
 @login_required
-async def logout():
+async def get_logout():
     logout_user()
+
     await flash("You have been logged out", "green")
+
     return redirect(url_for("portal.portal"))
