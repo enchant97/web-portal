@@ -27,7 +27,7 @@ async def post_import_v1_widgets():
     widgets = [Widget_V1.parse_obj(widget) for widget in loaded_json]
     count = await import_v1_widgets(widgets)
     if count == -1:
-        await flash("Unable to import, are you missing the web_links plugin?", "red")
+        await flash("Unable to import, are you missing the core plugin?", "red")
     else:
         await flash(f"Imported {count} widgets", "green")
 

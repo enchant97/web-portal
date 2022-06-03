@@ -20,7 +20,7 @@ class Widget_V1(BaseModel):
 @atomic()
 async def import_v1_widgets(widgets: Iterable[Widget_V1]) -> int:
     try:
-        web_links_plugin = PluginHandler.get_loaded_plugin("web_links")
+        core_plugin = PluginHandler.get_loaded_plugin("core")
     except KeyError:
         logger.error("Cannot import v1 widgets due to plugin missing")
         return -1
@@ -31,9 +31,9 @@ async def import_v1_widgets(widgets: Iterable[Widget_V1]) -> int:
         logger.info("Importing widget: '%s', from v1 data", count)
         try:
             # NOTE this directly uses the plugin's models
-            await web_links_plugin.db_models[0].Link.create(
-                name=widget.url,
-                url=widget.prefix,
+            await core_plugin.db_models[0].Link.create(
+                name=widget.prefix,
+                url=widget.url,
                 color_name=widget.color_name,
             )
         except IntegrityError:

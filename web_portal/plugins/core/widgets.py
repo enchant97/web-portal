@@ -8,16 +8,16 @@ from web_portal.helpers import PluginMeta
 from . import models, views
 
 PLUGIN_META = PluginMeta(
-    human_name="web links",
+    human_name="Core",
     widgets={
-        "links": "Web Links",
+        "links": " Links",
         "search": "Web Search",
         },
     db_models=[models],
     blueprints=[views.blueprint],
     plugin_settings = True,
     head_injection = True,
-    index_route_url="web_links.get_index",
+    index_route_url="core.get_index",
 )
 
 
@@ -36,7 +36,7 @@ async def render_widget_link(link_ids: tuple[int]) -> str:
     links = await models.Link.filter(id__in=link_ids).all()
 
     return await render_template(
-        "web_links/includes/link-widget.jinja",
+        "core/includes/link-widget.jinja",
         links=links,
     )
 
@@ -48,7 +48,7 @@ async def render_widget(internal_name, config: dict | None) -> str:
         case "links":
             return await render_widget_link(config.get("links", []))
         case "search":
-            return await render_template("web_links/includes/search-widget.jinja")
+            return await render_template("core/includes/search-widget.jinja")
         case _:
             raise ValueError("Unknown widget internal name")
 
@@ -62,7 +62,7 @@ async def render_widget_edit_link(
 
     added_links = await models.Link.filter(id__in=config.get("links", [])).all()
     return await render_template(
-        "web_links/includes/link-widget-edit.jinja",
+        "core/includes/link-widget-edit.jinja",
         dash_widget_id=dash_widget_id,
         links=links,
         added_links=added_links,
@@ -88,4 +88,4 @@ async def render_widget_edit(
 
 
 async def render_injected_head() -> str:
-    return await render_template("web_links/includes/head.jinja")
+    return await render_template("core/includes/head.jinja")

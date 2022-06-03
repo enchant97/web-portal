@@ -1,5 +1,5 @@
 {% from "/shared/macros.jinja" import feather_img %}
-<form class="web_links__search-form" action="{{ config.plugin__web_links.SEARCH_URL }}" method="{{ config.plugin__web_links.SEARCH_METHOD }}">
+<form class="core__search-form" action="{{ config.plugin__core.SEARCH_URL }}" method="{{ config.plugin__core.SEARCH_METHOD }}">
     <input type="text" name="q" placeholder="search..." required>
     <button type="submit" title="Search">{{ feather_img('search') }}</button>
 </form>

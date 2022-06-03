@@ -1,0 +1,16 @@
+{% extends "/shared/base.jinja" %}
+{% block title %}Core - New{% endblock %}
+{% block main %}
+<form action="{{ url_for('.post_link_new') }}" method="post">
+        <h3>New Widget</h3>
+        <label for="core-link-url">URL</label>
+        <input type="text" name="url" id="core-link-url" required placeholder="https://...">
+        <label for="core-link-name">Name</label>
+        <input type="text" name="name" id="core-link-name" required placeholder="name...">
+        <label for="core-link-color-name">Color</label>
+        <select name="color_name" id="core-link-color-name">
+            {% include "/shared/includes/options-color.jinja" %}
+        </select>
+        <button type="submit">Save</button>
+</form>
+{% endblock %}

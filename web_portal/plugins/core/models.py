@@ -9,4 +9,4 @@ class Link(Model):
     color_name = CharField(128)
 
     class Meta:
-        table = "web_links__link"
+        table = "core__link"

@@ -1,7 +1,7 @@
 {% extends "/shared/base.jinja" %}
-{% block title %}Web Links{% endblock %}
+{% block title %}Core{% endblock %}
 {% block main %}
-<p>Welcome to Web Links, a built-in plugin for Web-Portal.</p>
+<p>Welcome to Core, a built-in plugin for Web-Portal.</p>
 
 {% if current_user.is_authenticated_admin %}
 <a class="bnt" href="{{ url_for('.get_links') }}">Links Management</a>

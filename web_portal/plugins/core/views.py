@@ -6,13 +6,13 @@ from web_portal.helpers import login_admin_required
 
 from . import models
 
-blueprint = Blueprint("web_links", __name__, static_folder="static", template_folder="templates")
+blueprint = Blueprint("core", __name__, static_folder="static", template_folder="templates")
 
 
 @blueprint.get("/")
 @login_required
 async def get_index():
-    return await render_template("web_links/index.jinja")
+    return await render_template("core/index.jinja")
 
 
 @blueprint.get("/links")
@@ -20,7 +20,7 @@ async def get_index():
 async def get_links():
     links = await models.Link.all()
     return await render_template(
-        "web_links/links.jinja",
+        "core/links.jinja",
         links=links
     )
 
@@ -28,7 +28,7 @@ async def get_links():
 @blueprint.get("/links/new")
 @login_admin_required
 async def get_link_new():
-    return await render_template("web_links/links/new.jinja")
+    return await render_template("core/links/new.jinja")
 
 
 @blueprint.post("/links/new")
