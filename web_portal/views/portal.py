@@ -10,6 +10,10 @@ blueprint = Blueprint("portal", __name__)
 
 @blueprint.get("/")
 async def portal():
+    has_setup = await models.SystemSetting.get_or_none(key="has_setup")
+    if has_setup is None or has_setup.value is False:
+        return redirect(url_for("install.get_index"))
+
     if get_settings().PORTAL_SECURED:
         # if the user has made the portal login protected
         if not (await current_user.is_authenticated):
