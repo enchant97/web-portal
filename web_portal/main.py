@@ -10,7 +10,7 @@ from . import __version__
 from .config import get_settings
 from .database import models
 from .helpers import AuthUserEnhanced, PluginHandler, make_combined_widget_name
-from .views import admin, login, portal, settings
+from .views import admin, install, login, portal, settings
 
 app = Quart(__name__)
 auth_manager = AuthManager()
@@ -71,6 +71,7 @@ def create_app():
     app.register_blueprint(login.blueprint, url_prefix="/auth")
     app.register_blueprint(settings.blueprint, url_prefix="/settings")
     app.register_blueprint(admin.blueprint, url_prefix="/admin")
+    app.register_blueprint(install.blueprint, url_prefix="/install")
 
     db_models = {"models": [models]}
 

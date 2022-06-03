@@ -5,6 +5,11 @@ from tortoise.models import Model
 from werkzeug.security import check_password_hash, generate_password_hash
 
 
+class SystemSetting(Model):
+    key = CharField(128, pk=True)
+    value = JSONField()
+
+
 class User(Model):
     id = IntField(pk=True)
     username = CharField(20, unique=True)

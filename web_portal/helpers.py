@@ -6,7 +6,7 @@ from pathlib import Path
 from types import ModuleType
 from typing import Any, Callable, Generator
 
-from quart import Blueprint
+from quart import Blueprint, abort
 from quart_auth import AuthUser, Unauthorized, current_user
 
 from .database import models
@@ -114,6 +114,20 @@ def login_admin_required(func: Callable) -> Callable:
             raise Unauthorized()
         return await func(*args, **kwargs)
 
+    return wrapper
+
+
+def ensure_not_setup(func: Callable) -> Callable:
+    """
+    used to ensure the app has not gone through setup wizard,
+    aborting to 404 if it has.
+    """
+    @wraps(func)
+    async def wrapper(*args: Any, **kwargs: Any) -> Any:
+        if (has_setup := await models.SystemSetting.get_or_none(key="has_setup")) is not None:
+            if has_setup.value == True:
+                abort(404)
+        return await func(*args, **kwargs)
     return wrapper
 
 
