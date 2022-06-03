@@ -71,4 +71,4 @@ This program features an import/export ability; that allows data to be exported 
 This can feature as a backup without the need for a database. It can also allow for migrating from or to another program. It could also be used to allow mass adding of widgets.
 
 ## License
-The licenses for this project can be found in the `LICENSE` file.
+Copyright (c) 2022 Leo Spratt licenced under AGPL-3, the licence can be found in: `LICENSE.txt`. This project also uses some third-party code, licenses for those can be found at: `THIRD-PARTY.txt`.
