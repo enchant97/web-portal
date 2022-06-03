@@ -22,11 +22,11 @@ async def get_index():
 @login_required
 async def get_edit_dashboard():
     widgets = await models.Widget.all()
-    dashboard = (await models.Dashboard
-        .filter(owner_id=current_user.auth_id)
-        .get()
-    )
+    dashboard, is_new_dash = await models.Dashboard.get_or_create(owner_id=current_user.auth_id)
     placed_widgets = await dashboard.widgets.all().prefetch_related("widget", "widget__plugin")
+
+    if is_new_dash:
+        await flash("Created new dashboard", "green")
 
     return await render_template(
         "settings/dashboard-edit.jinja",
