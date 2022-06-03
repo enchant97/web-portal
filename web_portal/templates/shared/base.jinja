@@ -1,4 +1,4 @@
-{% import "/shared/macros.jinja2" as macros %}
+{% import "/shared/macros.jinja" as macros %}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -30,7 +30,7 @@
         </nav>
     </header>
     <main>
-        {% include "/shared/includes/flashed-messages.jinja2" %}
+        {% include "/shared/includes/flashed-messages.jinja" %}
         {% block main %}
         {% endblock %}
     </main>

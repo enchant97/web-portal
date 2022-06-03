@@ -40,7 +40,7 @@ async def portal():
         rendered_widgets.append((dashboard_widget, rendered_widget))
 
     return await render_template(
-        "portal.jinja2",
+        "portal.jinja",
         rendered_widgets=rendered_widgets,
     )
 

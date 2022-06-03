@@ -12,7 +12,7 @@ async def get_login():
         # if user is already logged in redirect to portal
         return redirect(url_for("portal.portal"))
 
-    return await render_template("login.jinja2")
+    return await render_template("login.jinja")
 
 
 @blueprint.post("/login")
