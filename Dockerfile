@@ -27,7 +27,9 @@ FROM python:${PYTHON_VERSION}-alpine
 
     COPY web_portal web_portal
 
-    CMD hypercorn 'web_portal.main:create_app()' --bind "$HOST:$PORT" --workers "$WORKERS" --log-level "$LOG_LEVEL"
+    COPY scripts/* ./
+
+    CMD /bin/sh run.sh
 
     HEALTHCHECK --interval=1m --start-period=30s \
-        CMD python -m web_health_checker 'http://127.0.0.1:8000/is-healthy'
+        CMD /bin/sh health-check.sh
