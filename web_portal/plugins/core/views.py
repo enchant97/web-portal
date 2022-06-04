@@ -17,10 +17,10 @@ async def get_index():
 
 @blueprint.get("/links")
 @login_admin_required
-async def get_links():
+async def get_links_index():
     links = await models.Link.all()
     return await render_template(
-        "core/links.jinja",
+        "core/links/index.jinja",
         links=links
     )
 
@@ -48,7 +48,7 @@ async def post_link_new():
 
     await flash(f"created link with name '{name}'", "green")
 
-    return redirect(url_for(".get_links"))
+    return redirect(url_for(".get_links_index"))
 
 
 @blueprint.post("/widget/links/<int:widget_id>/add")
