@@ -1,7 +1,7 @@
 # Web Portal
 Web-Portal is a web app written in Python using Quart, that aims to provide an easy and fast way to manage the links to all of your web services.
 
-It has been designed to run through docker and it is recommended to put it behind a proxy like Nginx to add https and custom routing.
+It has been designed to run through docker and it is recommended to put it behind a proxy like Nginx for custom routing and domain names.
 
 ## Features
 - Access a grid of beautiful links to your web services
@@ -56,8 +56,12 @@ You can configure the app using a .env file or through environment variables.
 | OPEN_TO_NEW_TAB       | Open portal links to a new tab                | True    | No          |
 | LOG_LEVEL             | What log level to use                         | "INFO"  | No          |
 | WORKERS               | Number of separate processes to spawn         | 1       | Yes         |
+| CERT_FILE             | SSL certificate file path (public)            | -       | Yes         |
+| KEY_FILE              | SSL key file path (private)                   | -       | Yes         |
 
 > Default values indicated with '-' are not required
+
+> If you want HTTPS, both `CERT_FILE` and `KEY_FILE` environment values must be provided to valid certificates
 
 ### Supported Databases
 | Database | URI Format                              |
