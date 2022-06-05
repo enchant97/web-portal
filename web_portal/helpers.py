@@ -6,7 +6,7 @@ from pathlib import Path
 from types import ModuleType
 from typing import Any, Callable, Generator
 
-from quart import Blueprint, abort
+from quart import Blueprint, abort, current_app
 from quart_auth import AuthUser, Unauthorized, current_user
 
 from .database import models
@@ -136,3 +136,31 @@ def is_username_allowed(username: str) -> bool:
             re.fullmatch(r"^[a-zA-Z0-9]+$", username) is not None:
         return True
     return False
+
+
+async def get_system_setting(
+        key: str,
+        default: Any = None,
+        skip_cache: bool = False) -> Any | None:
+    """
+    gets a system setting stored in db or from cache
+    """
+    value = None
+
+    if not skip_cache:
+        value = current_app.config.get(key)
+
+    if value is None:
+        setting_row = await models.SystemSetting.get_or_none(key=key)
+        if setting_row is not None:
+            value = setting_row.value
+
+    return value if value is not None else default
+
+
+async def set_system_setting(key: str, value: Any):
+    """
+    set a system setting stored in db and update cache
+    """
+    await models.SystemSetting.update_or_create(key=key, defaults=dict(value=value))
+    current_app.config[key] = value

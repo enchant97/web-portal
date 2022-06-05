@@ -1,0 +1,15 @@
+{% extends "/shared/no-nav.jinja" %}
+{% block title %}Install{% endblock %}
+{% block main %}
+<h2>Set Configs</h2>
+<p>This is used to setup some required system configs.</p>
+<form action="{{ url_for('.post_set_configs') }}" method="post">
+    <label for="install-portal-secured">Portal Secured</label>
+    <input type="checkbox" name="portal-secure" id="install-portal-secure" value="1">
+    <label for="install-show-widget-headers">Show Widget Headers</label>
+    <input type="checkbox" name="show-widget-headers" id="install-show-widget-headers" value="1" checked>
+
+    <button type="submit">Next</button>
+</form>
+
+{% endblock %}

@@ -8,8 +8,6 @@ class Settings(BaseSettings):
     DB_URI: str
     SECRET_KEY: str
     UNSECURE_LOGIN: Optional[bool] = False
-    PORTAL_SECURED: Optional[bool] = False
-    SHOW_PANEL_HEADERS: Optional[bool] = True
     LOG_LEVEL: Optional[str] = "INFO"
 
     class Config:

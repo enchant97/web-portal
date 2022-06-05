@@ -2,7 +2,7 @@ from quart import Blueprint, flash, redirect, render_template, request, url_for
 from tortoise.exceptions import IntegrityError
 
 from ..database import models
-from ..helpers import ensure_not_setup, is_username_allowed
+from ..helpers import ensure_not_setup, is_username_allowed, set_system_setting
 
 blueprint = Blueprint("install", __name__)
 
@@ -95,11 +95,33 @@ async def post_guest_user():
             user.set_password(password)
             await user.save()
 
-            return redirect(url_for(".get_finish"))
+            return redirect(url_for(".get_set_configs"))
         except IntegrityError:
             await flash("Username already taken", "red")
 
     return redirect(url_for(".get_guest_user", username=username))
+
+
+@blueprint.get("/configs")
+@ensure_not_setup
+async def get_set_configs():
+    return await render_template(
+        "install/config.jinja",
+    )
+
+
+@blueprint.post("/configs")
+@ensure_not_setup
+async def post_set_configs():
+    form = await request.form
+
+    portal_secure = form.get("portal-secure", False, bool)
+    show_widget_headers = form.get("show-widget-headers", False, bool)
+
+    await set_system_setting("PORTAL_SECURED", portal_secure)
+    await set_system_setting("SHOW_WIDGET_HEADERS", show_widget_headers)
+
+    return redirect(url_for(".get_finish"))
 
 
 @blueprint.get("/finish")

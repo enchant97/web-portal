@@ -1,7 +1,7 @@
-from quart import Blueprint, flash, redirect, render_template, url_for
+from quart import (Blueprint, current_app, flash, redirect, render_template,
+                   url_for)
 from quart_auth import current_user, login_required
 
-from ..config import get_settings
 from ..database import models
 from ..helpers import PluginHandler, deconstruct_widget_name
 
@@ -14,7 +14,7 @@ async def portal():
     if has_setup is None or has_setup.value is False:
         return redirect(url_for("install.get_index"))
 
-    if get_settings().PORTAL_SECURED:
+    if current_app.config.get("PORTAL_SECURED"):
         # if the user has made the portal login protected
         if not (await current_user.is_authenticated):
             await flash("You need to be logged in to view this page", "red")
