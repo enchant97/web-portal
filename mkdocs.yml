@@ -1,0 +1,15 @@
+site_name: Web Portal
+repo_url: https://github.com/enchant97/web-portal
+use_directory_urls: false
+theme:
+  name: readthedocs
+plugins:
+  - mkdocstrings:
+      handlers:
+        python:
+          options:
+            heading_level: 3
+            show_root_heading: true
+            show_root_full_path: false
+            docstring_style: sphinx
+  - search
