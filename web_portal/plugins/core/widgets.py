@@ -15,8 +15,8 @@ PLUGIN_META = PluginMeta(
         },
     db_models=[models],
     blueprints=[views.blueprint],
-    plugin_settings = True,
-    head_injection = True,
+    plugin_settings=True,
+    head_injection=True,
     index_route_url="core.get_index",
 )
 
@@ -56,8 +56,7 @@ async def render_widget(internal_name, config: dict | None) -> str:
 async def render_widget_edit_link(
         dash_widget_id: int,
         config: dict | None,
-        back_to_url: str,
-    ) -> str:
+        back_to_url: str) -> str:
     links = await models.Link.all()
 
     added_links = await models.Link.filter(id__in=config.get("links", [])).all()
@@ -74,8 +73,7 @@ async def render_widget_edit(
         internal_name: str,
         dash_widget_id: int,
         config: dict | None,
-        back_to_url: str,
-    ) -> str:
+        back_to_url: str) -> str:
     if config is None:
         config = {}
     match internal_name:

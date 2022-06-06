@@ -32,7 +32,7 @@ async def first_request():
         for widget_name in plugin.widgets:
             name = make_combined_widget_name(plugin.internal_name, widget_name)
             await models.Widget.update_or_create(internal_name=name, defaults={
-                "plugin":plugin_model
+                "plugin": plugin_model
             })
 
 
@@ -81,7 +81,7 @@ def create_app():
             db_models[plugin.internal_name] = plugin.db_models
 
     logging.debug("registering tortoise-orm")
-        # other setup
+    # other setup
     register_tortoise(
         app,
         db_url=get_settings().DB_URI,

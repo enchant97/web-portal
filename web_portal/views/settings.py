@@ -46,9 +46,9 @@ async def post_add_widget():
     widget_id = form["widget-id"]
 
     dashboard = (await models.Dashboard
-        .filter(owner_id=current_user.auth_id)
-        .get()
-    )
+                 .filter(owner_id=current_user.auth_id)
+                 .get()
+                 )
 
     await models.DashboardWidget.create(
         name=name,
@@ -63,9 +63,9 @@ async def post_add_widget():
 @login_required
 async def get_delete_widget(widget_id: int):
     dashboard = (await models.Dashboard
-        .filter(owner_id=current_user.auth_id)
-        .get()
-    )
+                 .filter(owner_id=current_user.auth_id)
+                 .get()
+                 )
 
     await dashboard.widgets.filter(id=widget_id).delete()
 

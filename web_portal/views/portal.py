@@ -20,7 +20,7 @@ async def portal():
             await flash("You need to be logged in to view this page", "red")
             return redirect(url_for("login.get_login"))
 
-    user_id =  current_user.auth_id
+    user_id = current_user.auth_id
     dashboard = None
 
     # load either personal dashboard or 'guest' as a fallback
@@ -40,7 +40,10 @@ async def portal():
         plugin_name = widget.plugin.internal_name
         widget_name = deconstruct_widget_name(plugin_name, widget.internal_name)
         loaded_plugin = PluginHandler.get_loaded_plugin(plugin_name)
-        rendered_widget = await loaded_plugin.module.render_widget(widget_name, dashboard_widget.config)
+        rendered_widget = await loaded_plugin.module.render_widget(
+            widget_name,
+            dashboard_widget.config
+        )
         rendered_widgets.append((dashboard_widget, rendered_widget))
 
     return await render_template(

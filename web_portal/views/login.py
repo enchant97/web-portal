@@ -6,6 +6,7 @@ from ..database import models
 
 blueprint = Blueprint("login", __name__)
 
+
 @blueprint.get("/login")
 async def get_login():
     if (await current_user.is_authenticated):
