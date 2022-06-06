@@ -4,8 +4,9 @@ from quart import Blueprint, flash, redirect, render_template, request, url_for
 from quart_auth import current_user
 from tortoise.exceptions import IntegrityError
 
+from ..core.auth import login_admin_required
+from ..core.validation import is_username_allowed
 from ..database import models
-from ..helpers import is_username_allowed, login_admin_required
 from ..import_export import Widget_V1, import_v1_widgets
 
 blueprint = Blueprint("admin", __name__)

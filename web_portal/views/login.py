@@ -1,8 +1,8 @@
 from quart import Blueprint, flash, redirect, render_template, request, url_for
 from quart_auth import current_user, login_required, login_user, logout_user
 
+from ..core.auth import AuthUserEnhanced
 from ..database import models
-from ..helpers import AuthUserEnhanced
 
 blueprint = Blueprint("login", __name__)
 

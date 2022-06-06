@@ -1,8 +1,8 @@
 from quart import (Blueprint, abort, flash, redirect, render_template, request,
                    url_for)
 from quart_auth import current_user, login_required
+from web_portal.core.auth import login_admin_required
 from web_portal.database import models as app_models
-from web_portal.helpers import login_admin_required
 
 from . import models
 

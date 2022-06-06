@@ -7,8 +7,9 @@ from web_health_checker.contrib import quart as health_check
 
 from . import __version__
 from .config import get_settings
+from .core.auth import AuthUserEnhanced
+from .core.plugin import PluginHandler, make_combined_widget_name
 from .database import models
-from .helpers import AuthUserEnhanced, PluginHandler, make_combined_widget_name
 from .views import admin, install, login, portal, settings
 
 app = Quart(__name__)

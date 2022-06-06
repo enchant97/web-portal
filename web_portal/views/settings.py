@@ -1,8 +1,8 @@
 from quart import Blueprint, flash, redirect, render_template, request, url_for
 from quart_auth import current_user, login_required
 
+from ..core.plugin import PluginHandler, deconstruct_widget_name
 from ..database import models
-from ..helpers import PluginHandler, deconstruct_widget_name
 
 blueprint = Blueprint("settings", __name__)
 

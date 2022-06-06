@@ -3,7 +3,7 @@ from typing import Optional
 
 from pydantic import BaseSettings
 from quart import render_template
-from web_portal.helpers import PluginMeta
+from web_portal.core.plugin import PluginMeta
 
 from . import models, views
 

@@ -1,15 +1,14 @@
-import re
+"""
+Module to assist plugin functionalities
+"""
+
 from dataclasses import dataclass
-from functools import wraps
 from importlib import import_module
 from pathlib import Path
 from types import ModuleType
-from typing import Any, Callable, Generator
+from typing import Generator
 
-from quart import Blueprint, abort, current_app
-from quart_auth import AuthUser, Unauthorized, current_user
-
-from .database import models
+from quart import Blueprint
 
 
 @dataclass
@@ -86,81 +85,9 @@ class PluginHandler:
             yield plugin
 
 
-class AuthUserEnhanced(AuthUser):
-    @property
-    async def is_authenticated_admin(self):
-        if await self.is_authenticated:
-            if await models.User.filter(id=current_user.auth_id, is_admin=True).get_or_none():
-                return True
-        return False
-
-
 def make_combined_widget_name(plugin_name: str, widget_name: str) -> str:
     return f"{plugin_name}__{widget_name}"
 
 
 def deconstruct_widget_name(plugin_name: str, combined_name: str) -> str:
     return combined_name.removeprefix(f"{plugin_name}__")
-
-
-def login_admin_required(func: Callable) -> Callable:
-    """
-    used the same as login_reqired,
-    but checks whether user is admin
-    """
-    @wraps(func)
-    async def wrapper(*args: Any, **kwargs: Any) -> Any:
-        if not (await current_user.is_authenticated_admin):
-            raise Unauthorized()
-        return await func(*args, **kwargs)
-
-    return wrapper
-
-
-def ensure_not_setup(func: Callable) -> Callable:
-    """
-    used to ensure the app has not gone through setup wizard,
-    aborting to 404 if it has.
-    """
-    @wraps(func)
-    async def wrapper(*args: Any, **kwargs: Any) -> Any:
-        if (has_setup := await models.SystemSetting.get_or_none(key="has_setup")) is not None:
-            if has_setup.value == True:
-                abort(404)
-        return await func(*args, **kwargs)
-    return wrapper
-
-
-def is_username_allowed(username: str) -> bool:
-    if (len(username) > 0 and len(username) <= 20) and \
-            re.fullmatch(r"^[a-zA-Z0-9]+$", username) is not None:
-        return True
-    return False
-
-
-async def get_system_setting(
-        key: str,
-        default: Any = None,
-        skip_cache: bool = False) -> Any | None:
-    """
-    gets a system setting stored in db or from cache
-    """
-    value = None
-
-    if not skip_cache:
-        value = current_app.config.get(key)
-
-    if value is None:
-        setting_row = await models.SystemSetting.get_or_none(key=key)
-        if setting_row is not None:
-            value = setting_row.value
-
-    return value if value is not None else default
-
-
-async def set_system_setting(key: str, value: Any):
-    """
-    set a system setting stored in db and update cache
-    """
-    await models.SystemSetting.update_or_create(key=key, defaults=dict(value=value))
-    current_app.config[key] = value

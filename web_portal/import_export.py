@@ -5,7 +5,7 @@ from pydantic import BaseModel, constr
 from tortoise.exceptions import IntegrityError
 from tortoise.transactions import atomic
 
-from .helpers import PluginHandler
+from .core.plugin import PluginHandler
 
 logger = logging.getLogger("import_export")
 

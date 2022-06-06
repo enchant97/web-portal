@@ -2,8 +2,8 @@ from quart import (Blueprint, current_app, flash, redirect, render_template,
                    url_for)
 from quart_auth import current_user, login_required
 
+from ..core.plugin import PluginHandler, deconstruct_widget_name
 from ..database import models
-from ..helpers import PluginHandler, deconstruct_widget_name
 
 blueprint = Blueprint("portal", __name__)
 
