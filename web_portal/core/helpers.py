@@ -11,10 +11,17 @@ from ..database import models
 
 async def get_system_setting(
         key: str,
+        /,
+        *,
         default: Any = None,
         skip_cache: bool = False) -> Any | None:
     """
-    gets a system setting stored in db or from cache
+    Gets a system setting stored in db or from cache
+
+        :param key: The setting's key
+        :param default: The default value to use if no setting was found, defaults to None
+        :param skip_cache: Whether the skip cache and load from db directly, defaults to False
+        :return: The loaded value or None
     """
     value = None
 
@@ -31,9 +38,22 @@ async def get_system_setting(
     return value if value is not None else default
 
 
-async def set_system_setting(key: str, value: Any):
+async def set_system_setting(key: str, value: Any, /):
     """
-    set a system setting stored in db and update cache
+    Set a system setting stored in db and updates cache
+
+        :param key: The setting's key
+        :param value: Value to update setting to
     """
     await models.SystemSetting.update_or_create(key=key, defaults=dict(value=value))
     current_app.config[key] = value
+
+
+async def remove_system_setting(key: str, /):
+    """
+    Removes a set system setting stored in db and cache
+
+        :param key: The setting's key
+    """
+    await models.SystemSetting.filter(key=key).delete()
+    current_app.config.pop(key, None)

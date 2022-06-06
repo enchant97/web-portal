@@ -6,9 +6,12 @@ from dataclasses import dataclass
 from importlib import import_module
 from pathlib import Path
 from types import ModuleType
-from typing import Generator
+from typing import Any, Generator, Optional
 
 from quart import Blueprint
+
+from .helpers import (get_system_setting, remove_system_setting,
+                      set_system_setting)
 
 
 @dataclass
@@ -91,3 +94,50 @@ def make_combined_widget_name(plugin_name: str, widget_name: str) -> str:
 
 def deconstruct_widget_name(plugin_name: str, combined_name: str) -> str:
     return combined_name.removeprefix(f"{plugin_name}__")
+
+
+def make_system_setting_plugin_key(plugin_name: str, key: str) -> str:
+    return f"plugin__{plugin_name}_{key}"
+
+
+async def get_plugin_system_setting(
+        plugin_name: str,
+        key: str,
+        /,
+        *,
+        default: Optional[Any] = None,
+        skip_cache: bool = False) -> Any | None:
+    """
+    Gets a plugin's system setting stored in db or from cache
+
+        :param plugin_name: The plugin's internal name
+        :param key: The setting's key
+        :param default: The default value to use if no setting was found, defaults to None
+        :param skip_cache: Whether the skip cache and load from db directly, defaults to False
+        :return: The loaded value or None
+    """
+    full_key = make_system_setting_plugin_key(plugin_name, key)
+    return get_system_setting(full_key, default, skip_cache)
+
+
+async def set_plugin_system_setting(plugin_name: str, key: str, value: Any, /):
+    """
+    Set a plugin's system setting stored in db and updates cache
+
+        :param plugin_name: The plugin's internal name
+        :param key: The setting's key
+        :param value: Value to update setting to
+    """
+    full_key = make_system_setting_plugin_key(plugin_name, key)
+    await set_system_setting(full_key, value)
+
+
+async def remove_plugin_system_setting(plugin_name: str, key: str, /):
+    """
+    Removes a set plugin's system setting stored in db and cache
+
+        :param plugin_name: The plugin's internal name
+        :param key: The setting's key
+    """
+    full_key = make_system_setting_plugin_key(plugin_name, key)
+    await remove_system_setting(full_key)
