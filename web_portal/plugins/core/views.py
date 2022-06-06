@@ -1,7 +1,9 @@
 from quart import (Blueprint, abort, flash, redirect, render_template, request,
                    url_for)
 from quart_auth import current_user, login_required
-from web_portal.plugin_api import app_models, login_admin_required
+from web_portal.plugin_api import (PORTAL_ENDPOINT, get_widget_details,
+                                   get_widget_owner_id, login_admin_required,
+                                   set_widget_config)
 
 from . import models
 
@@ -53,23 +55,24 @@ async def post_link_new():
 @blueprint.post("/widget/links/<int:widget_id>/add")
 @login_required
 async def post_widget_add_link(widget_id: int):
-    widget = await app_models.DashboardWidget.get(id=widget_id).prefetch_related("dashboard")
-
-    if widget.dashboard.owner_id != current_user.auth_id:
+    if await get_widget_owner_id(widget_id) != current_user.auth_id:
         abort(401)
 
     link_id = (await request.form)["link-id"]
     link = await models.Link.get(id=link_id)
 
-    if widget.config is None:
-        widget.config = {"links": []}
+    widget_details = await get_widget_details(widget_id)
+    widget_config = widget_details.config
 
-    widget.config["links"].append(link_id)
+    if widget_config is None:
+        widget_config = {"links": []}
 
-    await widget.save()
+    widget_config["links"].append(link_id)
 
-    await flash(f"added new link '{link.name}' to widget '{widget.name}'", "green")
+    await set_widget_config(widget_id, widget_config)
+
+    await flash(f"added new link '{link.name}' to widget '{widget_details.human_name}'", "green")
 
     if (back_to_url := request.args.get("back_to")) is not None:
         return redirect(back_to_url)
-    return redirect(url_for("portal.portal"))
+    return redirect(url_for(PORTAL_ENDPOINT))

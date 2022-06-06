@@ -10,8 +10,17 @@ from typing import Any, Generator, Optional
 
 from quart import Blueprint
 
+from ..database import models as app_models
 from .helpers import (get_system_setting, remove_system_setting,
                       set_system_setting)
+
+
+@dataclass
+class WidgetDetails:
+    human_name: str
+    internal_name: str
+    plugin_name: str
+    config: Any | None
 
 
 @dataclass
@@ -141,3 +150,50 @@ async def remove_plugin_system_setting(plugin_name: str, key: str, /):
     """
     full_key = make_system_setting_plugin_key(plugin_name, key)
     await remove_system_setting(full_key)
+
+
+async def get_widget_owner_id(widget_id: int, /) -> int:
+    """
+    Get a widget's owner id
+
+        :param widget_id: The widgets id
+        :return: The owner id
+    """
+    widget = await app_models.DashboardWidget.get(id=widget_id).prefetch_related(
+        "dashboard__owner_id"
+    )
+    return widget.dashboard.owner_id
+
+
+async def get_widget_details(widget_id: int, /) -> WidgetDetails:
+    """
+    Get a widgets details
+
+        :param widget_id: The widgets id
+        :return: The details
+    """
+    widget = await app_models.DashboardWidget.get(id=widget_id).prefetch_related(
+        "widget__internal_name",
+        "widget__plugin__internal_name",
+    )
+    return WidgetDetails(
+        widget.name,
+        deconstruct_widget_name(
+            widget.widget.plugin.internal_name,
+            widget.widget.internal_name
+        ),
+        widget.widget.plugin.internal_name,
+        widget.config,
+    )
+
+
+async def set_widget_config(widget_id: int, config: Any | None, /):
+    """
+    Set a widgets config
+
+        :param widget_id: The widgets id
+        :param config: The config to update to
+    """
+    widget = await app_models.DashboardWidget.get(id=widget_id)
+    widget.config = config
+    await widget.save()
