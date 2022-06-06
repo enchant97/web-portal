@@ -1,4 +1,3 @@
-# flake8: noqa
 """
 Unifed plugin api for plugins to access.
 
