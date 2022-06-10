@@ -55,6 +55,7 @@ async def post_link_new():
 @blueprint.post("/widget/links/<int:widget_id>/add")
 @login_required
 async def post_widget_add_link(widget_id: int):
+    # TODO check widget internal_name to ensure it is valid for this request
     if await get_widget_owner_id(widget_id) != current_user.auth_id:
         abort(401)
 
@@ -72,6 +73,31 @@ async def post_widget_add_link(widget_id: int):
     await set_widget_config(widget_id, widget_config)
 
     await flash(f"added new link '{link.name}' to widget '{widget_details.human_name}'", "green")
+
+    if (back_to_url := request.args.get("back_to")) is not None:
+        return redirect(back_to_url)
+    return redirect(url_for(PORTAL_ENDPOINT))
+
+
+@blueprint.post("/widget/embed_html/<int:widget_id>/update")
+@login_required
+async def post_widget_update_embed_html(widget_id: int):
+    # TODO check widget internal_name to ensure it is valid for this request
+    if await get_widget_owner_id(widget_id) != current_user.auth_id:
+        abort(401)
+
+    new_content = (await request.form)["content"].strip()
+
+    widget_details = await get_widget_details(widget_id)
+    widget_config = widget_details.config
+    if widget_config is None:
+        widget_config = {"content": ""}
+
+    widget_config["content"] = new_content
+
+    await set_widget_config(widget_id, widget_config)
+
+    await flash(f"updated HTML content for widget '{widget_details.human_name}'", "green")
 
     if (back_to_url := request.args.get("back_to")) is not None:
         return redirect(back_to_url)
