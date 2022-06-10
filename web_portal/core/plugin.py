@@ -48,7 +48,7 @@ class PluginHandler:
 
     @staticmethod
     def get_plugins_path() -> Path:
-        return Path(__file__).parent / "plugins"
+        return Path(__file__).parent.parent / "plugins"
 
     @staticmethod
     def get_plugin_names():
@@ -160,7 +160,7 @@ async def get_widget_owner_id(widget_id: int, /) -> int:
         :return: The owner id
     """
     widget = await app_models.DashboardWidget.get(id=widget_id).prefetch_related(
-        "dashboard__owner_id"
+        "dashboard"
     )
     return widget.dashboard.owner_id
 
@@ -173,8 +173,8 @@ async def get_widget_details(widget_id: int, /) -> WidgetDetails:
         :return: The details
     """
     widget = await app_models.DashboardWidget.get(id=widget_id).prefetch_related(
-        "widget__internal_name",
-        "widget__plugin__internal_name",
+        "widget",
+        "widget__plugin",
     )
     return WidgetDetails(
         widget.name,
