@@ -1,11 +1,12 @@
 from quart import (Blueprint, abort, flash, redirect, render_template, request,
-                   url_for)
+                   send_file, url_for)
 from quart_auth import current_user, login_required
 from web_portal.plugin_api import (PORTAL_ENDPOINT, get_widget_details,
                                    get_widget_owner_id, login_admin_required,
                                    set_widget_config)
 
 from . import models
+from .helpers import get_icon_names, get_icon_path
 
 blueprint = Blueprint("core", __name__, static_folder="static", template_folder="templates")
 
@@ -14,6 +15,19 @@ blueprint = Blueprint("core", __name__, static_folder="static", template_folder=
 @login_required
 async def get_index():
     return await render_template("core/index.jinja")
+
+
+@blueprint.get("/static/icons/<icon_name>")
+async def get_icon(icon_name):
+    # TODO check whether portal is in "login only" mode and do auth
+    full_path = get_icon_path(icon_name)
+    if full_path is None:
+        abort(404)
+
+    return await send_file(
+        full_path,
+        attachment_filename=full_path.name
+    )
 
 
 @blueprint.get("/links")
@@ -29,7 +43,12 @@ async def get_links_index():
 @blueprint.get("/links/new")
 @login_admin_required
 async def get_link_new():
-    return await render_template("core/links/new.jinja")
+    icon_names = get_icon_names()
+
+    return await render_template(
+        "core/links/new.jinja",
+        icon_names=icon_names,
+    )
 
 
 @blueprint.get("/links/<int:link_id>/delete")
@@ -49,11 +68,18 @@ async def post_link_new():
     name = form["name"].strip()
     url = form["url"].strip()
     color_name = form["color_name"].strip()
+    icon_name = form.get("icon-name")
+
+    if icon_name is not None:
+        if get_icon_path(icon_name) is None:
+            # TODO add logging here
+            icon_name = None
 
     await models.Link.create(
         name=name,
         url=url,
         color_name=color_name,
+        icon_name=icon_name,
     )
 
     await flash(f"created link with name '{name}'", "green")

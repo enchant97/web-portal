@@ -11,6 +11,13 @@
         <select name="color_name" id="core-link-color-name">
             {% include "/shared/includes/options-color.jinja" %}
         </select>
+        <label for="core-link-icon-name">Icon Name</label>
+        <select name="icon-name" id="core-link-icon-name">
+            <option value="">** No Icon **</option>
+            {% for name in icon_names %}
+            <option value="{{ name }}">{{ name }}</option>
+            {% endfor %}
+        </select>
         <button type="submit">Save</button>
 </form>
 {% endblock %}

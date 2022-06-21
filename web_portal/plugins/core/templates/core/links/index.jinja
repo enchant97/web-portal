@@ -9,6 +9,7 @@
         <tr>
             <th>Name</th>
             <th>Color</th>
+            <th>Icon</th>
             <th>URL</th>
             <th></th>
         </tr>
@@ -18,6 +19,7 @@
         <tr>
             <td>{{ link.name }}</td>
             <td>{{ link.color_name }}</td>
+            <td>{{ link.icon_name }}</td>
             <td><input type="text" readonly value="{{ link.url }}"></td>
             <td>
                 <a class="bnt" href="{{ url_for('.get_link_delete', link_id=link.id) }}">Delete</a>

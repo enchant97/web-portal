@@ -7,6 +7,7 @@ class Link(Model):
     name = CharField(128, unique=True)
     url = TextField()
     color_name = CharField(128)
+    icon_name = CharField(128, null=True)
 
     class Meta:
         table = "core__link"

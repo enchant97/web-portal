@@ -14,6 +14,11 @@
     text-align: center;
     box-shadow: 4px 4px 0px black;
     word-wrap: break-word;
+    /* for icon based links */
+    background-size: auto 80%;
+    background-repeat: no-repeat;
+    background-position-y: center;
+    background-position-x: center;
 }
 
 .widget-inner.core__links a:hover {

@@ -1,4 +1,8 @@
 {% for link in links %}
 <a class="{{ link.color_name }}" href="{{ link.url }}" {%- if config.plugin__core.OPEN_TO_NEW_TAB -%}target="_blank"
-    {%- endif -%} rel="noopener noreferrer">{{ link.name }}</a>
+    {%- endif -%}
+    {%- if link.icon_name -%}
+    style="background-image: url({{ url_for('core.get_icon', icon_name=link.icon_name) }});"
+    {%- endif -%}
+    rel="noopener noreferrer">{{ link.name }}</a>
 {% endfor %}
