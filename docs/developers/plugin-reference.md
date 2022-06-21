@@ -24,6 +24,7 @@ from web_portal.plugin_api import login_admin_required
 
 ## Plugin
 ::: web_portal.plugin_api.PluginMeta
+::: web_portal.plugin_api.get_plugin_data_path
 
 ## Endpoints
 ::: web_portal.plugin_api.PORTAL_ENDPOINT

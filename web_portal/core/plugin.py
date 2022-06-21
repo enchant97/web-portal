@@ -11,6 +11,7 @@ from typing import Any, Generator, Optional
 from quart import Blueprint
 
 from ..database import models as app_models
+from .config import get_settings
 from .helpers import (get_system_setting, remove_system_setting,
                       set_system_setting)
 
@@ -197,3 +198,18 @@ async def set_widget_config(widget_id: int, config: Any | None, /):
     widget = await app_models.DashboardWidget.get(id=widget_id)
     widget.config = config
     await widget.save()
+
+
+def get_plugin_data_path(plugin_name: str) -> Path:
+    """
+    Get a plugins's data path for storing
+    persistant data outside of the database,
+    path will be created if not exists
+    when this function is run
+
+        :param plugin_name: The plugin's internal name
+        :return: The data path
+    """
+    data_path = get_settings().DATA_PATH / "plugins" / plugin_name
+    data_path.mkdir(parents=True, exist_ok=True)
+    return data_path

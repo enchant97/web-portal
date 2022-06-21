@@ -6,8 +6,8 @@ from tortoise.contrib.quart import register_tortoise
 from web_health_checker.contrib import quart as health_check
 
 from . import __version__
-from .config import get_settings
 from .core.auth import AuthUserEnhanced
+from .core.config import get_settings
 from .core.plugin import PluginHandler, make_combined_widget_name
 from .database import models
 from .views import admin, install, login, portal, settings
