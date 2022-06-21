@@ -32,6 +32,15 @@ async def get_link_new():
     return await render_template("core/links/new.jinja")
 
 
+@blueprint.get("/links/<int:link_id>/delete")
+@login_admin_required
+async def get_link_delete(link_id: int):
+    await models.Link.filter(id=link_id).delete()
+    await flash("deleted link", "green")
+
+    return redirect(url_for(".get_links_index"))
+
+
 @blueprint.post("/links/new")
 @login_admin_required
 async def post_link_new():

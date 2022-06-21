@@ -2,10 +2,29 @@
 {% block title %}Core - Links{% endblock %}
 {% block main %}
 <a class="bnt" href="{{ url_for('.get_link_new') }}">New</a>
-<ul>
-    {% for link in links %}
-    <li>{{ link.name }}, {{ link.url }}</li>
-    {% endfor %}
-</ul>
+
+<table>
+    <caption>Available Links</caption>
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Color</th>
+            <th>URL</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for link in links %}
+        <tr>
+            <td>{{ link.name }}</td>
+            <td>{{ link.color_name }}</td>
+            <td><input type="text" readonly value="{{ link.url }}"></td>
+            <td>
+                <a class="bnt" href="{{ url_for('.get_link_delete', link_id=link.id) }}">Delete</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
 
 {% endblock %}
