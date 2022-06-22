@@ -114,6 +114,33 @@ async def post_widget_add_link(widget_id: int):
     return redirect(url_for(PORTAL_ENDPOINT))
 
 
+@blueprint.get("/widget/links/<int:widget_id>/<int:link_index>/delete")
+@login_required
+async def get_widget_remove_link(widget_id: int, link_index: int):
+    # TODO check widget internal_name to ensure it is valid for this request
+    if await get_widget_owner_id(widget_id) != current_user.auth_id:
+        abort(401)
+
+    widget_details = await get_widget_details(widget_id)
+    widget_config = widget_details.config
+
+    redirect_response = redirect(url_for(PORTAL_ENDPOINT))
+    if (back_to_url := request.args.get("back_to")) is not None:
+        redirect_response = redirect(back_to_url)
+
+    if widget_config is None or len(widget_config.get("links")) < link_index+1:
+        await flash("cannot find link to delete", "red")
+        return redirect_response
+
+    widget_config["links"].pop(link_index)
+
+    await set_widget_config(widget_id, widget_config)
+
+    await flash(f"removed link from widget '{widget_details.human_name}'", "green")
+
+    return redirect_response
+
+
 @blueprint.post("/widget/embed_html/<int:widget_id>/update")
 @login_required
 async def post_widget_update_embed_html(widget_id: int):

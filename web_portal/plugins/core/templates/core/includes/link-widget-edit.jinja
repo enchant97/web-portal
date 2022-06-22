@@ -1,4 +1,5 @@
-<form class="form-group" action="{{ url_for('core.post_widget_add_link', widget_id=dash_widget_id, back_to=back_to_url) }}" method="post">
+<form class="form-group"
+    action="{{ url_for('core.post_widget_add_link', widget_id=dash_widget_id, back_to=back_to_url) }}" method="post">
     <h3>Add Link</h3>
     <label for="core-widget-link">Link</label>
     <select name="link-id" id="core-widget-link-id">
@@ -8,9 +9,24 @@
     </select>
     <button type="submit">Add</button>
 </form>
-<h3>Links</h3>
-<ul>
-    {% for link in added_links %}
-    <li>{{ link.name }}, {{ link.url }}</li>
-    {% endfor %}
-</ul>
+
+<h3>Added Links</h3>
+<table>
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for link in added_links %}
+        <tr>
+            <td>{{ link.name }}</td>
+            <td>
+                <a class="bnt"
+                    href="{{ url_for('core.get_widget_remove_link', widget_id=dash_widget_id, link_index=loop.index0, back_to=back_to_url) }}">Delete</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
