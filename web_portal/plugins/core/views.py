@@ -1,3 +1,7 @@
+from pathlib import Path
+from tempfile import TemporaryDirectory
+from zipfile import ZipFile
+
 from quart import (Blueprint, abort, flash, redirect, render_template, request,
                    send_file, url_for)
 from quart_auth import current_user, login_required
@@ -6,7 +10,7 @@ from web_portal.plugin_api import (PORTAL_ENDPOINT, get_widget_details,
                                    set_widget_config)
 
 from . import models
-from .helpers import get_icon_names, get_icon_path
+from .helpers import copy_icons_from_import, get_icon_names, get_icon_path
 
 blueprint = Blueprint("core", __name__, static_folder="static", template_folder="templates")
 
@@ -28,6 +32,31 @@ async def get_icon(icon_name):
         full_path,
         attachment_filename=full_path.name
     )
+
+
+@blueprint.get("/upload-icons")
+@login_admin_required
+async def get_upload_icons():
+    return await render_template("core/upload-icons.jinja")
+
+
+@blueprint.post("/upload-icons")
+@login_admin_required
+async def post_upload_icons():
+    file = (await request.files)["file"]
+
+    with TemporaryDirectory(prefix="web-portal") as temp_location:
+        temp_zip_fn = Path(temp_location, "icons.zip")
+        await file.save(temp_zip_fn)
+
+        with ZipFile(temp_zip_fn, "r") as zip_file:
+            zip_file.extractall(temp_location)
+
+        copy_icons_from_import(temp_location)
+
+    await flash("uploaded icons", "green")
+
+    return redirect(url_for(".get_upload_icons"))
 
 
 @blueprint.get("/links")
