@@ -5,6 +5,7 @@ on:
     branches: [ "master" ]
   pull_request:
     branches: [ "master" ]
+    types: [ready_for_review, review_requested]
   schedule:
     - cron: '0 12 1 * *'
 
@@ -31,7 +32,7 @@ jobs:
       uses: github/codeql-action/init@v2
       with:
         languages: ${{ matrix.language }}
-        
+
     # Autobuild attempts to build any compiled languages  (C/C++, C#, or Java).
     - name: Autobuild
       uses: github/codeql-action/autobuild@v2
