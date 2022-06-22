@@ -1,10 +1,10 @@
 import json
 
 from quart import Blueprint, flash, redirect, render_template, request, url_for
-from quart_auth import current_user
+from quart_auth import current_user, login_user
 from tortoise.exceptions import IntegrityError
 
-from ..core.auth import login_admin_required
+from ..core.auth import AuthUserEnhanced, login_admin_required
 from ..core.validation import is_username_allowed
 from ..database import models
 from ..import_export import Widget_V1, import_v1_widgets
@@ -111,3 +111,28 @@ async def get_users_toggle_admin(user_id: int):
         await flash("User is no longer an admin", "green")
 
     return redirect(url_for(".get_users"))
+
+
+@blueprint.post("/users/force-login")
+@login_admin_required
+async def post_user_force_login():
+    form = await request.form
+
+    user_id = form["user-id"]
+    password = form["password"]
+
+    admin_user = await models.User.get(id=current_user.auth_id).only("password_hash")
+    if not admin_user.check_password(password):
+        await flash("admin password was incorrect", "red")
+        return redirect(url_for(".get_users"))
+
+    user = await models.User.filter(id=user_id, is_admin=False).get_or_none().only("id")
+
+    if user is None:
+        await flash("unable to force login as this user", "red")
+        return redirect(url_for(".get_users"))
+
+    login_user(AuthUserEnhanced(user.id))
+    await flash("forced login to user", "green")
+
+    return redirect(url_for("portal.portal"))

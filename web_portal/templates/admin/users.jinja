@@ -45,4 +45,22 @@
     </table>
 </section>
 
+<section>
+    <h2>Force Login</h2>
+    <form action="{{ url_for('.post_user_force_login') }}" method="post">
+        <label for="user-id">User</label>
+        <select name="user-id" id="user-id" required>
+            <option value="">** Select A Option **</option>
+            {% for user in users %}
+            {% if user.is_admin == False %}
+            <option value="{{ user.id }}">{{ user.username }}</option>
+            {% endif %}
+            {% endfor %}
+        </select>
+        <label for="password">Your Password</label>
+        <input type="password" name="password" id="password" required>
+        <button type="submit">Force Login</button>
+    </form>
+</section>
+
 {% endblock %}
