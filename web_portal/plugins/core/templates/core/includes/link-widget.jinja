@@ -1,8 +1,9 @@
 {% for link in links %}
-<a class="{{ link.color_name }}" href="{{ link.url }}" {%- if config.plugin__core.OPEN_TO_NEW_TAB -%}target="_blank"
-    {%- endif -%}
+<a class="{{ link.color_name }}" href="{{ link.url }}" {%- if config.plugin__core.OPEN_TO_NEW_TAB -%}target="_blank" {%-
+    endif -%} rel="noopener noreferrer" aria-label="{{ link.name }}">
     {%- if link.icon_name -%}
-    style="background-image: url({{ url_for('core.get_icon', icon_name=link.icon_name) }});"
+    <img src="{{ url_for('core.get_icon', icon_name=link.icon_name) }}" alt="icon for '{{ link.name }}' link">
     {%- endif -%}
-    rel="noopener noreferrer">{{ link.name }}</a>
+    <span>{{ link.name }}</span>
+</a>
 {% endfor %}
