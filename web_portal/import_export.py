@@ -31,7 +31,7 @@ async def import_v1_widgets(widgets: Iterable[Widget_V1]) -> int:
         logger.info("Importing widget: '%s', from v1 data", count)
         try:
             # NOTE this directly uses the plugin's models
-            await core_plugin.db_models[0].Link.create(
+            await core_plugin.meta.db_models[0].Link.create(
                 name=widget.prefix,
                 url=widget.url,
                 color_name=widget.color_name,

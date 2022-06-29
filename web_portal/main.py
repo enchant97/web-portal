@@ -29,7 +29,7 @@ async def first_request():
     for plugin in PluginHandler.loaded_plugins().values():
         plugin_model, _ = await models.Plugin.update_or_create(internal_name=plugin.internal_name)
 
-        for widget_name in plugin.widgets:
+        for widget_name in plugin.meta.widgets:
             name = make_combined_widget_name(plugin.internal_name, widget_name)
             await models.Widget.update_or_create(internal_name=name, defaults={
                 "plugin": plugin_model
@@ -41,8 +41,8 @@ def context_get_head_injects():
     # TODO store rendered output in variable instead at app launch (performance improvement)
     async def get_head_injects():
         for plugin in PluginHandler.get_loaded_plugin_values():
-            if plugin.head_injection:
-                yield await plugin.module.render_injected_head()
+            if plugin.meta.get_injected_head:
+                yield await plugin.meta.get_injected_head()
     return dict(get_head_injects=get_head_injects)
 
 
@@ -68,17 +68,17 @@ def create_app():
     logging.debug("loading plugins")
     for plugin in PluginHandler.load_plugins():
         # register plugin settings
-        if plugin.plugin_settings:
-            app.config[f"plugin__{plugin.internal_name}"] = plugin.module.get_settings()
+        if plugin.meta.get_settings:
+            app.config[f"plugin__{plugin.internal_name}"] = plugin.meta.get_settings()
         # register quart blueprints
-        for blueprint in plugin.blueprints:
+        for blueprint in plugin.meta.blueprints:
             url_prefix = f"/plugins/{plugin.internal_name}"
             if blueprint.url_prefix:
                 url_prefix += blueprint.url_prefix
             app.register_blueprint(blueprint, url_prefix=url_prefix)
         # register database models
-        if plugin.db_models:
-            db_models[plugin.internal_name] = plugin.db_models
+        if plugin.meta.db_models:
+            db_models[plugin.internal_name] = plugin.meta.db_models
 
     logging.debug("registering tortoise-orm")
     # other setup

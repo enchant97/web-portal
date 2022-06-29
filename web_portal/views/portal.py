@@ -40,7 +40,7 @@ async def portal():
         plugin_name = widget.plugin.internal_name
         widget_name = deconstruct_widget_name(plugin_name, widget.internal_name)
         loaded_plugin = PluginHandler.get_loaded_plugin(plugin_name)
-        rendered_widget = await loaded_plugin.module.render_widget(
+        rendered_widget = await loaded_plugin.meta.get_rendered_widget(
             widget_name,
             dashboard_widget.config
         )

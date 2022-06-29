@@ -7,21 +7,6 @@ from web_portal.plugin_api import PluginMeta
 
 from . import models, views
 
-PLUGIN_META = PluginMeta(
-    human_name="Core",
-    widgets={
-        "links": " Links",
-        "search": "Web Search",
-        "embed_html": "Embed HTML",
-        "iframe": "Embed Website",
-        },
-    db_models=[models],
-    blueprints=[views.blueprint],
-    plugin_settings=True,
-    head_injection=True,
-    index_route_url="core.get_index",
-)
-
 
 class PluginSettings(BaseSettings):
     SEARCH_URL: str
@@ -139,3 +124,21 @@ async def render_widget_edit(
 
 async def render_injected_head() -> str:
     return await render_template("core/includes/head.jinja")
+
+
+PLUGIN_META = PluginMeta(
+    human_name="Core",
+    widgets={
+        "links": " Links",
+        "search": "Web Search",
+        "embed_html": "Embed HTML",
+        "iframe": "Embed Website",
+        },
+    db_models=[models],
+    blueprints=[views.blueprint],
+    index_route_url="core.get_index",
+    get_rendered_widget=render_widget,
+    get_rendered_widget_edit=render_widget_edit,
+    get_settings=get_settings,
+    get_injected_head=render_injected_head,
+)

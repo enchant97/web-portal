@@ -4,9 +4,9 @@
 <ul>
     {% for plugin in loaded_plugins %}
     <li>
-        <a href="{{ url_for(plugin.index_route_url) }}">{{ plugin.human_name }}</a>
+        <a href="{{ url_for(plugin.meta.index_route_url) }}">{{ plugin.meta.human_name }}</a>
         <ul>
-            {% for widget in plugin.widgets.values() %}
+            {% for widget in plugin.meta.widgets.values() %}
             <li>{{ widget }}</li>
             {% endfor %}
         </ul>

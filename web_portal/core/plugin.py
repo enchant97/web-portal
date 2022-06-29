@@ -2,11 +2,12 @@
 Module to assist plugin functionalities
 """
 
+from collections.abc import Awaitable, Callable, Generator
 from dataclasses import dataclass
 from importlib import import_module
 from pathlib import Path
 from types import ModuleType
-from typing import Any, Generator, Optional
+from typing import Any, Optional
 
 from quart import Blueprint
 
@@ -30,15 +31,17 @@ class PluginMeta:
     widgets: dict[str, str]
     db_models: tuple[str | ModuleType]
     blueprints: tuple[Blueprint]
-    plugin_settings: bool
-    head_injection: bool
     index_route_url: str
+    get_rendered_widget: Callable[[str, dict | None], Awaitable[str]]
+    get_rendered_widget_edit: Callable[[str, int, dict | None, str], Awaitable[str]]
+    get_settings: Callable[[], dict] | None = None
+    get_injected_head: Callable[[], Awaitable[str]] | None = None
 
 
 @dataclass
-class LoadedPlugin(PluginMeta):
+class LoadedPlugin:
     internal_name: str
-    module: ModuleType
+    meta: PluginMeta
 
 
 class PluginHandler:
@@ -63,15 +66,8 @@ class PluginHandler:
         imported_module = import_module("." + name, "web_portal.plugins")
         plugin_meta: PluginMeta = imported_module.PLUGIN_META
         return LoadedPlugin(
-            human_name=plugin_meta.human_name,
-            widgets=plugin_meta.widgets,
-            db_models=plugin_meta.db_models,
-            blueprints=plugin_meta.blueprints,
-            plugin_settings=plugin_meta.plugin_settings,
-            head_injection=plugin_meta.head_injection,
-            index_route_url=plugin_meta.index_route_url,
             internal_name=name,
-            module=imported_module,
+            meta=plugin_meta,
         )
 
     @staticmethod
