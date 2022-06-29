@@ -1,5 +1,5 @@
 <form class="form-group" action="{{ url_for('core.post_widget_update_embed_html', widget_id=dash_widget_id, back_to=back_to_url) }}" method="post">
-    <label for="">HTML Content</label>
+    <label for="core-widget-embed_html-content">HTML Content</label>
     <textarea name="content" id="core-widget-embed_html-content" cols="30" rows="10"
         placeholder="enter HTML here...">{{ content }}</textarea>
     <button type="submit">Update</button>

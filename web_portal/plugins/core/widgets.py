@@ -13,6 +13,7 @@ PLUGIN_META = PluginMeta(
         "links": " Links",
         "search": "Web Search",
         "embed_html": "Embed HTML",
+        "iframe": "Embed Website",
         },
     db_models=[models],
     blueprints=[views.blueprint],
@@ -43,6 +44,17 @@ async def render_widget_link(link_ids: tuple[int]) -> str:
     )
 
 
+async def render_widget_iframe(config: dict) -> str:
+    iframe_src = config.get("src")
+    iframe_height = config.get("height", 150)
+
+    return await render_template(
+        "core/includes/iframe-widget.jinja",
+        iframe_src=iframe_src,
+        iframe_height=iframe_height,
+    )
+
+
 async def render_widget(internal_name, config: dict | None) -> str:
     if config is None:
         config = {}
@@ -53,6 +65,8 @@ async def render_widget(internal_name, config: dict | None) -> str:
             return await render_template("core/includes/search-widget.jinja")
         case "embed_html":
             return config.get("content", "")
+        case "iframe":
+            return await render_widget_iframe(config)
         case _:
             raise ValueError("Unknown widget internal name")
 
@@ -87,6 +101,22 @@ async def render_widget_edit_embed_html(
     )
 
 
+async def render_widget_edit_iframe(
+        dash_widget_id: int,
+        config: dict | None,
+        back_to_url: str) -> str:
+    iframe_src = config.get("src", "")
+    iframe_height = config.get("height", 150)
+
+    return await render_template(
+        "core/includes/iframe-widget-edit.jinja",
+        iframe_src=iframe_src,
+        iframe_height=iframe_height,
+        dash_widget_id=dash_widget_id,
+        back_to_url=back_to_url,
+    )
+
+
 async def render_widget_edit(
         internal_name: str,
         dash_widget_id: int,
@@ -101,6 +131,8 @@ async def render_widget_edit(
             return "No editor available"
         case "embed_html":
             return await render_widget_edit_embed_html(dash_widget_id, config, back_to_url)
+        case "iframe":
+            return await render_widget_edit_iframe(dash_widget_id, config, back_to_url)
         case _:
             raise ValueError("Unknown widget internal name")
 
