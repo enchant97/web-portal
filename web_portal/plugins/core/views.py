@@ -1,6 +1,5 @@
 from pathlib import Path
 from tempfile import TemporaryDirectory
-from zipfile import ZipFile
 
 from quart import (Blueprint, abort, flash, redirect, render_template, request,
                    send_file, url_for)
@@ -10,7 +9,8 @@ from web_portal.plugin_api import (PORTAL_ENDPOINT, get_widget_details,
                                    set_widget_config)
 
 from . import models
-from .helpers import copy_icons_from_import, get_icon_names, get_icon_path
+from .helpers import (VALID_UPLOAD_EXTENTIONS, copy_icons_from_import,
+                      extract_upload, get_icon_names, get_icon_path)
 
 blueprint = Blueprint("core", __name__, static_folder="static", template_folder="templates")
 
@@ -45,16 +45,18 @@ async def get_upload_icons():
 async def post_upload_icons():
     file = (await request.files)["file"]
 
-    with TemporaryDirectory(prefix="web-portal") as temp_location:
-        temp_zip_fn = Path(temp_location, "icons.zip")
-        await file.save(temp_zip_fn)
+    if (suffixes := "".join(Path(file.filename).suffixes)) in VALID_UPLOAD_EXTENTIONS:
+        upload_fn = "icons" + suffixes
+        with TemporaryDirectory(prefix="web-portal") as temp_location:
+            temp_location = Path(temp_location)
+            temp_upload_location = temp_location / upload_fn
+            await file.save(temp_upload_location)
+            extract_upload(temp_upload_location, temp_location)
+            copy_icons_from_import(temp_location)
 
-        with ZipFile(temp_zip_fn, "r") as zip_file:
-            zip_file.extractall(temp_location)
-
-        copy_icons_from_import(temp_location)
-
-    await flash("uploaded icons", "green")
+        await flash("uploaded icons", "green")
+    else:
+        await flash("failed to upload icons, (unknown file extention)", "red")
 
     return redirect(url_for(".get_upload_icons"))
 
