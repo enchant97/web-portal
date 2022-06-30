@@ -1,7 +1,7 @@
 from quart import Blueprint, flash, redirect, render_template, request, url_for
-from quart_auth import current_user, login_required, login_user, logout_user
+from quart_auth import login_user, logout_user
 
-from ..core.auth import AuthUserEnhanced
+from ..core.auth import AuthUserEnhanced, current_user, login_standard_required
 from ..database import models
 
 blueprint = Blueprint("login", __name__)
@@ -35,7 +35,7 @@ async def post_login():
 
 
 @blueprint.get("/logout")
-@login_required
+@login_standard_required
 async def get_logout():
     logout_user()
 

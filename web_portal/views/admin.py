@@ -1,10 +1,10 @@
 import json
 
 from quart import Blueprint, flash, redirect, render_template, request, url_for
-from quart_auth import current_user, login_user
+from quart_auth import login_user
 from tortoise.exceptions import IntegrityError
 
-from ..core.auth import AuthUserEnhanced, login_admin_required
+from ..core.auth import AuthUserEnhanced, current_user, login_admin_required
 from ..core.validation import is_username_allowed
 from ..database import models
 from ..import_export import Widget_V1, import_v1_widgets

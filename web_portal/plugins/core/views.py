@@ -3,10 +3,10 @@ from tempfile import TemporaryDirectory
 
 from quart import (Blueprint, abort, flash, redirect, render_template, request,
                    send_file, url_for)
-from quart_auth import current_user, login_required
-from web_portal.plugin_api import (PORTAL_ENDPOINT, get_widget_details,
-                                   get_widget_owner_id, login_admin_required,
-                                   set_widget_config)
+from web_portal.plugin_api import (PORTAL_ENDPOINT, current_user,
+                                   get_widget_details, get_widget_owner_id,
+                                   login_admin_required,
+                                   login_standard_required, set_widget_config)
 
 from . import models
 from .helpers import (VALID_UPLOAD_EXTENTIONS, copy_icons_from_import,
@@ -16,7 +16,7 @@ blueprint = Blueprint("core", __name__, static_folder="static", template_folder=
 
 
 @blueprint.get("/")
-@login_required
+@login_standard_required
 async def get_index():
     return await render_template("core/index.jinja")
 
@@ -119,7 +119,7 @@ async def post_link_new():
 
 
 @blueprint.post("/widget/links/<int:widget_id>/add")
-@login_required
+@login_standard_required
 async def post_widget_add_link(widget_id: int):
     # TODO check widget internal_name to ensure it is valid for this request
     if await get_widget_owner_id(widget_id) != current_user.auth_id:
@@ -146,7 +146,7 @@ async def post_widget_add_link(widget_id: int):
 
 
 @blueprint.get("/widget/links/<int:widget_id>/<int:link_index>/delete")
-@login_required
+@login_standard_required
 async def get_widget_remove_link(widget_id: int, link_index: int):
     # TODO check widget internal_name to ensure it is valid for this request
     if await get_widget_owner_id(widget_id) != current_user.auth_id:
@@ -173,7 +173,7 @@ async def get_widget_remove_link(widget_id: int, link_index: int):
 
 
 @blueprint.post("/widget/embed_html/<int:widget_id>/update")
-@login_required
+@login_standard_required
 async def post_widget_update_embed_html(widget_id: int):
     # TODO check widget internal_name to ensure it is valid for this request
     if await get_widget_owner_id(widget_id) != current_user.auth_id:
@@ -198,7 +198,7 @@ async def post_widget_update_embed_html(widget_id: int):
 
 
 @blueprint.post("/widget/iframe/<int:widget_id>/update")
-@login_required
+@login_standard_required
 async def post_widget_update_iframe(widget_id: int):
     # TODO check widget internal_name to ensure it is valid for this request
     if await get_widget_owner_id(widget_id) != current_user.auth_id:

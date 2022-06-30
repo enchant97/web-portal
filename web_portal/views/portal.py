@@ -1,7 +1,7 @@
-from quart import (Blueprint, current_app, flash, redirect, render_template,
-                   url_for)
-from quart_auth import current_user, login_required
+from quart import Blueprint, redirect, render_template, url_for
 
+from ..core.auth import (current_user, login_required_if_secured,
+                         login_standard_required)
 from ..core.plugin import PluginHandler, deconstruct_widget_name
 from ..database import models
 
@@ -9,16 +9,11 @@ blueprint = Blueprint("portal", __name__)
 
 
 @blueprint.get("/")
+@login_required_if_secured
 async def portal():
     has_setup = await models.SystemSetting.get_or_none(key="has_setup")
     if has_setup is None or has_setup.value is False:
         return redirect(url_for("install.get_index"))
-
-    if current_app.config.get("PORTAL_SECURED"):
-        # if the user has made the portal login protected
-        if not (await current_user.is_authenticated):
-            await flash("You need to be logged in to view this page", "red")
-            return redirect(url_for("login.get_login"))
 
     user_id = current_user.auth_id
     dashboard = None
@@ -53,7 +48,7 @@ async def portal():
 
 
 @blueprint.get("/plugins")
-@login_required
+@login_standard_required
 async def get_plugins_index():
     loaded_plugins = PluginHandler.get_loaded_plugin_values()
 

@@ -1,6 +1,6 @@
 from quart import Blueprint, flash, redirect, render_template, request, url_for
-from quart_auth import current_user, login_required
 
+from ..core.auth import current_user, login_standard_required
 from ..core.plugin import PluginHandler, deconstruct_widget_name
 from ..database import models
 
@@ -8,7 +8,7 @@ blueprint = Blueprint("settings", __name__)
 
 
 @blueprint.get("/")
-@login_required
+@login_standard_required
 async def get_index():
     dashboard = await models.Dashboard.get_or_none(owner_id=current_user.auth_id)
 
@@ -19,7 +19,7 @@ async def get_index():
 
 
 @blueprint.get("/dashboard/edit")
-@login_required
+@login_standard_required
 async def get_edit_dashboard():
     widgets = await models.Widget.all()
     dashboard, is_new_dash = await models.Dashboard.get_or_create(owner_id=current_user.auth_id)
@@ -38,7 +38,7 @@ async def get_edit_dashboard():
 
 
 @blueprint.post("/dashboard/widget/add")
-@login_required
+@login_standard_required
 async def post_add_widget():
     form = await request.form
 
@@ -60,7 +60,7 @@ async def post_add_widget():
 
 
 @blueprint.get("/dashboard/widget/<int:widget_id>/delete")
-@login_required
+@login_standard_required
 async def get_delete_widget(widget_id: int):
     dashboard = (await models.Dashboard
                  .filter(owner_id=current_user.auth_id)
@@ -75,7 +75,7 @@ async def get_delete_widget(widget_id: int):
 
 
 @blueprint.get("/dashboard/restore-defaults")
-@login_required
+@login_standard_required
 async def get_restore_defaults():
     await models.Dashboard.filter(owner_id=current_user.auth_id).delete()
     await flash("Reset dashboard for account", "green")
