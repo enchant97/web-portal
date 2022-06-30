@@ -18,8 +18,83 @@ from web_portal import plugin_api
 
 The plugin API reference can be accessed [here](plugin-reference.md), which shows what functions are available and how they can be used.
 
-## Plugin Creation
-This section will walk-through creating a plugin. Before making a plugin an internal name must be decided, for this tutorial we will use "my_plugin" as that. Please note that the below list is reserved plugin names that cannot be used:
+## Guidelines Of Making Plugins
+To ensure all plugins will integrate with web-portal correctly; when possible use only functionality exposed in the plugin API. For example the following will show a "do" and "don't":
+
+Do:
+
+```python
+from quart import Blueprint
+from web_portal import plugin_api
+
+blueprint = Blueprint("my_plugin", __name__)
+
+@blueprint.get("/")
+@plugin_api.login_standard_required
+async def protected_route():
+    ...
+```
+
+Don't:
+
+```python
+from quart import Blueprint
+from quart_auth import login_required
+from web_portal import plugin_api
+
+blueprint = Blueprint("my_plugin", __name__)
+
+@blueprint.get("/")
+@login_required
+async def protected_route():
+    ...
+```
+
+### Using Quart & Quart Auth
+As Web Portal plugins will require use of Quart (async implementation of Flask) to register routes and such, take care to ensure you do not access functions that may cause incompatibilities. The following is a list of alternatives (using the plugin api) to use:
+
+- quart.current_app.config
+    - get_plugin_system_setting
+    - set_plugin_system_setting
+    - remove_plugin_system_setting
+- quart_auth
+    - current_user
+    - ensure_not_setup
+    - login_admin_required
+    - login_required_if_secured
+    - login_standard_required
+
+### Using The Database
+Web Portal also uses tortoise-orm for databases, you must create models using the class interface and ensure you register them in the PLUGIN_META object. This will also require models to be placed in a separate file from your other plugin code. Forgetting to register them will cause them to not be created or even known to tortoise-orm. To avoid conflict with other plugins and the app please prefix your table names with your plugin name in this format: `<plugin name>__<table name>`.
+
+Model Example:
+
+```python
+# filepath: my_plugin/models.py
+from tortoise.fields import CharField, IntField
+from tortoise.models import Model
+
+
+class MyModel(Model):
+    id = IntField(pk=True)
+    name = TextField()
+
+    class Meta:
+        table = "my_plugin__my_model"
+```
+
+```python
+# filepath: my_plugin/...
+from . import models
+
+PLUGIN_META = PluginMeta(
+    db_models=[models],
+    ...
+)
+```
+
+### Reserved Names
+When naming your plugin these names are listed as reserved and must not be used:
 
 - core
 - admin
@@ -27,6 +102,21 @@ This section will walk-through creating a plugin. Before making a plugin an inte
 - login
 - portal
 - settings
+
+### Installing Other Packages
+If you are making a plugin and you have installed a package using pip (or another tool), it makes it incompatible with the official Docker image. There are several solutions:
+
+- Create a custom Docker image with the packages added
+- Warn users they cannot install the plugin when using Docker
+- Copy the package's code into the plugin folder (if the package's license allows)
+- Change your code to use the libraries bundles with the official install.
+
+## Reference Plugin
+If you are looking for a example plugin, well your in luck. Web Portal comes with a plugin called "core". You can use this as a good reference on how a plugin should be laid out.
+
+
+## Plugin Creation
+This section will walk-through creating a plugin. Before making a plugin an internal name must be decided, for this tutorial we will use "my_plugin" as that.
 
 Now a plugin name is chosen let's learn about the format. A plugin in web-portal is just a Python package So we can follow the following standard format:
 
@@ -52,14 +142,13 @@ Now we must actually create `plugin.py`, which is going to contain all of the pl
 ```python
 # filepath: my_plugin/plugin.py
 from quart import Blueprint, render_template
-from quart_auth import login_required
 from web_portal import plugin_api
 
 blueprint = Blueprint("my_plugin", __name__, template_folder="templates")
 
 
 @blueprint.get("/")
-@login_required
+@plugin_api.login_standard_required
 async def get_index():
     return await render_template("my_plugin/index.jinja")
 

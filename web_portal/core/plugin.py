@@ -19,6 +19,10 @@ from .helpers import (get_system_setting, remove_system_setting,
 
 @dataclass
 class WidgetDetails:
+    """
+    Used for storing information about a widget,
+    returned by get_widget_details()
+    """
     human_name: str
     internal_name: str
     plugin_name: str
@@ -27,6 +31,10 @@ class WidgetDetails:
 
 @dataclass
 class PluginMeta:
+    """
+    Class used when creating a plugin,
+    stores all information about a plugin and what it supports.
+    """
     human_name: str
     widgets: dict[str, str]
     db_models: tuple[str | ModuleType]

@@ -5,11 +5,20 @@ You can access them by importing them like this:
 
 ```python
 from web_portal.plugin_api import login_admin_required
+
+# Or
+
+from web_portal import plugin_api
 ```
+
+## Variables
+::: web_portal.plugin_api.current_user
 
 ## Route Decorators
 ::: web_portal.plugin_api.ensure_not_setup
 ::: web_portal.plugin_api.login_admin_required
+::: web_portal.plugin_api.login_required_if_secured
+::: web_portal.plugin_api.login_standard_required
 
 ## Settings Access
 ::: web_portal.plugin_api.get_plugin_system_setting
