@@ -9,12 +9,17 @@ from pathlib import Path
 from types import ModuleType
 from typing import Any, Optional
 
+from packaging.specifiers import InvalidSpecifier, SpecifierSet
 from quart import Blueprint
 
 from ..database import models as app_models
 from .config import get_settings
 from .helpers import (get_system_setting, remove_system_setting,
                       set_system_setting)
+
+
+class PluginVersionException(Exception):
+    pass
 
 
 @dataclass
@@ -35,6 +40,7 @@ class PluginMeta:
     Class used when creating a plugin,
     stores all information about a plugin and what it supports.
     """
+    version_specifier: str
     human_name: str
     widgets: dict[str, str]
     db_models: tuple[str | ModuleType]
@@ -44,6 +50,22 @@ class PluginMeta:
     get_rendered_widget_edit: Callable[[str, int, dict | None, str], Awaitable[str]]
     get_settings: Callable[[], dict] | None = None
     get_injected_head: Callable[[], Awaitable[str]] | None = None
+
+    def is_supported_version(self, app_version: str) -> bool:
+        """
+        Check whether the version requirement matches the given app version
+
+            :param app_version: The app version, given as a semantic version number
+            :return: Whether it is supported
+        """
+        try:
+            ver_specifier = SpecifierSet(self.version_specifier)
+            return True if app_version in ver_specifier else False
+        except InvalidSpecifier:
+            raise PluginVersionException(
+                "unexpected version specifier, " +
+                "please use format from PEP 440 e.g. '== 2'"
+            ) from None
 
 
 @dataclass
@@ -70,21 +92,29 @@ class PluginHandler:
                 yield name
 
     @staticmethod
-    def load_plugin(name: str) -> LoadedPlugin:
+    def load_plugin(name: str, app_version: str) -> LoadedPlugin:
         imported_module = import_module("." + name, "web_portal.plugins")
         plugin_meta: PluginMeta = imported_module.PLUGIN_META
+
+        # ensure version requested matches app version
+        if not plugin_meta.is_supported_version(app_version):
+            raise PluginVersionException(
+                f"running web-portal=={app_version}, " +
+                f"but plugin is wanting web-portal{plugin_meta.version_specifier}"
+            )
+
         return LoadedPlugin(
             internal_name=name,
             meta=plugin_meta,
         )
 
     @staticmethod
-    def load_plugins() -> Generator[LoadedPlugin, None, None]:
+    def load_plugins(app_version: str) -> Generator[LoadedPlugin, None, None]:
         for name in PluginHandler.get_plugin_names():
             # TODO add logging here
             # TODO add restricted plugin names
             if name not in PluginHandler._loaded_plugins:
-                plugin = PluginHandler.load_plugin(name)
+                plugin = PluginHandler.load_plugin(name, app_version)
                 PluginHandler._loaded_plugins[name] = plugin
                 yield plugin
 

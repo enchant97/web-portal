@@ -168,6 +168,7 @@ async def render_widget_edit(
 
 
 PLUGIN_META = PluginMeta(
+    version_specifier="== 2.0",
     human_name="My Plugin",
     widgets={
         "my_widget": "An amazing widget",

@@ -66,7 +66,7 @@ def create_app():
     db_models = {"models": [models]}
 
     logging.debug("loading plugins")
-    for plugin in PluginHandler.load_plugins():
+    for plugin in PluginHandler.load_plugins(__version__):
         # register plugin settings
         if plugin.meta.get_settings:
             app.config[f"plugin__{plugin.internal_name}"] = plugin.meta.get_settings()

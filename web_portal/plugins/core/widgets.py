@@ -127,6 +127,7 @@ async def render_injected_head() -> str:
 
 
 PLUGIN_META = PluginMeta(
+    version_specifier="== 2",
     human_name="Core",
     widgets={
         "links": " Links",
