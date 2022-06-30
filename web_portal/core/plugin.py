@@ -123,7 +123,7 @@ async def get_plugin_system_setting(
         :return: The loaded value or None
     """
     full_key = make_system_setting_plugin_key(plugin_name, key)
-    return get_system_setting(full_key, default, skip_cache)
+    return get_system_setting(full_key, default=default, skip_cache=skip_cache)
 
 
 async def set_plugin_system_setting(plugin_name: str, key: str, value: Any, /):
