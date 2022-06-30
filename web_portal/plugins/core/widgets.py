@@ -76,7 +76,7 @@ async def render_widget_edit_embed_html(
         dash_widget_id: int,
         config: dict | None,
         back_to_url: str) -> str:
-    content=config.get("content", "")
+    content = config.get("content", "")
 
     return await render_template(
         "core/includes/embed_html-widget-edit.jinja",

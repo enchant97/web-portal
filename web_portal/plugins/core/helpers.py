@@ -9,6 +9,7 @@ VALID_UPLOAD_EXTENTIONS = (
     ".zip",
 )
 
+
 def get_icon_names() -> set[str]:
     """
     Gets all icon names found in the icons folder
@@ -45,7 +46,7 @@ def copy_icons_from_import(src: Path):
 
 def _extract_upload_as_zip(upload_fp: Path, extract_into_fp: Path):
     with ZipFile(upload_fp, "r") as zip_file:
-            zip_file.extractall(extract_into_fp)
+        zip_file.extractall(extract_into_fp)
 
 
 def extract_upload(upload_fp: str | Path, extract_into_fp: Path):
