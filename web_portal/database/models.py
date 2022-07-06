@@ -12,7 +12,7 @@ class SystemSetting(Model):
 
 class User(Model):
     id = IntField(pk=True)
-    username = CharField(20, unique=True)
+    username = CharField(128, unique=True)
     password_hash = BinaryField()
     is_admin = BooleanField(default=False)
 

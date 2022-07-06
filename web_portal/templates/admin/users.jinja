@@ -5,7 +5,7 @@
     <h2>Add User</h2>
     <form action="{{ url_for('.post_users_new') }}" method="post">
         <label for="new-user-username">Username</label>
-        <input type="text" name="username" id="new-user-username" maxlength="20" required>
+        <input type="text" name="username" id="new-user-username" maxlength="128" required>
         <label for="new-user-password">Password</label>
         <input type="password" name="password" id="new-user-password" required>
         <label for="new-user-is-admin">Is Admin</label>

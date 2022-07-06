@@ -9,7 +9,7 @@
 </p>
 <form action="{{ url_for('.post_guest_user') }}" method="post">
     <label for="guest-user-username">Username (Cannot Be Changed)</label>
-    <input type="text" name="username" id="guest-user-username" maxlength="20" value="{{ username }}" disabled readonly required>
+    <input type="text" name="username" id="guest-user-username" maxlength="128" value="{{ username }}" disabled readonly required>
     <label for="guest-user-password">Password</label>
     <input type="password" name="password" id="guest-user-password" required>
     <label for="guest-user-password-confirm">Password Confirm</label>

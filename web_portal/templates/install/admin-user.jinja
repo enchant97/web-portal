@@ -8,7 +8,7 @@
 </p>
 <form action="{{ url_for('.post_admin_user') }}" method="post">
     <label for="admin-user-username">Username</label>
-    <input type="text" name="username" id="admin-user-username" maxlength="20" value="{{ username }}" required>
+    <input type="text" name="username" id="admin-user-username" maxlength="128" value="{{ username }}" required>
     <label for="admin-user-password">Password</label>
     <input type="password" name="password" id="admin-user-password" required>
     <label for="admin-user-password-confirm">Password Confirm</label>
