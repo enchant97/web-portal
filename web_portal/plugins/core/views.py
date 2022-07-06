@@ -61,6 +61,51 @@ async def post_upload_icons():
     return redirect(url_for(".get_upload_icons"))
 
 
+@blueprint.get("/engines")
+@login_admin_required
+async def get_engines_index():
+    engines = await models.SearchEngine.all()
+    return await render_template(
+        "core/engines/index.jinja",
+        engines=engines,
+    )
+
+
+@blueprint.get("/engines/new")
+@login_admin_required
+async def get_engines_new():
+    return await render_template("core/engines/new.jinja")
+
+
+@blueprint.post("/engines/new")
+@login_admin_required
+async def post_engines_new():
+    form = await request.form
+
+    name = form["name"].strip()
+    url = form["url"].strip()
+    method = models.SearchEngineMethod(form["method"].upper())
+
+    await models.SearchEngine.create(
+        name=name,
+        url=url,
+        method=method,
+    )
+
+    await flash(f"created engine with name '{name}'", "green")
+
+    return redirect(url_for(".get_engines_index"))
+
+
+@blueprint.get("/engines/<int:engine_id>/delete")
+@login_admin_required
+async def get_engines_delete(engine_id: int):
+    await models.SearchEngine.filter(id=engine_id).delete()
+    await flash("deleted engine", "green")
+
+    return redirect(url_for(".get_engines_index"))
+
+
 @blueprint.get("/links")
 @login_admin_required
 async def get_links_index():
@@ -116,6 +161,25 @@ async def post_link_new():
     await flash(f"created link with name '{name}'", "green")
 
     return redirect(url_for(".get_links_index"))
+
+
+@blueprint.post("/widget/search/<int:widget_id>/update")
+@login_standard_required
+async def post_widget_update_search(widget_id: int):
+    # TODO check widget internal_name to ensure it is valid for this request
+    if await get_widget_owner_id(widget_id) != current_user.auth_id:
+        abort(401)
+
+    engine_id = (await request.form)["engine-id"]
+
+    engine = await models.SearchEngine.get(id=engine_id)
+    await set_widget_config(widget_id, {"engine_id": engine.id})
+
+    await flash(f"updated search engine to '{engine.name}'", "green")
+
+    if (back_to_url := request.args.get("back_to")) is not None:
+        return redirect(back_to_url)
+    return redirect(url_for(PORTAL_ENDPOINT))
 
 
 @blueprint.post("/widget/links/<int:widget_id>/add")

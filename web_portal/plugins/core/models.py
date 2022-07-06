@@ -1,5 +1,12 @@
-from tortoise.fields import CharField, IntField, TextField
+from enum import Enum
+
+from tortoise.fields import CharEnumField, CharField, IntField, TextField
 from tortoise.models import Model
+
+
+class SearchEngineMethod(str, Enum):
+    GET = "GET"
+    POST = "POST"
 
 
 class Link(Model):
@@ -11,3 +18,13 @@ class Link(Model):
 
     class Meta:
         table = "core__link"
+
+
+class SearchEngine(Model):
+    id = IntField(pk=True)
+    name = CharField(128, unique=True)
+    url = TextField()
+    method = CharEnumField(SearchEngineMethod)
+
+    class Meta:
+        table = "core__searchengine"

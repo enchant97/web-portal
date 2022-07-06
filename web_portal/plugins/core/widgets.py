@@ -9,8 +9,6 @@ from . import models, views
 
 
 class PluginSettings(BaseSettings):
-    SEARCH_URL: str
-    SEARCH_METHOD: Optional[str] = "GET"
     OPEN_TO_NEW_TAB: Optional[bool] = True
 
 
@@ -26,6 +24,20 @@ async def render_widget_link(link_ids: tuple[int]) -> str:
     return await render_template(
         "core/includes/link-widget.jinja",
         links=links,
+    )
+
+
+async def render_widget_search(config: dict) -> str:
+    engine_id = config.get("engine_id")
+
+    engine = await models.SearchEngine.get_or_none(id=engine_id)
+
+    if not engine:
+        return "No search engine selected..."
+
+    return await render_template(
+        "core/includes/search-widget.jinja",
+        engine=engine,
     )
 
 
@@ -49,13 +61,28 @@ async def render_widget(internal_name, widget_id: int, config: dict | None) -> s
         case "links":
             return await render_widget_link(config.get("links", []))
         case "search":
-            return await render_template("core/includes/search-widget.jinja")
+            return await render_widget_search(config)
         case "embed_html":
             return config.get("content", "")
         case "iframe":
             return await render_widget_iframe(config)
         case _:
             raise ValueError("Unknown widget internal name")
+
+
+async def render_widget_edit_search(
+        dash_widget_id: int,
+        config: dict | None,
+        back_to_url: str) -> str:
+    engines = await models.SearchEngine.all()
+
+    return await render_template(
+        "core/includes/search-widget-edit.jinja",
+        dash_widget_id=dash_widget_id,
+        engines=engines,
+        curr_engine_id = config.get("engine_id"),
+        back_to_url=back_to_url,
+    )
 
 
 async def render_widget_edit_link(
@@ -112,10 +139,12 @@ async def render_widget_edit(
     if config is None:
         config = {}
     match internal_name:
+        case "clock":
+            return "No editor available"
         case "links":
             return await render_widget_edit_link(dash_widget_id, config, back_to_url)
-        case "clock" | "search":
-            return "No editor available"
+        case "search":
+            return await render_widget_edit_search(dash_widget_id, config, back_to_url)
         case "embed_html":
             return await render_widget_edit_embed_html(dash_widget_id, config, back_to_url)
         case "iframe":
