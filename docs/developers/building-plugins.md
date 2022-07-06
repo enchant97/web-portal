@@ -155,6 +155,7 @@ async def get_index():
 
 async def render_widget(
         internal_name: str,
+        widget_id: int,
         config: dict | None) -> str:
     return await render_template("my_plugin/my_widget.jinja")
 

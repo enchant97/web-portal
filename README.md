@@ -12,6 +12,7 @@ If you want just a basic link panel configured with a yaml file checkout Web Por
 - Adjustable site theme
 - Plugin support
 - Inbuilt widgets
+  - Digital Clock
   - Links
     - Groups
     - Colors
