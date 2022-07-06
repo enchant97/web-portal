@@ -11,7 +11,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&family=Roboto&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-    <script src="{{ url_for('static', filename='theme-changer.js') }}"></script>
+    <script src="{{ url_for('static', filename='theme-changer.min.js') }}"></script>
     <script src="{{ url_for('static', filename='script.js') }}" defer></script>
     {% for injection in get_head_injects() %}{{ injection | safe }}{% endfor %}
 </head>
@@ -21,7 +21,7 @@
         <h1>{{ self.title() }}</h1>
         <nav>
             {% block nav %}{% endblock %}
-            <button id="themeToggleBnt" title="Theme Picker">{{ macros.feather_img('sun') }}|{{
+            <button class="hidden" id="themeToggleBnt" title="Theme Picker">{{ macros.feather_img('sun') }}|{{
                 macros.feather_img('moon') }}</button>
         </nav>
     </header>

@@ -4,7 +4,7 @@ feather-sprite.svg - MIT
   Copyright (c) 2013-2017 Cole Bemis
   see <https://github.com/feathericons/feather>
 
-theme-changer.js - MIT
+theme-changer.min.js - MIT
   Copyright (c) 2022 Leo Spratt
 
 ---------------
