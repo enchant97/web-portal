@@ -1,3 +1,16 @@
+.widget-inner.core__clock .core__clock_display {
+    text-align: center;
+    font-weight: bold;
+}
+
+.widget-inner.core__clock .core__clock_display .time {
+    font-size: 3.5rem;
+}
+
+.widget-inner.core__clock .core__clock_display .date {
+    font-size: 2rem;
+}
+
 .widget-inner.core__links {
     display: grid;
     grid-template-columns: repeat(3, 32%);
@@ -52,6 +65,14 @@
 @media(max-width:640px) {
     .widget-inner.core__links {
         grid-template-columns: repeat(2, 200px);
+    }
+
+    .widget-inner.core__clock .core__clock_display .time {
+        font-size: 2rem;
+    }
+
+    .widget-inner.core__clock .core__clock_display .date {
+        font-size: 1.4rem;
     }
 }
 

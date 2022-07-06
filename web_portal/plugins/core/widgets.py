@@ -40,10 +40,12 @@ async def render_widget_iframe(config: dict) -> str:
     )
 
 
-async def render_widget(internal_name, config: dict | None) -> str:
+async def render_widget(internal_name, widget_id: int, config: dict | None) -> str:
     if config is None:
         config = {}
     match internal_name:
+        case "clock":
+            return await render_template("core/includes/clock-widget.jinja", widget_id=widget_id)
         case "links":
             return await render_widget_link(config.get("links", []))
         case "search":
@@ -112,7 +114,7 @@ async def render_widget_edit(
     match internal_name:
         case "links":
             return await render_widget_edit_link(dash_widget_id, config, back_to_url)
-        case "search":
+        case "clock" | "search":
             return "No editor available"
         case "embed_html":
             return await render_widget_edit_embed_html(dash_widget_id, config, back_to_url)
@@ -130,6 +132,7 @@ PLUGIN_META = PluginMeta(
     version_specifier="== 2",
     human_name="Core",
     widgets={
+        "clock": "Digital Clock",
         "links": " Links",
         "search": "Web Search",
         "embed_html": "Embed HTML",

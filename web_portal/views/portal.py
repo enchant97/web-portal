@@ -31,13 +31,14 @@ async def portal():
 
     # TODO handle either plugin in widget not existing
     for dashboard_widget in dashboard.widgets:
-        widget = dashboard_widget.widget
+        widget: models.Widget = dashboard_widget.widget
         plugin_name = widget.plugin.internal_name
         widget_name = deconstruct_widget_name(plugin_name, widget.internal_name)
         loaded_plugin = PluginHandler.get_loaded_plugin(plugin_name)
         rendered_widget = await loaded_plugin.meta.get_rendered_widget(
             widget_name,
-            dashboard_widget.config
+            dashboard_widget.id,
+            dashboard_widget.config,
         )
         rendered_widgets.append((dashboard_widget, rendered_widget))
 
