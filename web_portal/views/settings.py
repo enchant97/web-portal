@@ -4,7 +4,7 @@ from ..core.auth import current_user, login_standard_required
 from ..core.plugin import PluginHandler, deconstruct_widget_name
 from ..database import models
 
-blueprint = Blueprint("settings", __name__)
+blueprint = Blueprint("settings", __name__, url_prefix="/settings")
 
 
 @blueprint.get("/")

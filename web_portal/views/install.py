@@ -6,7 +6,7 @@ from ..core.helpers import set_system_setting
 from ..core.validation import is_username_allowed
 from ..database import models
 
-blueprint = Blueprint("install", __name__)
+blueprint = Blueprint("install", __name__, url_prefix="/install")
 
 
 @blueprint.get("/")

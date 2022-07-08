@@ -5,7 +5,7 @@ from ..core.auth import (current_user, login_required_if_secured,
 from ..core.plugin import PluginHandler, deconstruct_widget_name
 from ..database import models
 
-blueprint = Blueprint("portal", __name__)
+blueprint = Blueprint("portal", __name__, url_prefix="/")
 
 
 @blueprint.get("/")

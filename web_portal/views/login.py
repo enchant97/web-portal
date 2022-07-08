@@ -4,7 +4,7 @@ from quart_auth import login_user, logout_user
 from ..core.auth import AuthUserEnhanced, current_user, login_standard_required
 from ..database import models
 
-blueprint = Blueprint("login", __name__)
+blueprint = Blueprint("login", __name__, url_prefix="/auth")
 
 
 @blueprint.get("/login")

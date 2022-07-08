@@ -1,4 +1,6 @@
 import logging
+from importlib import import_module
+from pathlib import Path
 
 from quart import Quart, flash, redirect, url_for
 from quart_auth import AuthManager
@@ -10,7 +12,6 @@ from .core.auth import AuthUserEnhanced
 from .core.config import get_settings
 from .core.plugin import PluginHandler, make_combined_widget_name
 from .database import models
-from .views import admin, install, login, portal, settings
 
 logger = logging.getLogger("web-portal")
 
@@ -48,27 +49,8 @@ def context_get_head_injects():
     return dict(get_head_injects=get_head_injects)
 
 
-def create_app():
-    logging.basicConfig()
-    logger.setLevel(logging.getLevelName(get_settings().LOG_LEVEL))
-
-    logger.debug("loading config")
-    # do config
-    app.config["__VERSION__"] = __version__
-    app.secret_key = get_settings().SECRET_KEY
-    app.config["QUART_AUTH_COOKIE_SECURE"] = not get_settings().UNSECURE_LOGIN
-    logger.debug("registering blueprints")
-    # register blueprints
-    app.register_blueprint(health_check.blueprint, url_prefix="/")
-    app.register_blueprint(portal.blueprint, url_prefix="/")
-    app.register_blueprint(login.blueprint, url_prefix="/auth")
-    app.register_blueprint(settings.blueprint, url_prefix="/settings")
-    app.register_blueprint(admin.blueprint, url_prefix="/admin")
-    app.register_blueprint(install.blueprint, url_prefix="/install")
-
-    db_models = {"models": [models]}
-
-    logger.debug("loading plugins")
+def load_plugins(app: Quart) -> dict:
+    db_models = {}
     for plugin in PluginHandler.load_plugins(__version__):
         # register plugin settings
         if plugin.meta.get_settings:
@@ -82,6 +64,38 @@ def create_app():
         # register database models
         if plugin.meta.db_models:
             db_models[plugin.internal_name] = plugin.meta.db_models
+    return db_models
+
+
+def register_blueprints(app: Quart):
+    app.register_blueprint(health_check.blueprint, url_prefix="/")
+
+    root = Path(__file__).parent / "views"
+
+    for path in root.glob("*"):
+        if (name := path.stem) != "__init__" and path.is_file():
+            view = import_module("." + name, "web_portal.views")
+            app.register_blueprint(view.blueprint)
+
+
+def create_app():
+    logging.basicConfig()
+    logger.setLevel(logging.getLevelName(get_settings().LOG_LEVEL))
+
+    logger.debug("loading config")
+    # do config
+    app.config["__VERSION__"] = __version__
+    app.secret_key = get_settings().SECRET_KEY
+    app.config["QUART_AUTH_COOKIE_SECURE"] = not get_settings().UNSECURE_LOGIN
+    logger.debug("registering blueprints")
+    # register blueprints
+    register_blueprints(app)
+
+    db_models = {"models": [models]}
+
+    logger.debug("loading plugins")
+    plugin_models = load_plugins(app)
+    db_models.update(plugin_models)
 
     logger.debug("registering tortoise-orm")
     # other setup

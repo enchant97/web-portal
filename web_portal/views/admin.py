@@ -9,7 +9,7 @@ from ..core.validation import is_username_allowed
 from ..database import models
 from ..import_export import Widget_V1, import_v1_widgets
 
-blueprint = Blueprint("admin", __name__)
+blueprint = Blueprint("admin", __name__, url_prefix="/admin")
 
 
 @blueprint.get("/")
