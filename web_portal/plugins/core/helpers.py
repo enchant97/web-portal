@@ -10,13 +10,16 @@ VALID_UPLOAD_EXTENTIONS = (
 )
 
 
-def get_icon_names() -> set[str]:
+def get_icon_names(sort: bool = False) -> set[str]:
     """
     Gets all icon names found in the icons folder
 
-        :return: icon names
+        :param sort: Sort the icon names into order
+        :return: Icon names
     """
     names = set(path.stem for path in ICONS_PATH.glob("**/*"))
+    if sort:
+        names = sorted(names)
     return names
 
 

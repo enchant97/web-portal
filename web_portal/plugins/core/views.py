@@ -1,3 +1,4 @@
+import logging
 from pathlib import Path
 from tempfile import TemporaryDirectory
 
@@ -12,6 +13,7 @@ from . import models
 from .helpers import (VALID_UPLOAD_EXTENTIONS, copy_icons_from_import,
                       extract_upload, get_icon_names, get_icon_path)
 
+logger = logging.getLogger("web-portal")
 blueprint = Blueprint("core", __name__, static_folder="static", template_folder="templates")
 
 
@@ -119,7 +121,7 @@ async def get_links_index():
 @blueprint.get("/links/new")
 @login_admin_required
 async def get_link_new():
-    icon_names = get_icon_names()
+    icon_names = get_icon_names(True)
 
     return await render_template(
         "core/links/new.jinja",
@@ -148,8 +150,13 @@ async def post_link_new():
 
     if icon_name is not None:
         if get_icon_path(icon_name) is None:
-            # TODO add logging here
-            icon_name = None
+            logger.warning(
+                "icon name requested not found, " +
+                "or permission to read is missing::name='%s'",
+                icon_name,
+            )
+            await flash("failed to find icon", "error")
+            return redirect(url_for(".get_link_new"))
 
     await models.Link.create(
         name=name,
