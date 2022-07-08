@@ -102,20 +102,6 @@ header nav {
     gap: 10px;
 }
 
-header nav a,
-header nav button {
-    text-decoration: none;
-    color: var(--font-dark);
-    padding: .7rem 1.2rem;
-    background-color: var(--bg-sub-2);
-    border-radius: var(--border-radius);
-    border-style: none;
-    margin: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
 header nav a:hover,
 header nav button:hover {
     transition-duration: 400ms;
@@ -135,11 +121,6 @@ table {
 
 table thead {
     text-align: left;
-}
-
-table td.bnt-group {
-    display: flex;
-    justify-content: flex-end;
 }
 
 input,
@@ -177,9 +158,15 @@ button:hover,
 }
 
 .icon-bnt {
-    display: flex;
+    display: inline-flex;
     align-items: center;
     justify-content: center;
+    gap: .4rem;
+}
+
+header nav .icon-bnt {
+    padding: .7rem 1.2rem;
+    margin: 0;
 }
 
 footer {
@@ -220,6 +207,15 @@ footer a {
     padding: .5rem;
     margin-bottom: 1rem;
     border-radius: var(--border-radius);
+}
+
+.bnt-group {
+    gap: .2rem;
+    display: flex;
+}
+
+table td.bnt-group {
+    justify-content: flex-end;
 }
 
 /* flash styles */

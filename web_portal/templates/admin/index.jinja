@@ -3,8 +3,8 @@
 {% block main %}
 <section class="panel">
     <h2>Menu</h2>
-    <a class="bnt" href="{{ url_for('portal.get_plugins_index') }}">Plugins</a>
-    <a class="bnt" href="{{ url_for('admin.get_users') }}">Users</a>
+    <a class="icon-bnt" href="{{ url_for('portal.get_plugins_index') }}">{{ macros.feather_img('box') }} Plugins</a>
+    <a class="icon-bnt" href="{{ url_for('admin.get_users') }}">{{ macros.feather_img('users') }} Users</a>
 </section>
 
 <section class="panel">
