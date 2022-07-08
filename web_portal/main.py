@@ -1,6 +1,7 @@
 import logging
 from importlib import import_module
 from pathlib import Path
+from secrets import token_urlsafe
 
 from quart import Quart, flash, redirect, url_for
 from quart_auth import AuthManager
@@ -85,8 +86,13 @@ def create_app():
     logger.debug("loading config")
     # do config
     app.config["__VERSION__"] = __version__
-    app.secret_key = get_settings().SECRET_KEY
-    app.config["QUART_AUTH_COOKIE_SECURE"] = not get_settings().UNSECURE_LOGIN
+    if get_settings().SECRET_KEY:
+        app.secret_key = get_settings().SECRET_KEY
+    else:
+        logger.warning("SECRET_KEY not set, generating random key")
+        app.secret_key = token_urlsafe(128)
+    app.config["QUART_AUTH_COOKIE_NAME"] = "WEB-PORTAL-AUTH"
+    app.config["QUART_AUTH_COOKIE_SECURE"] = get_settings().SECURE_COOKIES
     logger.debug("registering blueprints")
     # register blueprints
     register_blueprints(app)

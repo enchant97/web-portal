@@ -7,9 +7,9 @@ from pydantic import BaseSettings
 
 class Settings(BaseSettings):
     DB_URI: str
-    SECRET_KEY: str
     DATA_PATH: Path
-    UNSECURE_LOGIN: Optional[bool] = False
+    SECRET_KEY: Optional[str] = None
+    SECURE_COOKIES: Optional[bool] = False
     LOG_LEVEL: Optional[str] = "INFO"
 
     class Config:

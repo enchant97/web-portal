@@ -51,13 +51,15 @@ services:
 ### Environment Variables
 All configs shown here should be given as environment variables.
 
-| Name           | Description                            | Default |
-| :------------- | :------------------------------------- | :------ |
-| DB_URI         | URI of where db is stored              |         |
-| SECRET_KEY     | Your app secret (use something secure) |         |
-| DATA_PATH      | Where plugin & app data will be stored |         |
-| UNSECURE_LOGIN | Whether to allow http for cookies      | False   |
-| LOG_LEVEL      | What log level to use                  | "INFO"  |
+| Name           | Description                            | Default              |
+| :------------- | :------------------------------------- | :------------------- |
+| DB_URI         | URI of where db is stored              |                      |
+| DATA_PATH      | Where plugin & app data will be stored |                      |
+| SECRET_KEY     | Your app secret (use something secure) | (randomly generated) |
+| SECURE_COOKIES | Whether to require https for cookies   | False                |
+| LOG_LEVEL      | What log level to use                  | "INFO"               |
+
+> SECRET_KEY should be set, otherwise logins will be reset on server restart
 
 This table shows how the `DB_URI` values should look:
 
