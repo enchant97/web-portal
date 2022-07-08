@@ -11,6 +11,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&family=Roboto&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='colors.css') }}">
     <script src="{{ url_for('static', filename='theme-changer.min.js') }}"></script>
     <script src="{{ url_for('static', filename='script.js') }}" defer></script>
     {% for injection in get_head_injects() %}{{ injection | safe }}{% endfor %}
