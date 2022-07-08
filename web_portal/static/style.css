@@ -59,6 +59,7 @@ main,
 footer,
 header,
 input,
+textarea,
 select,
 button,
 label,
@@ -123,7 +124,12 @@ table thead {
     text-align: left;
 }
 
+textarea {
+    resize: vertical;
+}
+
 input,
+textarea,
 select,
 button,
 .bnt,

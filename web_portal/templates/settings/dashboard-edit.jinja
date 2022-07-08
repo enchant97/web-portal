@@ -1,35 +1,32 @@
 {% extends "/shared/base.jinja" %}
 {% block title %}Dashboard Editor{% endblock %}
 {% block main %}
-<form class="panel" action="{{ url_for('.post_add_widget') }}" method="post">
+<section class="panel">
     <h2>Add Widget</h2>
-    <label for="widget-name">Name</label>
-    <input type="text" name="name" id="widget-name" required placeholder="Name..." maxlength="128">
-    <label for="widget-widget-id">Widget</label>
-    <select name="widget-id" id="widget-widget-id">
-        {% for widget in widgets %}
-        <option value="{{ widget.id }}">{{ widget.internal_name }}</option>
-        {% endfor %}
-    </select>
-    <button type="submit">Add</button>
-</form>
+    <form action="{{ url_for('.post_add_widget') }}" method="post">
+        <label for="widget-name">Name</label>
+        <input type="text" name="name" id="widget-name" required placeholder="Name..." maxlength="128">
+        <label for="widget-widget-id">Widget</label>
+        <select name="widget-id" id="widget-widget-id">
+            {% for widget in widgets %}
+            <option value="{{ widget.id }}">{{ widget.internal_name }}</option>
+            {% endfor %}
+        </select>
+        <button type="submit">Add</button>
+    </form>
+</section>
 
-<div>
+<section class="panel">
     <h2>Placed Widgets</h2>
     {% for widget in placed_widgets %}
     <div>
         <h3>{{ widget.name }}, {{ widget.widget.internal_name }}</h3>
-        <div>
+        <div class="bnt-group">
+            <a class="bnt" href="{{ url_for('.get_edit_dashboard_widget', widget_id=widget.id) }}">Edit</a>
             <a class="bnt" href="{{ url_for('.get_delete_widget', widget_id=widget.id) }}">Delete</a>
-        </div>
-        {% set render_func=get_loaded_plugin(widget.widget.plugin.internal_name).meta.get_rendered_widget_edit %}
-        {% set widget_name=deconstruct_widget_name(widget.widget.plugin.internal_name, widget.widget.internal_name) %}
-        {% set back_url=url_for('.get_edit_dashboard') %}
-        <div>
-            {{ render_func(widget_name, widget.id, widget.config, back_url) | safe }}
         </div>
     </div>
     {% endfor %}
-</div>
+</section>
 
 {% endblock %}

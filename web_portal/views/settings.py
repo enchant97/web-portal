@@ -23,7 +23,7 @@ async def get_index():
 async def get_edit_dashboard():
     widgets = await models.Widget.all()
     dashboard, is_new_dash = await models.Dashboard.get_or_create(owner_id=current_user.auth_id)
-    placed_widgets = await dashboard.widgets.all().prefetch_related("widget", "widget__plugin")
+    placed_widgets = await dashboard.widgets.all()
 
     if is_new_dash:
         await flash("Created new dashboard", "ok")
@@ -32,8 +32,6 @@ async def get_edit_dashboard():
         "settings/dashboard-edit.jinja",
         widgets=widgets,
         placed_widgets=placed_widgets,
-        get_loaded_plugin=PluginHandler.get_loaded_plugin,
-        deconstruct_widget_name=deconstruct_widget_name,
     )
 
 
@@ -57,6 +55,23 @@ async def post_add_widget():
     )
 
     return redirect(url_for(".get_edit_dashboard"))
+
+
+@blueprint.get("/dashboard/<int:widget_id>/edit")
+@login_standard_required
+async def get_edit_dashboard_widget(widget_id: int):
+    dashboard = await models.Dashboard.get(owner_id=current_user.auth_id)
+    widget = (await dashboard.widgets.filter(id=widget_id)
+                     .get()
+                     .prefetch_related("widget", "widget__plugin")
+                     )
+
+    return await render_template(
+        "settings/dashboard-widget-edit.jinja",
+        widget=widget,
+        get_loaded_plugin=PluginHandler.get_loaded_plugin,
+        deconstruct_widget_name=deconstruct_widget_name,
+    )
 
 
 @blueprint.get("/dashboard/widget/<int:widget_id>/delete")
