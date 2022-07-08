@@ -21,7 +21,7 @@ auth_manager.user_class = AuthUserEnhanced
 
 @app.errorhandler(401)
 async def redirect_to_login(*_):
-    await flash("You need to be logged in to view this page", "red")
+    await flash("You need to be logged in to view this page", "error")
     return redirect(url_for("login.get_login"))
 
 

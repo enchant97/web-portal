@@ -29,7 +29,7 @@ async def post_login():
         login_user(AuthUserEnhanced(user.id))
         return redirect(url_for("portal.portal"))
 
-    await flash("Username or password incorrect", "red")
+    await flash("Username or password incorrect", "error")
 
     return redirect(url_for(".get_login"))
 
@@ -39,6 +39,6 @@ async def post_login():
 async def get_logout():
     logout_user()
 
-    await flash("You have been logged out", "green")
+    await flash("You have been logged out", "ok")
 
     return redirect(url_for("portal.portal"))

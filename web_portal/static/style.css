@@ -211,9 +211,18 @@ footer a {
 }
 
 .flashes div {
+    color: var(--font-light);
     border-radius: 10px;
     padding: 10px;
     margin-bottom: 5px;
+}
+
+.flashes div.ok {
+    background-color: #217915;
+}
+
+.flashes div.error {
+    background-color: #aa2020;
 }
 
 .flashes div span {

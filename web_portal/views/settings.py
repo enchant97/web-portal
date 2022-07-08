@@ -26,7 +26,7 @@ async def get_edit_dashboard():
     placed_widgets = await dashboard.widgets.all().prefetch_related("widget", "widget__plugin")
 
     if is_new_dash:
-        await flash("Created new dashboard", "green")
+        await flash("Created new dashboard", "ok")
 
     return await render_template(
         "settings/dashboard-edit.jinja",
@@ -69,7 +69,7 @@ async def get_delete_widget(widget_id: int):
 
     await dashboard.widgets.filter(id=widget_id).delete()
 
-    await flash("deleted widget", "green")
+    await flash("deleted widget", "ok")
 
     return redirect(url_for(".get_edit_dashboard"))
 
@@ -78,5 +78,5 @@ async def get_delete_widget(widget_id: int):
 @login_standard_required
 async def get_restore_defaults():
     await models.Dashboard.filter(owner_id=current_user.auth_id).delete()
-    await flash("Reset dashboard for account", "green")
+    await flash("Reset dashboard for account", "ok")
     return redirect(url_for(".get_index"))

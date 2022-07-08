@@ -35,17 +35,17 @@ async def post_admin_user():
     password_confirm = form["password-confirm"]
 
     if not is_username_allowed(username):
-        await flash("Entered username contains invalid characters", "red")
+        await flash("Entered username contains invalid characters", "error")
     elif username == "guest":
-        await flash("This username is reserved, please use another", "red")
+        await flash("This username is reserved, please use another", "error")
     elif password != password_confirm:
-        await flash("Passwords do not match", "red")
+        await flash("Passwords do not match", "error")
     elif len(password) < 12:
-        await flash("Password is too short, must be at least 12 characters", "red")
+        await flash("Password is too short, must be at least 12 characters", "error")
     elif len(password) > 1024:
-        await flash("Password is too long, how would you even remember this?", "red")
+        await flash("Password is too long, how would you even remember this?", "error")
     elif password.find(username) != -1:
-        await flash("Password cannot contain username", "red")
+        await flash("Password cannot contain username", "error")
     else:
         try:
             user = models.User(
@@ -57,7 +57,7 @@ async def post_admin_user():
 
             return redirect(url_for(".get_guest_user"))
         except IntegrityError:
-            await flash("Username already taken", "red")
+            await flash("Username already taken", "error")
 
     return redirect(url_for(".get_admin_user", username=username))
 
@@ -81,13 +81,13 @@ async def post_guest_user():
     password_confirm = form["password-confirm"]
 
     if password != password_confirm:
-        await flash("Passwords do not match", "red")
+        await flash("Passwords do not match", "error")
     elif len(password) < 8:
-        await flash("Password is too short, must be at least 8 characters", "red")
+        await flash("Password is too short, must be at least 8 characters", "error")
     elif len(password) > 1024:
-        await flash("Password is too long, how would you even remember this?", "red")
+        await flash("Password is too long, how would you even remember this?", "error")
     elif password.find(username) != -1:
-        await flash("Password cannot contain username", "red")
+        await flash("Password cannot contain username", "error")
     else:
         try:
             user = models.User(
@@ -99,7 +99,7 @@ async def post_guest_user():
 
             return redirect(url_for(".get_set_configs"))
         except IntegrityError:
-            await flash("Username already taken", "red")
+            await flash("Username already taken", "error")
 
     return redirect(url_for(".get_guest_user", username=username))
 

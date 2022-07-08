@@ -54,9 +54,9 @@ async def post_upload_icons():
             extract_upload(temp_upload_location, temp_location)
             copy_icons_from_import(temp_location)
 
-        await flash("uploaded icons", "green")
+        await flash("uploaded icons", "ok")
     else:
-        await flash("failed to upload icons, (unknown file extention)", "red")
+        await flash("failed to upload icons, (unknown file extention)", "error")
 
     return redirect(url_for(".get_upload_icons"))
 
@@ -92,7 +92,7 @@ async def post_engines_new():
         method=method,
     )
 
-    await flash(f"created engine with name '{name}'", "green")
+    await flash(f"created engine with name '{name}'", "ok")
 
     return redirect(url_for(".get_engines_index"))
 
@@ -101,7 +101,7 @@ async def post_engines_new():
 @login_admin_required
 async def get_engines_delete(engine_id: int):
     await models.SearchEngine.filter(id=engine_id).delete()
-    await flash("deleted engine", "green")
+    await flash("deleted engine", "ok")
 
     return redirect(url_for(".get_engines_index"))
 
@@ -131,7 +131,7 @@ async def get_link_new():
 @login_admin_required
 async def get_link_delete(link_id: int):
     await models.Link.filter(id=link_id).delete()
-    await flash("deleted link", "green")
+    await flash("deleted link", "ok")
 
     return redirect(url_for(".get_links_index"))
 
@@ -158,7 +158,7 @@ async def post_link_new():
         icon_name=icon_name,
     )
 
-    await flash(f"created link with name '{name}'", "green")
+    await flash(f"created link with name '{name}'", "ok")
 
     return redirect(url_for(".get_links_index"))
 
@@ -175,7 +175,7 @@ async def post_widget_update_search(widget_id: int):
     engine = await models.SearchEngine.get(id=engine_id)
     await set_widget_config(widget_id, {"engine_id": engine.id})
 
-    await flash(f"updated search engine to '{engine.name}'", "green")
+    await flash(f"updated search engine to '{engine.name}'", "ok")
 
     if (back_to_url := request.args.get("back_to")) is not None:
         return redirect(back_to_url)
@@ -202,7 +202,7 @@ async def post_widget_add_link(widget_id: int):
 
     await set_widget_config(widget_id, widget_config)
 
-    await flash(f"added new link '{link.name}' to widget '{widget_details.human_name}'", "green")
+    await flash(f"added new link '{link.name}' to widget '{widget_details.human_name}'", "ok")
 
     if (back_to_url := request.args.get("back_to")) is not None:
         return redirect(back_to_url)
@@ -224,14 +224,14 @@ async def get_widget_remove_link(widget_id: int, link_index: int):
         redirect_response = redirect(back_to_url)
 
     if widget_config is None or len(widget_config.get("links")) < link_index+1:
-        await flash("cannot find link to delete", "red")
+        await flash("cannot find link to delete", "error")
         return redirect_response
 
     widget_config["links"].pop(link_index)
 
     await set_widget_config(widget_id, widget_config)
 
-    await flash(f"removed link from widget '{widget_details.human_name}'", "green")
+    await flash(f"removed link from widget '{widget_details.human_name}'", "ok")
 
     return redirect_response
 
@@ -254,7 +254,7 @@ async def post_widget_update_embed_html(widget_id: int):
 
     await set_widget_config(widget_id, widget_config)
 
-    await flash(f"updated HTML content for widget '{widget_details.human_name}'", "green")
+    await flash(f"updated HTML content for widget '{widget_details.human_name}'", "ok")
 
     if (back_to_url := request.args.get("back_to")) is not None:
         return redirect(back_to_url)
@@ -282,7 +282,7 @@ async def post_widget_update_iframe(widget_id: int):
 
     await set_widget_config(widget_id, widget_config)
 
-    await flash(f"updated website url for widget '{widget_details.human_name}'", "green")
+    await flash(f"updated website url for widget '{widget_details.human_name}'", "ok")
 
     if (back_to_url := request.args.get("back_to")) is not None:
         return redirect(back_to_url)

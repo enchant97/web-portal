@@ -28,9 +28,9 @@ async def post_import_v1_widgets():
     widgets = [Widget_V1.parse_obj(widget) for widget in loaded_json]
     count = await import_v1_widgets(widgets)
     if count == -1:
-        await flash("Unable to import, are you missing the core plugin?", "red")
+        await flash("Unable to import, are you missing the core plugin?", "error")
     else:
-        await flash(f"Imported {count} widgets", "green")
+        await flash(f"Imported {count} widgets", "ok")
 
     return redirect(url_for(".get_index"))
 
@@ -53,15 +53,15 @@ async def post_users_new():
     is_admin = form.get("is-admin", False, bool)
 
     if not is_username_allowed(username):
-        await flash("Entered username contains invalid characters", "red")
+        await flash("Entered username contains invalid characters", "error")
     elif is_admin and len(password) < 12:
-        await flash("Password is too short, must be at least 12 characters", "red")
+        await flash("Password is too short, must be at least 12 characters", "error")
     elif not is_admin and len(password) < 8:
-        await flash("Password is too short, must be at least 8 characters", "red")
+        await flash("Password is too short, must be at least 8 characters", "error")
     elif len(password) > 1024:
-        await flash("Password is too long, how would you even remember this?", "red")
+        await flash("Password is too long, how would you even remember this?", "error")
     elif password.find(username) != -1:
-        await flash("Password cannot contain username", "red")
+        await flash("Password cannot contain username", "error")
     else:
         try:
             user = models.User(
@@ -70,9 +70,9 @@ async def post_users_new():
             )
             user.set_password(password)
             await user.save()
-            await flash(f"created user '{username}'", "green")
+            await flash(f"created user '{username}'", "ok")
         except IntegrityError:
-            await flash("Username already taken", "red")
+            await flash("Username already taken", "error")
 
     return redirect(url_for(".get_users"))
 
@@ -81,10 +81,10 @@ async def post_users_new():
 @login_admin_required
 async def get_users_delete(user_id: int):
     if user_id == current_user.auth_id:
-        await flash("You cannot delete yourself", "red")
+        await flash("You cannot delete yourself", "error")
     else:
         await models.User.filter(id=user_id).delete()
-        await flash("deleted user", "green")
+        await flash("deleted user", "ok")
 
     return redirect(url_for(".get_users"))
 
@@ -93,22 +93,22 @@ async def get_users_delete(user_id: int):
 @login_admin_required
 async def get_users_toggle_admin(user_id: int):
     if user_id == current_user.auth_id:
-        await flash("You cannot change role of yourself", "red")
+        await flash("You cannot change role of yourself", "error")
         return redirect(url_for(".get_users"))
 
     user = await models.User.filter(id=user_id).get()
 
     if user.username == "guest":
-        await flash("This account cannot become an admin", "red")
+        await flash("This account cannot become an admin", "error")
         return redirect(url_for(".get_users"))
 
     user.is_admin = not user.is_admin
     await user.save()
 
     if user.is_admin:
-        await flash("User is now an admin", "green")
+        await flash("User is now an admin", "ok")
     else:
-        await flash("User is no longer an admin", "green")
+        await flash("User is no longer an admin", "ok")
 
     return redirect(url_for(".get_users"))
 
@@ -123,16 +123,16 @@ async def post_user_force_login():
 
     admin_user = await models.User.get(id=current_user.auth_id).only("password_hash")
     if not admin_user.check_password(password):
-        await flash("admin password was incorrect", "red")
+        await flash("admin password was incorrect", "error")
         return redirect(url_for(".get_users"))
 
     user = await models.User.filter(id=user_id, is_admin=False).get_or_none().only("id")
 
     if user is None:
-        await flash("unable to force login as this user", "red")
+        await flash("unable to force login as this user", "error")
         return redirect(url_for(".get_users"))
 
     login_user(AuthUserEnhanced(user.id))
-    await flash("forced login to user", "green")
+    await flash("forced login to user", "ok")
 
     return redirect(url_for("portal.portal"))
