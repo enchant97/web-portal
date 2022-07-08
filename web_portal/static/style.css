@@ -5,26 +5,23 @@
 
     --font-dark--light: var(--font-dark-no-adjust);
     --font-light--light: #f0f0f0;
-    --bg-bnt--light: #adadad;
     --bg-body--light: #9299a5;
-    --bg-sub-body--light: #8c93a0;
-    --bg-panel--light: #848a94;
+    --bg-sub-1--light: #7b828f;
+    --bg-sub-2--light: #aaaeb5;
 
     --font-dark--dark: var(--font-light--dark);
     --font-light--dark: #bcbcbc;
-    --bg-bnt--dark: #003d4b;
     --bg-body--dark: #002b36;
-    --bg-sub-body--dark: #073540;
-    --bg-panel--dark: #083b47;
+    --bg-sub-1--dark: #073642;
+    --bg-sub-2--dark: #0c414f;
 
 
     color-scheme: light;
     --font-dark: var(--font-dark--light);
     --font-light: var(--font-light--light);
-    --bg-bnt: var(--bg-bnt--light);
     --bg-body: var(--bg-body--light);
-    --bg-sub-body: var(--bg-sub-body--light);
-    --bg-panel: var(--bg-panel--light);
+    --bg-sub-1: var(--bg-sub-1--light);
+    --bg-sub-2: var(--bg-sub-2--light);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -32,10 +29,9 @@
         color-scheme: dark;
         --font-dark: var(--font-dark--dark);
         --font-light: var(--font-dark--dark);
-        --bg-bnt: var(--bg-bnt--dark);
         --bg-body: var(--bg-body--dark);
-        --bg-sub-body: var(--bg-sub-body--dark);
-        --bg-panel: var(--bg-panel--dark);
+        --bg-sub-1: var(--bg-sub-1--dark);
+        --bg-sub-2: var(--bg-sub-2--dark);
     }
 }
 
@@ -43,20 +39,18 @@
     color-scheme: light;
     --font-dark: var(--font-dark--light);
     --font-light: var(--font-light--light);
-    --bg-bnt: var(--bg-bnt--light);
     --bg-body: var(--bg-body--light);
-    --bg-sub-body: var(--bg-sub-body--light);
-    --bg-panel: var(--bg-panel--light);
+    --bg-sub-1: var(--bg-sub-1--light);
+    --bg-sub-2: var(--bg-sub-2--light);
 }
 
 [data-theme=dark]:root {
     color-scheme: dark;
     --font-dark: var(--font-dark--dark);
     --font-light: var(--font-dark--dark);
-    --bg-bnt: var(--bg-bnt--dark);
     --bg-body: var(--bg-body--dark);
-    --bg-sub-body: var(--bg-sub-body--dark);
-    --bg-panel: var(--bg-panel--dark);
+    --bg-sub-1: var(--bg-sub-1--dark);
+    --bg-sub-2: var(--bg-sub-2--dark);
 }
 
 main,
@@ -110,7 +104,7 @@ header nav button {
     text-decoration: none;
     color: var(--font-dark);
     padding: .7rem 1.2rem;
-    background-color: var(--bg-bnt);
+    background-color: var(--bg-sub-2);
     border-radius: 10px;
     border-style: none;
     margin: 0;
@@ -142,14 +136,14 @@ button,
     border-radius: 6px;
     border-style: none;
     margin: 2px;
-    background-color: var(--bg-panel);
+    background-color: var(--bg-sub-2);
 }
 
 button,
 .bnt {
     color: var(--font-dark);
     text-decoration: none;
-    background-color: var(--bg-bnt);
+    background-color: var(--bg-sub-2);
 }
 
 button:hover,
@@ -185,7 +179,7 @@ footer a {
 .panel,
 .widget-outer {
     border-radius: 6px;
-    background-color: var(--bg-panel);
+    background-color: var(--bg-sub-1);
     padding: 10px;
     margin-bottom: 8px;
 }
@@ -196,7 +190,7 @@ footer a {
 
 .form-group {
     border-radius: 10px;
-    background-color: var(--bg-sub-body);
+    background-color: var(--bg-sub-1);
     width: 50%;
     margin: auto;
     padding: 10px;
