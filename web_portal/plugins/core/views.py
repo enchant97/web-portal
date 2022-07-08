@@ -198,7 +198,7 @@ async def post_widget_add_link(widget_id: int):
     if await get_widget_owner_id(widget_id) != current_user.auth_id:
         abort(401)
 
-    link_id = (await request.form)["link-id"]
+    link_id = int((await request.form)["link-id"])
     link = await models.Link.get(id=link_id)
 
     widget_details = await get_widget_details(widget_id)
@@ -207,11 +207,12 @@ async def post_widget_add_link(widget_id: int):
     if widget_config is None:
         widget_config = {"links": []}
 
-    widget_config["links"].append(link_id)
-
-    await set_widget_config(widget_id, widget_config)
-
-    await flash(f"added new link '{link.name}' to widget '{widget_details.human_name}'", "ok")
+    if link_id in widget_config["links"]:
+        await flash("not adding link, as already added", "error")
+    else:
+        widget_config["links"].append(link_id)
+        await set_widget_config(widget_id, widget_config)
+        await flash(f"added new link '{link.name}' to widget '{widget_details.human_name}'", "ok")
 
     if (back_to_url := request.args.get("back_to")) is not None:
         return redirect(back_to_url)
