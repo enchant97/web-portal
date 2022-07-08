@@ -12,6 +12,8 @@ from .core.plugin import PluginHandler, make_combined_widget_name
 from .database import models
 from .views import admin, install, login, portal, settings
 
+logger = logging.getLogger("web-portal")
+
 app = Quart(__name__)
 auth_manager = AuthManager()
 auth_manager.user_class = AuthUserEnhanced
@@ -47,14 +49,15 @@ def context_get_head_injects():
 
 
 def create_app():
-    logging.basicConfig(
-        level=logging.getLevelName(get_settings().LOG_LEVEL))
-    logging.debug("loading config")
+    logging.basicConfig()
+    logger.setLevel(logging.getLevelName(get_settings().LOG_LEVEL))
+
+    logger.debug("loading config")
     # do config
     app.config["__VERSION__"] = __version__
     app.secret_key = get_settings().SECRET_KEY
     app.config["QUART_AUTH_COOKIE_SECURE"] = not get_settings().UNSECURE_LOGIN
-    logging.debug("registering blueprints")
+    logger.debug("registering blueprints")
     # register blueprints
     app.register_blueprint(health_check.blueprint, url_prefix="/")
     app.register_blueprint(portal.blueprint, url_prefix="/")
@@ -65,7 +68,7 @@ def create_app():
 
     db_models = {"models": [models]}
 
-    logging.debug("loading plugins")
+    logger.debug("loading plugins")
     for plugin in PluginHandler.load_plugins(__version__):
         # register plugin settings
         if plugin.meta.get_settings:
@@ -80,15 +83,15 @@ def create_app():
         if plugin.meta.db_models:
             db_models[plugin.internal_name] = plugin.meta.db_models
 
-    logging.debug("registering tortoise-orm")
+    logger.debug("registering tortoise-orm")
     # other setup
     register_tortoise(
         app,
         db_url=get_settings().DB_URI,
         modules=db_models,
         generate_schemas=True)
-    logging.debug("init auth manager")
+    logger.debug("init auth manager")
     auth_manager.init_app(app)
-    logging.debug("created app")
+    logger.debug("created app")
 
     return app

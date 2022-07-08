@@ -1,7 +1,7 @@
 """
 Module to assist plugin functionalities
 """
-
+import logging
 from collections.abc import Awaitable, Callable, Generator
 from dataclasses import dataclass
 from importlib import import_module
@@ -17,8 +17,33 @@ from .config import get_settings
 from .helpers import (get_system_setting, remove_system_setting,
                       set_system_setting)
 
+RESTRICTED_PLUGIN_NAMES = (
+    "web_portal",
+    "admin",
+    "install",
+    "login",
+    "portal",
+    "settings",
+    "static",
+    "plugin",
+)
 
-class PluginVersionException(Exception):
+logger = logging.getLogger("web-portal")
+
+
+class PluginException(Exception):
+    pass
+
+
+class PluginNameConflictException(PluginException):
+    pass
+
+
+class PluginVersionException(PluginException):
+    pass
+
+
+class PluginRestrictedNameException(PluginException):
     pass
 
 
@@ -89,6 +114,7 @@ class PluginHandler:
         root = PluginHandler.get_plugins_path()
         for path in root.glob("*"):
             if (name := path.name) not in ("__init__.py", "__pycache__") and path.is_dir():
+                logger.debug("found possible plugin::name='%s'", name)
                 yield name
 
     @staticmethod
@@ -100,7 +126,7 @@ class PluginHandler:
         if not plugin_meta.is_supported_version(app_version):
             raise PluginVersionException(
                 f"running web-portal=={app_version}, " +
-                f"but plugin is wanting web-portal{plugin_meta.version_specifier}"
+                f"but plugin is wanting web-portal{plugin_meta.version_specifier.strip()}"
             )
 
         return LoadedPlugin(
@@ -109,14 +135,48 @@ class PluginHandler:
         )
 
     @staticmethod
+    def validate_plugin_name(name: str) -> None:
+        """
+        Raises exceptions if plugin name is invalid
+
+            :param name: The plugin name to test
+            :raises PluginRestrictedNameException: Plugin name is not allowed
+            :raises PluginNameConflictException: Plugin name detected as already loaded
+        """
+        if name in RESTRICTED_PLUGIN_NAMES:
+            raise PluginRestrictedNameException(f"plugin name '{name}' is restricted")
+        if name in PluginHandler._loaded_plugins:
+            raise PluginNameConflictException(f"plugin with name '{name}' already loaded")
+
+    @staticmethod
     def load_plugins(app_version: str) -> Generator[LoadedPlugin, None, None]:
         for name in PluginHandler.get_plugin_names():
-            # TODO add logging here
-            # TODO add restricted plugin names
-            if name not in PluginHandler._loaded_plugins:
+            try:
+                logger.debug("loading plugin::plugin_name='%s'", name)
+
+                PluginHandler.validate_plugin_name(name)
+
                 plugin = PluginHandler.load_plugin(name, app_version)
                 PluginHandler._loaded_plugins[name] = plugin
+                logger.debug("loaded plugin::plugin_name='%s'", name)
                 yield plugin
+
+            except PluginNameConflictException as err:
+                logger.error(
+                    "unable to load plugin, " +
+                    "plugin with same name already loaded::plugin_name='%s', err='%s'",
+                    name, err.args[0]
+                )
+            except PluginRestrictedNameException as err:
+                logger.error(
+                    "unable to load plugin, using restricted name::plugin_name='%s', err='%s'",
+                    name, err.args[0]
+                )
+            except PluginVersionException as err:
+                logger.error(
+                    "unable to load plugin, version incompatible::plugin_name='%s', err='%s'",
+                    name, err.args[0]
+                )
 
     @staticmethod
     def loaded_plugins() -> dict[LoadedPlugin]:
