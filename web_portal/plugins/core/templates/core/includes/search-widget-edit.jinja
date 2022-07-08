@@ -1,9 +1,9 @@
 <form action="{{ url_for('core.post_widget_update_search', widget_id=dash_widget_id, back_to=back_to_url) }}"
-    method="post" class="form-group">
+    method="post" class="panel">
     <h3>Set Search Engine</h3>
     <label for="core-widget-search-engine-id">Search Engine</label>
     <select name="engine-id" id="core-widget-search-engine-id" required>
-        <option value=""></option>
+        <option value="">** Select Engine **</option>
         {% for engine in engines %}
         <option {% if curr_engine_id==engine.id %}selected{% endif %} value="{{ engine.id }}">{{ engine.name }}</option>
         {% endfor %}

@@ -1,7 +1,7 @@
 {% extends "/shared/base.jinja" %}
 {% block title %}Login{% endblock %}
 {% block main %}
-<form class="form-group" action="{{ url_for('.post_login') }}" method="post">
+<form class="panel login" action="{{ url_for('.post_login') }}" method="post">
     <img class="img-branding" src="{{ url_for('static', filename='icon-256.png') }}" alt="web-portal icon">
     <label for="username">Username</label>
     <input type="text" id="username" name="username" placeholder="username..." required>

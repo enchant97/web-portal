@@ -1,17 +1,20 @@
 {% extends "/shared/base.jinja" %}
 {% block title %}Plugins{% endblock %}
 {% block main %}
-<ul>
-    {% for plugin in loaded_plugins %}
-    <li>
-        <a href="{{ url_for(plugin.meta.index_route_url) }}">{{ plugin.meta.human_name }}</a>
-        <ul>
-            {% for widget in plugin.meta.widgets.values() %}
-            <li>{{ widget }}</li>
-            {% endfor %}
-        </ul>
-    </li>
-    {% endfor %}
-</ul>
+<section class="panel">
+    <h2>Loaded Plugins</h2>
+    <ul>
+        {% for plugin in loaded_plugins %}
+        <li>
+            <a href="{{ url_for(plugin.meta.index_route_url) }}">{{ plugin.meta.human_name }}</a>
+            <ul>
+                {% for widget in plugin.meta.widgets.values() %}
+                <li>{{ widget }}</li>
+                {% endfor %}
+            </ul>
+        </li>
+        {% endfor %}
+    </ul>
+</section>
 
 {% endblock %}

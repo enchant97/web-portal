@@ -19,7 +19,7 @@
 }
 
 .widget-inner.core__links a {
-    border-radius: 10px;
+    border-radius: var(--border-radius);
     padding: 3rem;
     text-decoration: none;
     font-family: var(--font-family-title);

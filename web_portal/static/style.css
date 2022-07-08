@@ -1,4 +1,6 @@
 :root {
+    --border-radius: 10px;
+
     --font-family-title: 'Roboto', sans-serif;
     --font-family-main: 'Open Sans', sans-serif;
     --font-dark-no-adjust: black;
@@ -71,6 +73,7 @@ h2,
 h3 {
     font-family: var(--font-family-title);
     color: var(--font-dark);
+    text-align: center;
 }
 
 h1 {
@@ -105,7 +108,7 @@ header nav button {
     color: var(--font-dark);
     padding: .7rem 1.2rem;
     background-color: var(--bg-sub-2);
-    border-radius: 10px;
+    border-radius: var(--border-radius);
     border-style: none;
     margin: 0;
     display: flex;
@@ -122,36 +125,61 @@ header nav button:hover {
 }
 
 form {
-    margin: auto;
     display: flex;
     flex-direction: column;
-    max-width: 500px;
 }
 
-form input,
-form select,
+table {
+    width: 100%;
+}
+
+table thead {
+    text-align: left;
+}
+
+table td.bnt-group {
+    display: flex;
+    justify-content: flex-end;
+}
+
+input,
+select,
 button,
-.bnt {
-    padding: 4px;
-    border-radius: 6px;
+.bnt,
+.icon-bnt {
+    padding: .4rem 1rem;
+    border-radius: var(--border-radius);
     border-style: none;
-    margin: 2px;
+    margin: .1rem;
     background-color: var(--bg-sub-2);
 }
 
+input {
+    width: -webkit-fill-available;
+}
+
 button,
-.bnt {
+.bnt,
+.icon-bnt {
     color: var(--font-dark);
     text-decoration: none;
     background-color: var(--bg-sub-2);
+    display: inline-block;
 }
 
 button:hover,
-.bnt:hover {
+.bnt:hover,
+.icon-bnt:hover {
     cursor: pointer;
     transition-duration: 400ms;
     background-color: black;
     color: var(--font-light);
+}
+
+.icon-bnt {
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 footer {
@@ -176,9 +204,8 @@ footer a {
     fill: none;
 }
 
-.panel,
 .widget-outer {
-    border-radius: 6px;
+    border-radius: var(--border-radius);
     background-color: var(--bg-sub-1);
     padding: 10px;
     margin-bottom: 8px;
@@ -188,13 +215,11 @@ footer a {
     text-align: center;
 }
 
-.form-group {
-    border-radius: 10px;
+.panel {
     background-color: var(--bg-sub-1);
-    width: 50%;
-    margin: auto;
-    padding: 10px;
-    margin-bottom: 15px;
+    padding: .5rem;
+    margin-bottom: 1rem;
+    border-radius: var(--border-radius);
 }
 
 /* flash styles */
@@ -206,7 +231,7 @@ footer a {
 
 .flashes div {
     color: var(--font-light);
-    border-radius: 10px;
+    border-radius: var(--border-radius);
     padding: 10px;
     margin-bottom: 5px;
 }
@@ -240,6 +265,11 @@ footer a {
     width: -webkit-fill-available;
 }
 
+.login {
+    max-width: 500px;
+    margin: auto;
+}
+
 .hidden {
     display: none;
 }
@@ -266,10 +296,6 @@ footer a {
 }
 
 @media(max-width:640px) {
-
-    .form-group {
-        width: initial;
-    }
 
     #theme-picker-selector {
         flex-direction: column;

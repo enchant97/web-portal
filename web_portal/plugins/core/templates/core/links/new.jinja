@@ -1,23 +1,25 @@
 {% extends "/shared/base.jinja" %}
 {% block title %}Core - Links New{% endblock %}
 {% block main %}
-<form action="{{ url_for('.post_link_new') }}" method="post">
-        <h3>New Widget</h3>
-        <label for="core-link-url">URL</label>
-        <input type="text" name="url" id="core-link-url" required placeholder="https://...">
-        <label for="core-link-name">Name</label>
-        <input type="text" name="name" id="core-link-name" required placeholder="name...">
-        <label for="core-link-color-name">Color</label>
-        <select name="color_name" id="core-link-color-name">
-            {% include "/shared/includes/options-color.jinja" %}
-        </select>
-        <label for="core-link-icon-name">Icon Name</label>
-        <select name="icon-name" id="core-link-icon-name">
-            <option value="">** No Icon **</option>
-            {% for name in icon_names %}
-            <option value="{{ name }}">{{ name }}</option>
-            {% endfor %}
-        </select>
-        <button type="submit">Save</button>
-</form>
+<section class="panel">
+    <h2>New Link</h2>
+    <form action="{{ url_for('.post_link_new') }}" method="post">
+            <label for="core-link-url">URL</label>
+            <input type="text" name="url" id="core-link-url" required placeholder="https://...">
+            <label for="core-link-name">Name</label>
+            <input type="text" name="name" id="core-link-name" required placeholder="name...">
+            <label for="core-link-color-name">Color</label>
+            <select name="color_name" id="core-link-color-name">
+                {% include "/shared/includes/options-color.jinja" %}
+            </select>
+            <label for="core-link-icon-name">Icon Name</label>
+            <select name="icon-name" id="core-link-icon-name">
+                <option value="">** No Icon **</option>
+                {% for name in icon_names %}
+                <option value="{{ name }}">{{ name }}</option>
+                {% endfor %}
+            </select>
+            <button type="submit">Save</button>
+    </form>
+</section>
 {% endblock %}

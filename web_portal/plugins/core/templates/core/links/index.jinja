@@ -1,32 +1,37 @@
 {% extends "/shared/base.jinja" %}
 {% block title %}Core - Links{% endblock %}
 {% block main %}
-<a class="bnt" href="{{ url_for('.get_link_new') }}">New</a>
+<section class="panel">
+    <h2>Menu</h2>
+    <a class="bnt" href="{{ url_for('.get_link_new') }}">New Link</a>
+</section>
 
-<table>
-    <caption>Available Links</caption>
-    <thead>
-        <tr>
-            <th>Name</th>
-            <th>Color</th>
-            <th>Icon</th>
-            <th>URL</th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for link in links %}
-        <tr>
-            <td>{{ link.name }}</td>
-            <td>{{ link.color_name }}</td>
-            <td>{{ link.icon_name }}</td>
-            <td><input type="text" readonly value="{{ link.url }}"></td>
-            <td>
-                <a class="bnt" href="{{ url_for('.get_link_delete', link_id=link.id) }}">Delete</a>
-            </td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
+<section class="panel">
+    <h2>Available Links</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Color</th>
+                <th>Icon</th>
+                <th>URL</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for link in links %}
+            <tr>
+                <td>{{ link.name }}</td>
+                <td>{{ link.color_name }}</td>
+                <td>{{ link.icon_name }}</td>
+                <td><input type="text" readonly value="{{ link.url }}"></td>
+                <td class="bnt-group">
+                    <a class="bnt" href="{{ url_for('.get_link_delete', link_id=link.id) }}">Delete</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</section>
 
 {% endblock %}

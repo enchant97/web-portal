@@ -1,29 +1,36 @@
 {% extends "/shared/base.jinja" %}
 {% block title %}Core - Search Engines{% endblock %}
 {% block main %}
-<a class="bnt" href="{{ url_for('.get_engines_new') }}">New</a>
+<section class="panel">
+    <h2>Menu</h2>
+    <a class="bnt" href="{{ url_for('.get_engines_new') }}">New Engine</a>
+</section>
 
-<table>
-    <caption>Available Engines</caption>
-    <thead>
-        <tr>
-            <th>Name</th>
-            <th>URL</th>
-            <th>Method</th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for engine in engines %}
-        <tr>
-            <td>{{ engine.name }}</td>
-            <td><input type="text" value="{{ engine.url }}" readonly></td>
-            <td>{{ engine.method.value }}</td>
-            <td>
-                <a href="{{ url_for('.get_engines_delete', engine_id=engine.id) }}" class="bnt">Delete</a>
-            </td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
+<section class="panel">
+    <h2>Available Engines</h2>
+    <table>
+        <caption></caption>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>URL</th>
+                <th>Method</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for engine in engines %}
+            <tr>
+                <td>{{ engine.name }}</td>
+                <td><input type="text" value="{{ engine.url }}" readonly></td>
+                <td>{{ engine.method.value }}</td>
+                <td class="bnt-group">
+                    <a href="{{ url_for('.get_engines_delete', engine_id=engine.id) }}" class="bnt">Delete</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</section>
+
 {% endblock %}

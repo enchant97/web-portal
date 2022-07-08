@@ -1,20 +1,22 @@
 {% extends "/shared/no-nav.jinja" %}
 {% block title %}Install{% endblock %}
 {% block main %}
-<h2>Create Guest User</h2>
-<p>
-    This user will be a standard user account that allows for other
-    user accounts to inherit the dashboard setup from, if they have not set their own.
-    If set it will also be used as the publicly viewable one.
-</p>
-<form action="{{ url_for('.post_guest_user') }}" method="post">
-    <label for="guest-user-username">Username (Cannot Be Changed)</label>
-    <input type="text" name="username" id="guest-user-username" maxlength="128" value="{{ username }}" disabled readonly required>
-    <label for="guest-user-password">Password</label>
-    <input type="password" name="password" id="guest-user-password" required>
-    <label for="guest-user-password-confirm">Password Confirm</label>
-    <input type="password" name="password-confirm" id="guest-user-password-confirm" required>
-    <button type="submit">Next</button>
-</form>
+<section class="panel">
+    <h2>Create Guest User</h2>
+    <p>
+        This user will be a standard user account that allows for other
+        user accounts to inherit the dashboard setup from, if they have not set their own.
+        If set it will also be used as the publicly viewable one.
+    </p>
+    <form action="{{ url_for('.post_guest_user') }}" method="post">
+        <label for="guest-user-username">Username (Cannot Be Changed)</label>
+        <input type="text" name="username" id="guest-user-username" maxlength="128" value="{{ username }}" disabled readonly required>
+        <label for="guest-user-password">Password</label>
+        <input type="password" name="password" id="guest-user-password" required>
+        <label for="guest-user-password-confirm">Password Confirm</label>
+        <input type="password" name="password-confirm" id="guest-user-password-confirm" required>
+        <button type="submit">Next</button>
+    </form>
+</section>
 
 {% endblock %}

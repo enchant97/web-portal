@@ -1,7 +1,7 @@
 {% extends "/shared/base.jinja" %}
 {% block title %}Admin - Users{% endblock %}
 {% block main %}
-<section>
+<section class="panel">
     <h2>Add User</h2>
     <form action="{{ url_for('.post_users_new') }}" method="post">
         <label for="new-user-username">Username</label>
@@ -14,7 +14,7 @@
     </form>
 </section>
 
-<section>
+<section class="panel">
     <h2>Existing Users</h2>
     <table>
         <thead>
@@ -29,7 +29,7 @@
             <tr id="user-row-id-{{ user.id }}">
                 <td>{{ user.username }}</td>
                 <td>{{ user.is_admin }}</td>
-                <td>
+                <td class="bnt-group">
                     {% if user.username != "guest" and user.id != current_user.auth_id %}
                     {% if user.is_admin %}
                     <a class="bnt" href="{{ url_for('.get_users_toggle_admin', user_id=user.id) }}">Remove Admin</a>
@@ -45,12 +45,12 @@
     </table>
 </section>
 
-<section>
+<section class="panel">
     <h2>Force Login</h2>
     <form action="{{ url_for('.post_user_force_login') }}" method="post">
         <label for="user-id">User</label>
         <select name="user-id" id="user-id" required>
-            <option value="">** Select A Option **</option>
+            <option value="">** Select User **</option>
             {% for user in users %}
             {% if user.is_admin == False %}
             <option value="{{ user.id }}">{{ user.username }}</option>

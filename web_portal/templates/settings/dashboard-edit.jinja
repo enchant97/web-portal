@@ -1,7 +1,7 @@
 {% extends "/shared/base.jinja" %}
 {% block title %}Dashboard Editor{% endblock %}
 {% block main %}
-<form class="form-group" action="{{ url_for('.post_add_widget') }}" method="post">
+<form class="panel" action="{{ url_for('.post_add_widget') }}" method="post">
     <h2>Add Widget</h2>
     <label for="widget-name">Name</label>
     <input type="text" name="name" id="widget-name" required placeholder="Name..." maxlength="128">

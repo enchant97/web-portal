@@ -1,7 +1,7 @@
 {% extends "/shared/base.jinja" %}
 {% block title %}Core{% endblock %}
 {% block main %}
-<section>
+<section class="panel">
     <h2>Upload Format</h2>
     <p>
         Before uploading please follow the below layout.
@@ -28,11 +28,14 @@
     </ul>
 </section>
 
-<form action="{{ url_for('.post_upload_icons') }}" method="post" enctype="multipart/form-data">
+<section class="panel">
     <h2>Upload Icons</h2>
-    <label for="icons-file">Zip</label>
-    <input type="file" name="file" id="icons-file" accept=".zip" required>
-    <button type="submit">Upload</button>
-</form>
+    <form action="{{ url_for('.post_upload_icons') }}" method="post" enctype="multipart/form-data">
+        <label for="icons-file">Zip</label>
+        <input type="file" name="file" id="icons-file" accept=".zip" required>
+        <button type="submit">Upload</button>
+    </form>
+</section>
+
 
 {% endblock %}

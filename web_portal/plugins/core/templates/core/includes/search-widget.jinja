@@ -2,5 +2,5 @@
 <form class="core__search-form" action="{{ engine.url }}" method="{{ engine.method.value }}" {% if
     config.plugin__core.OPEN_TO_NEW_TAB %}target="_blank" {% endif %}>
     <input type="text" name="q" placeholder="enter search term...">
-    <button type="submit" title="Search {{ engine.name }}">{{ feather_img('search') }}</button>
+    <button class="icon-bnt" type="submit" title="Search {{ engine.name }}">{{ feather_img('search') }}</button>
 </form>

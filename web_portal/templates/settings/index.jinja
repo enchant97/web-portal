@@ -1,12 +1,7 @@
 {% extends "/shared/base.jinja" %}
 {% block title %}Settings{% endblock %}
 {% block main %}
-{% if current_user.is_authenticated_admin %}
-<a class="bnt" href="{{ url_for('admin.get_index') }}">Administration</a>
-{% endif %}
-<a class="bnt" href="{{ url_for('portal.get_plugins_index') }}">Plugins</a>
-
-<div>
+<section class="panel">
     <h2>Dashboard</h2>
     {% if is_personal_dash %}
     <a class="bnt" href="{{ url_for('.get_edit_dashboard') }}">Editor</a>
@@ -14,6 +9,14 @@
     {% else %}
     <a class="bnt" href="{{ url_for('.get_edit_dashboard') }}">Create Custom</a>
     {% endif %}
-</div>
+</section>
+
+<section class="panel">
+    <h2>Other</h2>
+    {% if current_user.is_authenticated_admin %}
+    <a class="bnt" href="{{ url_for('admin.get_index') }}">Administration</a>
+    {% endif %}
+    <a class="bnt" href="{{ url_for('portal.get_plugins_index') }}">Plugins</a>
+</section>
 
 {% endblock %}
