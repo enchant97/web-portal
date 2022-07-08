@@ -27,7 +27,6 @@ async def get_index():
 @blueprint.get("/static/icons/<icon_name>")
 @login_required_if_secured
 async def get_icon(icon_name):
-    # TODO check whether portal is in "login only" mode and do auth
     full_path = get_icon_path(icon_name)
     if full_path is None:
         abort(404)
@@ -150,7 +149,7 @@ async def post_link_new():
     color_name = form["color_name"].strip()
     icon_name = form.get("icon-name")
 
-    if icon_name is not None:
+    if icon_name:
         if get_icon_path(icon_name) is None:
             logger.warning(
                 "icon name requested not found, " +
