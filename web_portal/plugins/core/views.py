@@ -7,6 +7,7 @@ from quart import (Blueprint, abort, flash, redirect, render_template, request,
 from web_portal.plugin_api import (PORTAL_ENDPOINT, current_user,
                                    get_widget_details, get_widget_owner_id,
                                    login_admin_required,
+                                   login_required_if_secured,
                                    login_standard_required, set_widget_config)
 
 from . import models
@@ -24,6 +25,7 @@ async def get_index():
 
 
 @blueprint.get("/static/icons/<icon_name>")
+@login_required_if_secured
 async def get_icon(icon_name):
     # TODO check whether portal is in "login only" mode and do auth
     full_path = get_icon_path(icon_name)
