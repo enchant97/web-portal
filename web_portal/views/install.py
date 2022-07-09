@@ -76,10 +76,10 @@ async def get_set_configs():
 async def post_set_configs():
     form = await request.form
 
-    portal_secure = form.get("portal-secure", False, bool)
+    portal_secured = not form.get("public-portal", False, bool)
     show_widget_headers = form.get("show-widget-headers", False, bool)
 
-    await set_system_setting("PORTAL_SECURED", portal_secure)
+    await set_system_setting("PORTAL_SECURED", portal_secured)
     await set_system_setting("SHOW_WIDGET_HEADERS", show_widget_headers)
 
     return redirect(url_for(".get_finish"))
