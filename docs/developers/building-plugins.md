@@ -7,6 +7,14 @@ This guide is aimed at developers and will aid with the creation of new and amaz
 - Provide custom placeable widgets
 - Widgets included with web-portal are actually a plugin called "core"
 
+## Important Notes
+- Web Portal plugins must be compatible with the Python version that it is based on, this is currently 3.10
+- Try to make use of asyncio in api async methods this will greatly improve performance
+- Try not to use extra pip packages
+- Don't override Web Portal internal functions, this will cause instability and may cause damage
+- Prefer DRY code, meaning reduce repetition. If it's in the plugin api don't re-invent
+- Ensure you always set the min, max app version requirements properly
+
 ## Using The API Module
 The API module is a python module that is contained in web-portal that gives plugin developers an easy and unified access to access web-portal.
 
@@ -111,9 +119,27 @@ If you are making a plugin and you have installed a package using pip (or anothe
 - Copy the package's code into the plugin folder (if the package's license allows)
 - Change your code to use the libraries bundles with the official install.
 
+### Version Specifiers
+The `version_specifier` in the PLUGIN_META variable takes PEP 440 version specifiers, the following is some examples:
+
+> When specifying a range of versions, it is a good idea to test each version to ensure the plugin works as expected
+
+```
+# must be version 2.0.0
+== 2.0.0
+
+# must be at least version 2.0, allows for bug fixes e.g. 2.0.3
+== 2.0
+
+# must be at least version 2, allows for any update apart from major e.g. 2.10.1
+== 2
+
+# must be version 2 up to version 2.5 e.g. 2.3.2 is allowed but 2.6.0 is not
+>= 2.0, <= 2.5
+```
+
 ## Reference Plugin
 If you are looking for a example plugin, well your in luck. Web Portal comes with a plugin called "core". You can use this as a good reference on how a plugin should be laid out.
-
 
 ## Plugin Creation
 This section will walk-through creating a plugin. Before making a plugin an internal name must be decided, for this tutorial we will use "my_plugin" as that.
@@ -123,6 +149,8 @@ Now a plugin name is chosen let's learn about the format. A plugin in web-portal
 ```
 plugin_name/
     __init__.py
+    templates/plugin_name/
+    static/
     ...
 ```
 
@@ -180,7 +208,6 @@ PLUGIN_META = PluginMeta(
     get_rendered_widget_edit,
     # NOTE there are other fields to add more functionality
 )
-
 ```
 
 The plugin's homepage template:
