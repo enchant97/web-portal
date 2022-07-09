@@ -2,6 +2,7 @@ from quart import Blueprint, flash, redirect, render_template, request, url_for
 from tortoise.exceptions import IntegrityError
 
 from ..core.auth import ensure_not_setup
+from ..core.constants import PUBLIC_ACCOUNT_USERNAME
 from ..core.helpers import set_system_setting
 from ..core.validation import is_username_allowed
 from ..database import models
@@ -36,7 +37,7 @@ async def post_admin_user():
 
     if not is_username_allowed(username):
         await flash("Entered username contains invalid characters", "error")
-    elif username == "guest":
+    elif username == PUBLIC_ACCOUNT_USERNAME:
         await flash("This username is reserved, please use another", "error")
     elif password != password_confirm:
         await flash("Passwords do not match", "error")
@@ -55,53 +56,11 @@ async def post_admin_user():
             user.set_password(password)
             await user.save()
 
-            return redirect(url_for(".get_guest_user"))
-        except IntegrityError:
-            await flash("Username already taken", "error")
-
-    return redirect(url_for(".get_admin_user", username=username))
-
-
-@blueprint.get("/guest-user")
-@ensure_not_setup
-async def get_guest_user():
-    return await render_template(
-        "install/guest-user.jinja",
-        username="guest",
-    )
-
-
-@blueprint.post("/guest-user")
-@ensure_not_setup
-async def post_guest_user():
-    form = await request.form
-
-    username = "guest"
-    password = form["password"]
-    password_confirm = form["password-confirm"]
-
-    if password != password_confirm:
-        await flash("Passwords do not match", "error")
-    elif len(password) < 8:
-        await flash("Password is too short, must be at least 8 characters", "error")
-    elif len(password) > 1024:
-        await flash("Password is too long, how would you even remember this?", "error")
-    elif password.find(username) != -1:
-        await flash("Password cannot contain username", "error")
-    else:
-        try:
-            user = models.User(
-                username=username,
-                is_admin=False,
-            )
-            user.set_password(password)
-            await user.save()
-
             return redirect(url_for(".get_set_configs"))
         except IntegrityError:
             await flash("Username already taken", "error")
 
-    return redirect(url_for(".get_guest_user", username=username))
+    return redirect(url_for(".get_admin_user", username=username))
 
 
 @blueprint.get("/configs")

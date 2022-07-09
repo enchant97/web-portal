@@ -11,6 +11,7 @@ from web_health_checker.contrib import quart as health_check
 from . import __version__
 from .core.auth import AuthUserEnhanced
 from .core.config import get_settings
+from .core.constants import PUBLIC_ACCOUNT_USERNAME
 from .core.plugin import PluginHandler, make_combined_widget_name
 from .database import models
 
@@ -29,6 +30,12 @@ async def redirect_to_login(*_):
 
 @app.before_first_request
 async def first_request():
+    # NOTE this ensures public virtual account is always created
+    await models.User.update_or_create(
+        defaults={"password_hash": None},
+        username=PUBLIC_ACCOUNT_USERNAME
+    )
+
     # NOTE this ensures plugins and widgets are registed in database
     for plugin in PluginHandler.loaded_plugins().values():
         plugin_model, _ = await models.Plugin.update_or_create(internal_name=plugin.internal_name)
@@ -93,6 +100,7 @@ def create_app():
         app.secret_key = token_urlsafe(128)
     app.config["QUART_AUTH_COOKIE_NAME"] = "WEB-PORTAL-AUTH"
     app.config["QUART_AUTH_COOKIE_SECURE"] = get_settings().SECURE_COOKIES
+    app.config["PUBLIC_ACCOUNT_USERNAME"] = PUBLIC_ACCOUNT_USERNAME
     logger.debug("registering blueprints")
     # register blueprints
     register_blueprints(app)

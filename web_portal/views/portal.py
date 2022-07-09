@@ -2,6 +2,7 @@ from quart import Blueprint, redirect, render_template, url_for
 
 from ..core.auth import (current_user, login_required_if_secured,
                          login_standard_required)
+from ..core.constants import PUBLIC_ACCOUNT_USERNAME
 from ..core.plugin import PluginHandler, deconstruct_widget_name
 from ..database import models
 
@@ -18,13 +19,13 @@ async def portal():
     user_id = current_user.auth_id
     dashboard = None
 
-    # load either personal dashboard or 'guest' as a fallback
+    # load either personal dashboard or 'public' as a fallback
     if user_id is not None:
         dashboard = await models.Dashboard.get_or_none(owner_id=user_id).prefetch_related(
             "widgets", "widgets__widget", "widgets__widget__plugin")
     if dashboard is None:
-        guest = await models.User.filter(username="guest").get()
-        dashboard = (await models.Dashboard.get_or_create(owner=guest))[0]
+        public_account = await models.User.filter(username=PUBLIC_ACCOUNT_USERNAME).get()
+        dashboard = (await models.Dashboard.get_or_create(owner=public_account))[0]
         await dashboard.fetch_related("widgets", "widgets__widget", "widgets__widget__plugin")
 
     rendered_widgets = []

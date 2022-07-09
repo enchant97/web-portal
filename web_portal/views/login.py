@@ -2,6 +2,7 @@ from quart import Blueprint, flash, redirect, render_template, request, url_for
 from quart_auth import login_user, logout_user
 
 from ..core.auth import AuthUserEnhanced, current_user, login_standard_required
+from ..core.constants import PUBLIC_ACCOUNT_USERNAME
 from ..core.helpers import get_system_setting
 from ..database import models
 
@@ -24,11 +25,12 @@ async def post_login():
     username = form["username"]
     password = form["password"]
 
-    user = await models.User.filter(username=username).get_or_none()
-
-    if user and user.check_password(password):
-        login_user(AuthUserEnhanced(user.id))
-        return redirect(url_for("portal.portal"))
+    # prevents logging in with 'public virtual' account
+    if username != PUBLIC_ACCOUNT_USERNAME:
+        user = await models.User.filter(username=username).get_or_none()
+        if user and user.check_password(password):
+            login_user(AuthUserEnhanced(user.id))
+            return redirect(url_for("portal.portal"))
 
     await flash("Username or password incorrect", "error")
 

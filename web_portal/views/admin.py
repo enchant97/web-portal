@@ -5,6 +5,7 @@ from quart_auth import login_user
 from tortoise.exceptions import IntegrityError
 
 from ..core.auth import AuthUserEnhanced, current_user, login_admin_required
+from ..core.constants import PUBLIC_ACCOUNT_USERNAME
 from ..core.validation import is_username_allowed
 from ..database import models
 from ..import_export import Widget_V1, import_v1_widgets
@@ -18,13 +19,13 @@ async def get_index():
     return await render_template("admin/index.jinja")
 
 
-@blueprint.get("/switch-to-guest")
+@blueprint.get("/switch-to-public")
 @login_admin_required
-async def get_switch_to_guest():
-    guest = await models.User.filter(username="guest").get().only("id")
+async def get_switch_to_public():
+    public_user = await models.User.filter(username=PUBLIC_ACCOUNT_USERNAME).get().only("id")
 
-    login_user(AuthUserEnhanced(guest.id))
-    await flash("switched to guest account", "ok")
+    login_user(AuthUserEnhanced(public_user.id))
+    await flash(f"switched to {PUBLIC_ACCOUNT_USERNAME} account", "ok")
 
     return redirect(url_for("portal.portal"))
 
@@ -91,6 +92,7 @@ async def post_users_new():
 @blueprint.get("/users/<int:user_id>/delete")
 @login_admin_required
 async def get_users_delete(user_id: int):
+    # TODO deny deletion for public account
     if user_id == current_user.auth_id:
         await flash("You cannot delete yourself", "error")
     else:
@@ -109,7 +111,7 @@ async def get_users_toggle_admin(user_id: int):
 
     user = await models.User.filter(id=user_id).get()
 
-    if user.username == "guest":
+    if user.username == PUBLIC_ACCOUNT_USERNAME:
         await flash("This account cannot become an admin", "error")
         return redirect(url_for(".get_users"))
 

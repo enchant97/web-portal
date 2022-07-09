@@ -30,7 +30,7 @@
                 <td>{{ user.username }}</td>
                 <td>{{ user.is_admin }}</td>
                 <td class="bnt-group">
-                    {% if user.username != "guest" and user.id != current_user.auth_id %}
+                    {% if user.username != config.PUBLIC_ACCOUNT_USERNAME and user.id != current_user.auth_id %}
                     {% if user.is_admin %}
                     <a class="bnt" href="{{ url_for('.get_users_toggle_admin', user_id=user.id) }}">Remove Admin</a>
                     {% else %}
