@@ -51,6 +51,8 @@ services:
 ### Environment Variables
 All configs shown here should be given as environment variables.
 
+#### Base App
+
 | Name           | Description                            | Default              |
 | :------------- | :------------------------------------- | :------------------- |
 | DB_URI         | URI of where db is stored              |                      |
@@ -67,6 +69,15 @@ This table shows how the `DB_URI` values should look:
 | :------- | :-------------------------------------- |
 | MySQL    | mysql://user:password@hostname/database |
 | SQLite   | sqlite://path-to-database.db            |
+
+#### Core Plugin
+If you have the "core" plugin installed, which comes built-in to Web Portal unless you have removed it. These are the configs:
+
+| Name            | Description                                        | Default |
+| :-------------- | :------------------------------------------------- | :------ |
+| OPEN_TO_NEW_TAB | Whether to open the link widget links in a new tab | True    |
+
+#### Docker Specific
 
 Other configs related to when running through the official docker image:
 
@@ -94,6 +105,6 @@ docker compose pull
 docker compose up -d
 ```
 
-After these have been run, navigate in the browser to the hostname and port you configured. From there you should see a setup wizard which will guide you through the rest of the install.
+After these have been run, navigate in the browser to the hostname and port you configured. From there you should see a setup wizard which will guide you through the rest of the install. After you have completed this you may want to read the usage guide [here](usage.md).
 
 If you have a question, you can ask in the GitHub discussions page at: <https://github.com/enchant97/web-portal/discussions>.
