@@ -18,6 +18,17 @@ async def get_index():
     return await render_template("admin/index.jinja")
 
 
+@blueprint.get("/switch-to-guest")
+@login_admin_required
+async def get_switch_to_guest():
+    guest = await models.User.filter(username="guest").get().only("id")
+
+    login_user(AuthUserEnhanced(guest.id))
+    await flash("switched to guest account", "ok")
+
+    return redirect(url_for("portal.portal"))
+
+
 @blueprint.post("/import-v1-widgets")
 @login_admin_required
 async def post_import_v1_widgets():
