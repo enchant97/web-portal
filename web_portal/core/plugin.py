@@ -200,6 +200,10 @@ class PluginHandler:
         for plugin in PluginHandler._loaded_plugins.values():
             yield plugin
 
+    @staticmethod
+    def get_loaded_plugin_names() -> list[str]:
+        return PluginHandler._loaded_plugins.keys()
+
 
 def make_combined_widget_name(plugin_name: str, widget_name: str) -> str:
     return f"{plugin_name}__{widget_name}"

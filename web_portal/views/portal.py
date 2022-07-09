@@ -1,7 +1,7 @@
 from quart import Blueprint, flash, redirect, render_template, url_for
 
-from ..core.auth import (current_user, login_required_if_secured,
-                         login_standard_required)
+from ..core.auth import (current_user, login_admin_required,
+                         login_required_if_secured, login_standard_required)
 from ..core.constants import PUBLIC_ACCOUNT_USERNAME
 from ..core.plugin import PluginHandler, deconstruct_widget_name
 from ..database import models
@@ -72,7 +72,29 @@ async def portal():
 async def get_plugins_index():
     loaded_plugins = PluginHandler.get_loaded_plugin_values()
 
+    missing_plugins = await models.Plugin.filter(
+        internal_name__not_in=PluginHandler.get_loaded_plugin_names()
+    ).all()
+
     return await render_template(
         "plugins.jinja",
         loaded_plugins=loaded_plugins,
+        missing_plugins=missing_plugins,
     )
+
+
+@blueprint.get("/admin/plugins/delete-unloaded/<plugin_name>")
+@login_admin_required
+async def get_delete_plugin_data(plugin_name: str):
+    loaded_plugins = PluginHandler.get_loaded_plugin_names()
+
+    if plugin_name in loaded_plugins:
+        await flash("cannot delete loaded plugin, unload first", "error")
+        return redirect(url_for(".get_plugins_index"))
+
+    await models.Plugin.filter(internal_name=plugin_name).delete()
+    await models.SystemSetting.filter(key__startswith=f"plugin__{plugin_name}").delete()
+
+    await flash("deleted plugin data", "ok")
+
+    return redirect(url_for(".get_plugins_index"))
