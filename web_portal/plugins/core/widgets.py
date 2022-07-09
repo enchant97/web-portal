@@ -1,3 +1,4 @@
+import logging
 from functools import lru_cache
 from typing import Optional
 
@@ -7,6 +8,7 @@ from web_portal.plugin_api import PluginMeta
 
 from . import models, views
 
+logger = logging.getLogger("web-portal")
 
 class PluginSettings(BaseSettings):
     OPEN_TO_NEW_TAB: Optional[bool] = True
@@ -67,6 +69,10 @@ async def render_widget(internal_name, widget_id: int, config: dict | None) -> s
         case "iframe":
             return await render_widget_iframe(config)
         case _:
+            logger.error(
+                "widget not found in plugin::widget_name='%s',plugin_name='core'",
+                internal_name
+            )
             raise ValueError("Unknown widget internal name")
 
 
@@ -150,6 +156,10 @@ async def render_widget_edit(
         case "iframe":
             return await render_widget_edit_iframe(dash_widget_id, config, back_to_url)
         case _:
+            logger.error(
+                "widget not found in plugin::widget_name='%s',plugin_name='core'",
+                internal_name
+            )
             raise ValueError("Unknown widget internal name")
 
 

@@ -1,4 +1,4 @@
-from quart import Blueprint, redirect, render_template, url_for
+from quart import Blueprint, flash, redirect, render_template, url_for
 
 from ..core.auth import (current_user, login_required_if_secured,
                          login_standard_required)
@@ -30,18 +30,36 @@ async def portal():
 
     rendered_widgets = []
 
-    # TODO handle either plugin in widget not existing
     for dashboard_widget in dashboard.widgets:
+        dashboard_widget: models.DashboardWidget
         widget: models.Widget = dashboard_widget.widget
         plugin_name = widget.plugin.internal_name
         widget_name = deconstruct_widget_name(plugin_name, widget.internal_name)
         loaded_plugin = PluginHandler.get_loaded_plugin(plugin_name)
-        rendered_widget = await loaded_plugin.meta.get_rendered_widget(
-            widget_name,
-            dashboard_widget.id,
-            dashboard_widget.config,
-        )
-        rendered_widgets.append((dashboard_widget, rendered_widget))
+
+        if loaded_plugin is None:
+            # skips loading plugin and warn user
+            await flash(
+                f"widget with name '{dashboard_widget.name}' could not be loaded, " +
+                "please contact administrator",
+                "error"
+            )
+            continue
+
+        try:
+            rendered_widget = await loaded_plugin.meta.get_rendered_widget(
+                widget_name,
+                dashboard_widget.id,
+                dashboard_widget.config,
+            )
+            rendered_widgets.append((dashboard_widget, rendered_widget))
+        except ValueError:
+            # skips loading widget and warn user
+            await flash(
+                f"widget with name '{dashboard_widget.name}' could not be loaded, " +
+                "please contact administrator",
+                "error"
+            )
 
     return await render_template(
         "portal.jinja",

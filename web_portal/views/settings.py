@@ -68,12 +68,34 @@ async def get_edit_dashboard_widget(widget_id: int):
                      .prefetch_related("widget", "widget__plugin")
                      )
 
-    return await render_template(
-        "settings/dashboard-widget-edit.jinja",
-        widget=widget,
-        get_loaded_plugin=PluginHandler.get_loaded_plugin,
-        deconstruct_widget_name=deconstruct_widget_name,
+    loaded_plugin = PluginHandler.get_loaded_plugin(widget.widget.plugin.internal_name)
+
+    if loaded_plugin is None:
+        await flash("Editor could not be loaded, please contact administrator", "error")
+        return redirect(url_for(".get_edit_dashboard"))
+
+    widget_name = deconstruct_widget_name(
+        widget.widget.plugin.internal_name,
+        widget.widget.internal_name,
     )
+    back_url = url_for(".get_edit_dashboard_widget", widget_id=widget.id)
+
+    try:
+        rendered_editor = await loaded_plugin.meta.get_rendered_widget_edit(
+            widget_name,
+            widget.id,
+            widget.config,
+            back_url,
+        )
+
+        return await render_template(
+            "settings/dashboard-widget-edit.jinja",
+            widget=widget,
+            rendered_editor=rendered_editor,
+        )
+    except ValueError:
+        await flash("Editor could not be loaded, please contact administrator", "error")
+        return redirect(url_for(".get_edit_dashboard"))
 
 
 @blueprint.get("/dashboard/widget/<int:widget_id>/delete")

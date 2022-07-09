@@ -184,7 +184,16 @@ class PluginHandler:
 
     @staticmethod
     def get_loaded_plugin(name: str) -> LoadedPlugin:
-        return PluginHandler._loaded_plugins[name]
+        """
+        Gets a loaded plugin by internal name
+
+            :param name: The plugin's internal name
+            :return: The loaded plugin, or None if not found
+        """
+        try:
+            return PluginHandler._loaded_plugins[name]
+        except KeyError:
+            logger.error("plugin is not loaded::plugin_name='%s'", name)
 
     @staticmethod
     def get_loaded_plugin_values() -> Generator[LoadedPlugin, None, None]:
