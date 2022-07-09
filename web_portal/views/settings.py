@@ -11,9 +11,11 @@ blueprint = Blueprint("settings", __name__, url_prefix="/settings")
 @login_standard_required
 async def get_index():
     dashboard = await models.Dashboard.get_or_none(owner_id=current_user.auth_id)
+    user = await models.User.get(id=current_user.auth_id)
 
     return await render_template(
         "settings/index.jinja",
+        user=user,
         is_personal_dash=True if dashboard else False,
     )
 
