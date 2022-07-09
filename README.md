@@ -39,4 +39,14 @@ If you want just a basic link panel configured with a yaml file checkout Web Por
 More details and guides on installing can be found in `docs`, or click [here](docs/index.md).
 
 ## License
-Copyright (c) 2022 Leo Spratt licenced under AGPL-3, the licence can be found in: `LICENSE.txt`. This project also uses some third-party code, licenses for those can be found at: `THIRD-PARTY.txt`.
+This project is Copyright (c) 2022 Leo Spratt, licences shown below:
+
+Code
+
+    AGPL-3 or any later version. Full license found in `LICENSE.txt`
+
+Documentation
+
+    FDLv1.3 or any later version. Full license found in `docs/LICENSE.txt`
+
+This project also uses some third party content, licences for those are found at: `THIRD-PARTY.txt`.
