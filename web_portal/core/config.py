@@ -12,6 +12,8 @@ class Settings(BaseSettings):
     SECURE_COOKIES: Optional[bool] = False
     LOG_LEVEL: Optional[str] = "INFO"
 
+    DISABLE_PLUGIN_LOADER: bool = False
+
     class Config:
         case_sensitive = True
         env_file = '.env'

@@ -53,13 +53,14 @@ All configs shown here should be given as environment variables.
 
 #### Base App
 
-| Name           | Description                            | Default              |
-| :------------- | :------------------------------------- | :------------------- |
-| DB_URI         | URI of where db is stored              |                      |
-| DATA_PATH      | Where plugin & app data will be stored |                      |
-| SECRET_KEY     | Your app secret (use something secure) | (randomly generated) |
-| SECURE_COOKIES | Whether to require https for cookies   | False                |
-| LOG_LEVEL      | What log level to use                  | "INFO"               |
+| Name                  | Description                            | Default              |
+| :-------------------- | :------------------------------------- | :------------------- |
+| DB_URI                | URI of where db is stored              |                      |
+| DATA_PATH             | Where plugin & app data will be stored |                      |
+| SECRET_KEY            | Your app secret (use something secure) | (randomly generated) |
+| SECURE_COOKIES        | Whether to require https for cookies   | False                |
+| LOG_LEVEL             | What log level to use                  | "INFO"               |
+| DISABLE_PLUGIN_LOADER | Disable the plugin loader              | False                |
 
 > SECRET_KEY should be set, otherwise logins will be reset on server restart
 

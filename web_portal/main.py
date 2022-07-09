@@ -107,9 +107,12 @@ def create_app():
 
     db_models = {"models": [models]}
 
-    logger.debug("loading plugins")
-    plugin_models = load_plugins(app)
-    db_models.update(plugin_models)
+    if not get_settings().DISABLE_PLUGIN_LOADER:
+        logger.debug("loading plugins")
+        plugin_models = load_plugins(app)
+        db_models.update(plugin_models)
+    else:
+        logger.warning("plugin loading has been disabled by app config")
 
     logger.debug("registering tortoise-orm")
     # other setup
