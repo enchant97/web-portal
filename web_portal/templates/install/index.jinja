@@ -11,4 +11,17 @@
     <a class="bnt" href="{{ url_for('.get_admin_user') }}">Next</a>
 </section>
 
+<section class="panel">
+    <h2>Demo Install</h2>
+    <p>
+        This allows you to try out Web Portal as a demo.
+        Will use internally defined values.
+    </p>
+    <p>
+        Default users will be created (demo and admin),
+        the passwords will be the same as the username.
+    </p>
+    <a class="bnt" href="{{ url_for('.get_demo_install') }}">Install As Demo</a>
+</section>
+
 {% endblock %}

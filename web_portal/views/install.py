@@ -16,6 +16,31 @@ async def get_index():
     return await render_template("install/index.jinja")
 
 
+@blueprint.get("/demo-install")
+@ensure_not_setup
+async def get_demo_install():
+    admin_user = models.User(
+                username="admin",
+                is_admin=True,
+            )
+    admin_user.set_password("admin")
+    await admin_user.save()
+
+    demo_user = models.User(
+                username="demo",
+                is_admin=False,
+            )
+    demo_user.set_password("demo")
+    await demo_user.save()
+
+    await set_system_setting("PORTAL_SECURED", True)
+    await set_system_setting("SHOW_WIDGET_HEADERS", True)
+
+    await models.SystemSetting.update_or_create(key="has_setup", defaults=dict(value=True))
+
+    return redirect(url_for("login.get_login"))
+
+
 @blueprint.get("/admin-user")
 @ensure_not_setup
 async def get_admin_user():
