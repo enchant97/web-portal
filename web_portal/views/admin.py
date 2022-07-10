@@ -6,7 +6,7 @@ from tortoise.exceptions import IntegrityError
 
 from ..core.auth import AuthUserEnhanced, current_user, login_admin_required
 from ..core.constants import PUBLIC_ACCOUNT_USERNAME
-from ..core.validation import is_username_allowed
+from ..core.validation import check_password, is_username_allowed
 from ..database import models
 from ..import_export import Widget_V1, import_v1_widgets
 
@@ -66,14 +66,8 @@ async def post_users_new():
 
     if not is_username_allowed(username):
         await flash("Entered username contains invalid characters", "error")
-    elif is_admin and len(password) < 12:
-        await flash("Password is too short, must be at least 12 characters", "error")
-    elif not is_admin and len(password) < 8:
-        await flash("Password is too short, must be at least 8 characters", "error")
-    elif len(password) > 1024:
-        await flash("Password is too long, how would you even remember this?", "error")
-    elif password.find(username) != -1:
-        await flash("Password cannot contain username", "error")
+    elif (message := check_password(username, password)) is not None:
+        await flash(message.value, "error")
     else:
         try:
             user = models.User(

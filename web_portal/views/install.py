@@ -4,7 +4,7 @@ from tortoise.exceptions import IntegrityError
 from ..core.auth import ensure_not_setup
 from ..core.constants import PUBLIC_ACCOUNT_USERNAME
 from ..core.helpers import set_system_setting
-from ..core.validation import is_username_allowed
+from ..core.validation import check_password, is_username_allowed
 from ..database import models
 
 blueprint = Blueprint("install", __name__, url_prefix="/install")
@@ -64,14 +64,8 @@ async def post_admin_user():
         await flash("Entered username contains invalid characters", "error")
     elif username == PUBLIC_ACCOUNT_USERNAME:
         await flash("This username is reserved, please use another", "error")
-    elif password != password_confirm:
-        await flash("Passwords do not match", "error")
-    elif len(password) < 12:
-        await flash("Password is too short, must be at least 12 characters", "error")
-    elif len(password) > 1024:
-        await flash("Password is too long, how would you even remember this?", "error")
-    elif password.find(username) != -1:
-        await flash("Password cannot contain username", "error")
+    elif (message := check_password(username, password, password_confirm)) is not None:
+        await flash(message.value, "error")
     else:
         try:
             user = models.User(
