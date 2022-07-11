@@ -63,19 +63,19 @@ While this is not the recommended method, it is possible and perfectly fine to r
 
 ```bash
 # Clone project repo (stable branch)
-~$ git clone https://github.com/enchant97/web-portal.git --depth=1
+git clone https://github.com/enchant97/web-portal.git --depth=1
 
 # Enter project directory
-~$ cd web-portal
+cd web-portal
 
 # Create a virtual Python environment to separate dependences from system's
-~/web-portal$ python -m venv .venv
+python -m venv .venv
 
 # Install Pip requirements
-~/web-portal$ .venv/bin/pip install -r requirements.txt
+.venv/bin/pip install -r requirements.txt
 
 # Create folder for app data
-~/web-portal$ mkdir data
+mkdir data
 ```
 
 ```bash
@@ -153,7 +153,7 @@ After following the "Getting Ready" section, you can launch the app using Hyperc
 > You may want to run this command through systemd or similar, this will allow the app to run in the background and startup automatically.
 
 ```bash
-~/web-portal$ ./venv/bin/hypercorn 'web_portal.main:create_app()' --bind 0.0.0.0:8000 --workers 1
+./.venv/bin/hypercorn 'web_portal.main:create_app()' --bind 0.0.0.0:8000 --workers 1
 ```
 
 If you wish to configure Hypercorn the documentation can be found [here](https://pgjones.gitlab.io/hypercorn/), you could for example configure https or different bind methods.
