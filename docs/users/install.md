@@ -1,10 +1,10 @@
 # Install
 This sections will guide you though installing web-portal.
 
-- It is written for Docker users, although can be adapted for other systems.
-- It will assume you have Docker and Docker Compose installed.
+- If following the Docker guide it is expected you have Docker and Docker Compose installed
+- If following without Docker you will need Python 3.10, older versions will not work
 - Is recommended to install behind a reverse proxy like Nginx for custom routing and domain names.
-- Plugins may require more configs to be set
+- Third-Party plugins may require additional configs to be set
 
 ## Selecting A Database
 First you will need to decide which database to use:
@@ -14,7 +14,11 @@ First you will need to decide which database to use:
 
 If you only have a small amount of users and have no experience, its best to stick with SQLite.
 
-## Configure
+
+## Getting Ready
+There are several ways of installing Web Portal. The recommended method is through the official Docker image.
+
+### With Docker (Recommended)
 Now we can configure web-portal. We can do this using Docker Compose. So we will need to create a compose file.
 
 This file should be placed in a directory where you are going to store all your app data. The following is an example of your directory layout:
@@ -27,6 +31,8 @@ web_portal/
 
 ### Example Compose File
 This is an example config (using SQLite) which you can copy, as long as `SECRET_KEY` value is changed for security.
+
+> Config values explained in "Configuration" section
 
 ```yaml
 version: "3"
@@ -48,8 +54,41 @@ services:
       - "SECRET_KEY=replace_me_123"
 ```
 
-### Environment Variables
-All configs shown here should be given as environment variables.
+### Without Docker
+While this is not the recommended method, it is possible and perfectly fine to run Web Portal without Docker.
+
+> Commands shown will assume a GNU/Linux based system is being used
+
+> Config values explained in "Configuration" section
+
+```bash
+# Clone project repo (stable branch)
+~$ git clone https://github.com/enchant97/web-portal.git --depth=1
+
+# Enter project directory
+~$ cd web-portal
+
+# Create a virtual Python environment to separate dependences from system's
+~/web-portal$ python -m venv .venv
+
+# Install Pip requirements
+~/web-portal$ .venv/bin/pip install -r requirements.txt
+
+# Create folder for app data
+~/web-portal$ mkdir data
+```
+
+```bash
+# filepath: web-portal/.env
+
+DATA_PATH="./data"
+DB_URI="sqlite://data/db.sqlite"
+SECRET_KEY="replace_me_123"
+```
+
+
+## Configuration
+All configs shown here should be given as environment variables, or in a `.env` file.
 
 #### Base App
 
@@ -92,9 +131,11 @@ Other configs related to when running through the official docker image:
 
 > If you want HTTPS, both `CERT_FILE` and `KEY_FILE` environment values must be provided to valid certificates
 
-## Initial Run
-Now a compose file has been created, we can finally download and run the Docker image.
 
+## Run
+Now configurations have been done, you can move on to running Web Portal for the first time.
+
+### With Docker (Recommended)
 Inside the app directory, run these commands
 
 > Running `docker compose pull` ensures you have the latest specified in the compose file
@@ -106,6 +147,19 @@ docker compose pull
 docker compose up -d
 ```
 
-After these have been run, navigate in the browser to the hostname and port you configured. From there you should see a setup wizard which will guide you through the rest of the install. After you have completed this you may want to read the usage guide [here](usage.md).
+### Without Docker
+After following the "Getting Ready" section, you can launch the app using Hypercorn.
+
+> You may want to run this command through systemd or similar, this will allow the app to run in the background and startup automatically.
+
+```bash
+~/web-portal$ ./venv/bin/hypercorn 'web_portal.main:create_app()' --bind 0.0.0.0:8000 --workers 1
+```
+
+If you wish to configure Hypercorn the documentation can be found [here](https://pgjones.gitlab.io/hypercorn/), you could for example configure https or different bind methods.
+
+
+## Once Running
+After the app is launched, navigate in the browser to the hostname and port you configured. From there you should see a setup wizard which will guide you through the rest of the install. After you have completed this you may want to read the usage guide [here](usage.md).
 
 If you have a question, you can ask in the GitHub discussions page at: <https://github.com/enchant97/web-portal/discussions>.
