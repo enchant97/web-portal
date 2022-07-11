@@ -10,7 +10,7 @@ from .constants import (MAX_PASSWORD_LENGTH, MAX_USERNAME_LENGTH,
 def check_password(
         username: str,
         password: str,
-        password_conf: str | None) -> str | None:
+        password_conf: str | None = None) -> str | None:
     if password_conf is not None and password != password_conf:
         return "passwords do not match"
     elif username.lower() in password.lower():
