@@ -6,7 +6,7 @@
     <p>Welcome to Core, a built-in plugin for Web-Portal.</p>
 
     {% if current_user.is_authenticated_admin %}
-    <a class="bnt" href="{{ url_for('.get_engines_index') }}">Search Engines</a>
+    <a class="bnt" href="{{ url_for('.get_engines_index') }}">Engine Management</a>
     <a class="bnt" href="{{ url_for('.get_links_index') }}">Links Management</a>
     <a class="bnt" href="{{ url_for('.get_upload_icons') }}">Upload Icons</a>
     {% endif %}

@@ -1,3 +1,24 @@
+{% if not engines %}
+<section class="panel">
+    <h2>No Engines Available Yet...</h2>
+    {% if current_user.is_authenticated_admin %}
+    <p>
+        No search engines are available to select yet. Go to the "Engine Management" to add some,
+        this can be found in the plugin settings or by clicking below:
+    </p>
+    <a class="bnt" href="{{ url_for('core.get_engines_index') }}">Engine Management</a>
+    {% else %}
+    <p>
+        No search engines are available to select yet. Ask your administrator to add some by going
+        here:
+    </p>
+    <blockquote><samp>Settings > Plugins > Core > Engine Management</samp></blockquote>
+    {% endif %}
+    <p>
+        After they have been added return to this page to select one.
+    </p>
+</section>
+{% else %}
 <section class="panel">
     <h2>Configure</h2>
     <form action="{{ url_for('core.post_widget_update_search', widget_id=dash_widget_id, back_to=back_to_url) }}"
@@ -6,9 +27,11 @@
         <select name="engine-id" id="core-widget-search-engine-id" required>
             <option value="">** Select Engine **</option>
             {% for engine in engines %}
-            <option {% if curr_engine_id==engine.id %}selected{% endif %} value="{{ engine.id }}">{{ engine.name }}</option>
+            <option {% if curr_engine_id==engine.id %}selected{% endif %} value="{{ engine.id }}">{{ engine.name }}
+            </option>
             {% endfor %}
         </select>
         <button type="submit">Save</button>
     </form>
 </section>
+{% endif %}

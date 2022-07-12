@@ -1,9 +1,31 @@
+{% if not links %}
+<section class="panel">
+    <h2>No Links Available Yet...</h2>
+    {% if current_user.is_authenticated_admin %}
+    <p>
+        No links are available to add yet. Go to the "Links Manager" to add some,
+        this can be found in the plugin settings or by clicking below:
+    </p>
+    <a class="bnt" href="{{ url_for('core.get_links_index') }}">Links Manager</a>
+    {% else %}
+    <p>
+        No links are available to add yet. Ask your administrator to add some by going
+        here:
+    </p>
+    <blockquote><samp>Settings > Plugins > Core > Links Manager</samp></blockquote>
+    {% endif %}
+    <p>
+        After they have been added return to this page to place them on your dashboard.
+    </p>
+</section>
+{% else %}
 <section class="panel">
     <h2>Add Link</h2>
     <form action="{{ url_for('core.post_widget_add_link', widget_id=dash_widget_id, back_to=back_to_url) }}"
         method="post">
         <label for="core-widget-link">Link</label>
-        <select name="link-id" id="core-widget-link-id">
+        <select name="link-id" id="core-widget-link-id" required>
+            <option value="">** Select Link **</option>
             {% for link in links %}
             <option value="{{ link.id }}">{{ link.name }}</option>
             {% endfor %}
@@ -34,3 +56,4 @@
         </tbody>
     </table>
 </section>
+{% endif %}
