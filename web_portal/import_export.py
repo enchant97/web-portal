@@ -7,7 +7,7 @@ from tortoise.transactions import atomic
 
 from .core.plugin import PluginHandler
 
-logger = logging.getLogger("import_export")
+logger = logging.getLogger("web-portal")
 
 
 class Widget_V1(BaseModel):
@@ -19,9 +19,10 @@ class Widget_V1(BaseModel):
 
 @atomic()
 async def import_v1_widgets(widgets: Iterable[Widget_V1]) -> int:
-    try:
-        core_plugin = PluginHandler.get_loaded_plugin("core")
-    except KeyError:
+    core_plugin = PluginHandler.get_loaded_plugin("core")
+
+    # requires 'core' plugin to be registered
+    if core_plugin is None:
         logger.error("Cannot import v1 widgets due to plugin missing")
         return -1
 

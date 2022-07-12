@@ -183,7 +183,7 @@ class PluginHandler:
         return PluginHandler._loaded_plugins
 
     @staticmethod
-    def get_loaded_plugin(name: str) -> LoadedPlugin:
+    def get_loaded_plugin(name: str) -> LoadedPlugin | None:
         """
         Gets a loaded plugin by internal name
 
