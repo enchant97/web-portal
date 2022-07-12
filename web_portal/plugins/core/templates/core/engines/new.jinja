@@ -8,6 +8,8 @@
         <input type="text" name="name" id="core-engine-name" placeholder="search..." maxlength="128" required>
         <label for="core-engine-url">Search Url</label>
         <input type="url" name="url" id="core-engine-url" placeholder="https://" value="{{ search_url }}" required>
+        <label for="core-engine-query-param">Query Parameter</label>
+        <input type="text" name="query-param" id="core-engine-query-param" value="q" maxlength="128" required>
         <label for="core-engine-method">Submission Method</label>
         <select name="method" id="core-engine-method">
             <option value="GET">GET</option>

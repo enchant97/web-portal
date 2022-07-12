@@ -24,6 +24,7 @@ class SearchEngine(Model):
     id = IntField(pk=True)
     name = CharField(128, unique=True)
     url = TextField()
+    query_param = CharField(128)
     method = CharEnumField(SearchEngineMethod)
 
     class Meta:

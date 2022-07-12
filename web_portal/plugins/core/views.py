@@ -87,11 +87,13 @@ async def post_engines_new():
 
     name = form["name"].strip()
     url = form["url"].strip()
+    query_param = form["query-param"].strip()
     method = models.SearchEngineMethod(form["method"].upper())
 
     await models.SearchEngine.create(
         name=name,
         url=url,
+        query_param=query_param,
         method=method,
     )
 
