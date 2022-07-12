@@ -1,3 +1,5 @@
+import asyncio
+
 from quart import Blueprint, flash, redirect, render_template, request, url_for
 
 from ..core.auth import current_user, login_standard_required
@@ -10,8 +12,10 @@ blueprint = Blueprint("settings", __name__, url_prefix="/settings")
 @blueprint.get("/")
 @login_standard_required
 async def get_index():
-    dashboard = await models.Dashboard.get_or_none(owner_id=current_user.auth_id)
-    user = await models.User.get(id=current_user.auth_id)
+    user, dashboard = await asyncio.gather(
+        models.User.get(id=current_user.auth_id),
+        models.Dashboard.get_or_none(owner_id=current_user.auth_id),
+    )
 
     return await render_template(
         "settings/index.jinja",

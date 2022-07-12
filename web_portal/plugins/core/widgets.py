@@ -1,3 +1,4 @@
+import asyncio
 import logging
 from functools import lru_cache
 from typing import Optional
@@ -95,9 +96,11 @@ async def render_widget_edit_link(
         dash_widget_id: int,
         config: dict | None,
         back_to_url: str) -> str:
-    links = await models.Link.all()
+    links, added_links = await asyncio.gather(
+        models.Link.all(),
+        models.Link.filter(id__in=config.get("links", [])).all(),
+    )
 
-    added_links = await models.Link.filter(id__in=config.get("links", [])).all()
     return await render_template(
         "core/includes/link-widget-edit.jinja",
         dash_widget_id=dash_widget_id,

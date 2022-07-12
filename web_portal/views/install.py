@@ -1,3 +1,5 @@
+import asyncio
+
 from quart import Blueprint, flash, redirect, render_template, request, url_for
 from tortoise.exceptions import IntegrityError
 
@@ -24,19 +26,19 @@ async def get_demo_install():
                 is_admin=True,
             )
     admin_user.set_password("admin")
-    await admin_user.save()
 
     demo_user = models.User(
                 username="demo",
                 is_admin=False,
             )
     demo_user.set_password("demo")
-    await demo_user.save()
 
-    await set_system_setting("PORTAL_SECURED", True)
-    await set_system_setting("SHOW_WIDGET_HEADERS", True)
-
-    await models.SystemSetting.update_or_create(key="has_setup", defaults=dict(value=True))
+    await asyncio.gather(
+        models.User.bulk_create((admin_user, demo_user)),
+        set_system_setting("PORTAL_SECURED", True),
+        set_system_setting("SHOW_WIDGET_HEADERS", True),
+        models.SystemSetting.update_or_create(key="has_setup", defaults=dict(value=True)),
+    )
 
     return redirect(url_for("login.get_login"))
 
@@ -98,8 +100,10 @@ async def post_set_configs():
     portal_secured = not form.get("public-portal", False, bool)
     show_widget_headers = form.get("show-widget-headers", False, bool)
 
-    await set_system_setting("PORTAL_SECURED", portal_secured)
-    await set_system_setting("SHOW_WIDGET_HEADERS", show_widget_headers)
+    await asyncio.gather(
+        set_system_setting("PORTAL_SECURED", portal_secured),
+        set_system_setting("SHOW_WIDGET_HEADERS", show_widget_headers),
+    )
 
     return redirect(url_for(".get_finish"))
 
