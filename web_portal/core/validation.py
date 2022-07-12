@@ -4,7 +4,8 @@ Module to provide validation functions for forms/requests
 import re
 
 from .constants import (MAX_PASSWORD_LENGTH, MAX_USERNAME_LENGTH,
-                        MIN_PASSWORD_LENGTH, VALID_USERNAME_RE)
+                        MIN_PASSWORD_LENGTH, PUBLIC_ACCOUNT_USERNAME,
+                        VALID_USERNAME_RE)
 
 
 def check_password(
@@ -22,6 +23,8 @@ def check_password(
 
 
 def is_username_allowed(username: str) -> bool:
+    if username == PUBLIC_ACCOUNT_USERNAME:
+        return False
     if (len(username) > 0 and len(username) <= MAX_USERNAME_LENGTH) and \
             re.fullmatch(VALID_USERNAME_RE, username) is not None:
         return True
