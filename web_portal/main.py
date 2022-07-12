@@ -85,6 +85,7 @@ def register_blueprints(app: Quart):
             view = import_module("." + name, "web_portal.views")
             app.register_blueprint(view.blueprint)
 
+
 def setup_configs(app: Quart):
     logging.basicConfig()
     logger.setLevel(logging.getLevelName(get_settings().LOG_LEVEL))

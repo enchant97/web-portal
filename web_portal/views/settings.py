@@ -68,9 +68,9 @@ async def post_add_widget():
 async def get_edit_dashboard_widget(widget_id: int):
     dashboard = await models.Dashboard.get(owner_id=current_user.auth_id)
     widget = (await dashboard.widgets.filter(id=widget_id)
-                     .get()
-                     .prefetch_related("widget", "widget__plugin")
-                     )
+              .get()
+              .prefetch_related("widget", "widget__plugin")
+              )
 
     loaded_plugin = PluginHandler.get_loaded_plugin(widget.widget.plugin.internal_name)
 

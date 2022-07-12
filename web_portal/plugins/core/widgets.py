@@ -11,6 +11,7 @@ from . import models, views
 
 logger = logging.getLogger("web-portal")
 
+
 class PluginSettings(BaseSettings):
     OPEN_TO_NEW_TAB: Optional[bool] = True
 
@@ -87,7 +88,7 @@ async def render_widget_edit_search(
         "core/includes/search-widget-edit.jinja",
         dash_widget_id=dash_widget_id,
         engines=engines,
-        curr_engine_id = config.get("engine_id"),
+        curr_engine_id=config.get("engine_id"),
         back_to_url=back_to_url,
     )
 
