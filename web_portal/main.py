@@ -85,13 +85,10 @@ def register_blueprints(app: Quart):
             view = import_module("." + name, "web_portal.views")
             app.register_blueprint(view.blueprint)
 
-
-def create_app():
+def setup_configs(app: Quart):
     logging.basicConfig()
     logger.setLevel(logging.getLevelName(get_settings().LOG_LEVEL))
 
-    logger.debug("loading config")
-    # do config
     app.config["__VERSION__"] = __version__
     if get_settings().SECRET_KEY:
         app.secret_key = get_settings().SECRET_KEY
@@ -101,8 +98,13 @@ def create_app():
     app.config["QUART_AUTH_COOKIE_NAME"] = "WEB-PORTAL-AUTH"
     app.config["QUART_AUTH_COOKIE_SECURE"] = get_settings().SECURE_COOKIES
     app.config["PUBLIC_ACCOUNT_USERNAME"] = PUBLIC_ACCOUNT_USERNAME
+
+
+def create_app():
+    logger.debug("loading config")
+    setup_configs(app)
+
     logger.debug("registering blueprints")
-    # register blueprints
     register_blueprints(app)
 
     db_models = {"models": [models]}
@@ -115,14 +117,14 @@ def create_app():
         logger.warning("plugin loading has been disabled by app config")
 
     logger.debug("registering tortoise-orm")
-    # other setup
     register_tortoise(
         app,
         db_url=get_settings().DB_URI,
         modules=db_models,
         generate_schemas=True)
-    logger.debug("init auth manager")
+
     auth_manager.init_app(app)
+
     logger.debug("created app")
 
     return app
