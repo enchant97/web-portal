@@ -5,13 +5,26 @@ After finishing the install wizard you will either be met by the public dashboar
 
 > This guide will not show any setup of plugins other than the "Core" plugin.
 
+> Please read the whole guide, to understand all base functionality
+
+## Terminology
+### The Public User
+Web Portal and the documentation reference a user with the username of "public". This is a virtual account, which only admins can access. It is used to provide a dashboard for when the dashboard is in public mode, and it will also be used when a user has not configured their own dashboard.
+
+### Core
+When "Core" is referenced it means the "Core" plugin, which is the plugin built-in to Web Portal. It can also be removed if needed.
+
 
 ## Logging In
-First you will need to login. To login click on the "Log In" button at the top navigation bar. Use the admin credentials you setup earlier.
+To login click on the "Log In" button at the top navigation bar. Use the admin credentials you setup earlier.
 
 
 ## The Dashboard
-After logging in you will be met with the dashboard, which will fill up with your widgets. At the movement this should be blank.
+This is where widgets will be displayed. It is the homepage (or index page) of Web Portal.
+
+- During the install if you set the portal as private you will have to login to see it
+- After installing, this page will be blank
+- Unless a user has created their own dashboard, they will see the inherited "public" user's one.
 
 
 ## Accessing User Settings
@@ -29,8 +42,6 @@ If you want to override the public dashboard for the current user click on the "
 
 If you have a dashboard this button will be called "Editor" instead. You can reset back to the public dashboard by clicking "Restore To Defaults".
 
-As we want to access the public account, which will allow us to set a global dashboard for any user click on the "Administration" button.
-
 
 ## Accessing Administration Settings
 Once at the "Administration" page. We have the following options:
@@ -40,22 +51,41 @@ Once at the "Administration" page. We have the following options:
 - Users - Takes you into a manage users page; allowing for you to add new users, modify existing ones and force login to standard account users. It also display a table of all users currently registered with their corresponding management buttons.
 - Import V1 Widgets - Import links from Web Portal V1 (only works when Core plugin is installed)
 
-As we want to access the public account, we can click on "Switch To Public". This will now login to the virtual public account. From there we can go into settings and create our shared public dashboard.
-
 
 ## Dashboard Editor
 Inside the dashboard editor we can add new widgets and manage our currently placed ones.
 
+- If you want to access the public dashboard navigate to: `Settings > Administration > Switch To Public`
+- Creating a dashboard for a user will override the "public" one
+
 ### Add Widget
 Depending on what plugins you have installed you may have more options. However You can add a widget to the dashboard by selecting the widget type and giving it a name (this will show up in the widgets header if enabled).
 
+> Core widgets are spoken about in the "Plugin - Core" section
+
 ### Manage Placed Widget
-Once a widget has been placed, in the dashboard editor you will see the widgets and their corresponding management buttons (Edit, Delete).
+Once a widget has been placed, the dashboard editor will display the widgets and their corresponding management buttons (Edit, Delete).
 
 Clicking on the "Edit" button will take you to the widgets edit page, depending on how the plugin is implemented it may look different to the Web Portal theme.
 
+
+## Plugin Settings
+This page allows the management of plugins. If you are an admin you may see more options.
+
+Each plugin is listed, with a link to it's plugin settings.
+
+### Missing Plugins
+Removing a plugin from the plugin folder while the Web Portal is shutdown will only prevent it from being loaded, Web Portal will recognise it as missing.
+
+To truly remove it you will need to deregister the plugin after you have removed it from the plugin folder. This can be done from "Plugin Settings" and navigating to the "Missing Plugins" section (which will appear once a plugin is not found) and pressing the delete button.
+
+Please note before removing a plugin, you may need to tell the plugin it is being removed (this depends on the plugin), as any data that is controlled by the plugin and not Web Portal will **not** be removed.
+
+> If a plugin has failed to load it will also appear in the "Missing Plugins" section
+
+
 ## Plugin - Core
-The Core plugin which is built-in to Web Portal (unless you removed it). Provides several widgets which are listed below:
+The Core plugin which is built-in to Web Portal (unless you removed it). It provides several widgets which are listed below:
 
 - Digital Clock - A digital clock which also displays the date
 - Links - The links widget allows for placement of customisable links
@@ -70,4 +100,6 @@ This plugin also has a management page, which is accessed from the "Plugin Setti
 - Links Management - Allows admin to add links which can be selected from the links widget
 - Upload Icons - Allows admin to upload icons which can be used in the links widget for a app icon
 
+
+## The End
 This is the end of the usage tutorial for Web Portal, maybe checkout the upgrading and migrating guide next [here](upgrading.md)
