@@ -32,10 +32,27 @@ If you want just a basic link panel configured with a yaml file checkout Web Por
 
 <https://youtu.be/VIWvmfFK5V0>
 
-## About The Repo
-- This repo uses 'master' as the develop branch and should be treating unstable or unfinished. If you want a stable release please use the tags/releases.
-- The [CHANGELOG](CHANGELOG.md) contains a history of changes that happened with each release.
+## Branches
+| Name         | Description            | State         |
+| :----------- | :--------------------- | :------------ |
+| master       | Work ready for release | Stable        |
+| next         | Work for next version  | Very Unstable |
+| historical-X | Historical versions    | Unsupported   |
 
+> Choose a tag/release for most stable if running project
+
+## Contributions
+Contributing to this project is welcome, whether that is an issue or pull request, but please read the guidelines below:
+
+- Contributions may get rejected, if they do not fit the project
+- New widgets most likely will not be added, instead make a plugin (feel free to add the idea to the GitHub discussions page, [here](https://github.com/enchant97/web-portal/discussions/categories/ideas))
+- You should keep code to this existing style/format
+- Contributions should not require more pip packages from being added, although there may be exceptions
+- Contributions must be licensed under the same as the project
+- Submit pull requests to 'next' branch, please include some details of what the Contribution is
+- Don't change the version number
+
+## Documentation
 More details and guides on installing can be found in `docs`, or click [here](docs/index.md).
 
 ## License
