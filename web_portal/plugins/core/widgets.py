@@ -26,7 +26,7 @@ async def render_widget_link(link_ids: tuple[int]) -> str:
     links = await models.Link.filter(id__in=link_ids).order_by("name").all()
 
     return await render_template(
-        "core/includes/link-widget.jinja",
+        "core/includes/widgets/link.jinja",
         links=links,
     )
 
@@ -40,7 +40,7 @@ async def render_widget_search(config: dict) -> str:
         return "No search engine selected..."
 
     return await render_template(
-        "core/includes/search-widget.jinja",
+        "core/includes/widgets/search.jinja",
         engine=engine,
     )
 
@@ -50,7 +50,7 @@ async def render_widget_iframe(config: dict) -> str:
     iframe_height = config.get("height", 150)
 
     return await render_template(
-        "core/includes/iframe-widget.jinja",
+        "core/includes/widgets/iframe.jinja",
         iframe_src=iframe_src,
         iframe_height=iframe_height,
     )
@@ -61,7 +61,7 @@ async def render_widget(internal_name, widget_id: int, config: dict | None) -> s
         config = {}
     match internal_name:
         case "clock":
-            return await render_template("core/includes/clock-widget.jinja", widget_id=widget_id)
+            return await render_template("core/includes/widgets/clock.jinja", widget_id=widget_id)
         case "links":
             return await render_widget_link(config.get("links", []))
         case "search":
@@ -85,7 +85,7 @@ async def render_widget_edit_search(
     engines = await models.SearchEngine.all()
 
     return await render_template(
-        "core/includes/search-widget-edit.jinja",
+        "core/includes/widgets-editor/search.jinja",
         dash_widget_id=dash_widget_id,
         engines=engines,
         curr_engine_id=config.get("engine_id"),
@@ -103,7 +103,7 @@ async def render_widget_edit_link(
     )
 
     return await render_template(
-        "core/includes/link-widget-edit.jinja",
+        "core/includes/widgets-editor/link.jinja",
         dash_widget_id=dash_widget_id,
         links=links,
         added_links=added_links,
@@ -118,7 +118,7 @@ async def render_widget_edit_embed_html(
     content = config.get("content", "")
 
     return await render_template(
-        "core/includes/embed_html-widget-edit.jinja",
+        "core/includes/widgets-editor/embed_html.jinja",
         content=content,
         dash_widget_id=dash_widget_id,
         back_to_url=back_to_url,
@@ -133,7 +133,7 @@ async def render_widget_edit_iframe(
     iframe_height = config.get("height", 150)
 
     return await render_template(
-        "core/includes/iframe-widget-edit.jinja",
+        "core/includes/widgets-editor/iframe.jinja",
         iframe_src=iframe_src,
         iframe_height=iframe_height,
         dash_widget_id=dash_widget_id,
