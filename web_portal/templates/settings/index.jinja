@@ -11,7 +11,8 @@
         <a class="icon-bnt" href="{{ url_for('.get_restore_defaults') }}">{{ macros.feather_img('refresh-cw') }} Restore
             To Defaults</a>
         {% else %}
-        <a class="bnt" href="{{ url_for('.get_edit_dashboard') }}">Create Custom</a>
+        <a class="icon-bnt" href="{{ url_for('.get_edit_dashboard') }}">{{ macros.feather_img('grid') }} Create
+            Custom</a>
         {% endif %}
     </div>
 </section>

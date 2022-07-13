@@ -3,6 +3,10 @@
 {% block main %}
 <section class="panel">
     <h2>Add User</h2>
+    <p>
+        This allows you to add new users to Web Portal.
+        You can also decide whether to make them an admin or not.
+    </p>
     <form action="{{ url_for('.post_users_new') }}" method="post">
         <label for="new-user-username">Username</label>
         <input type="text" name="username" id="new-user-username" maxlength="128" required>
@@ -16,6 +20,10 @@
 
 <section class="panel">
     <h2>Existing Users</h2>
+    <p>
+        This panel displays all user accounts.
+        Please note some accounts cannot be modified, so the management controls will not show.
+    </p>
     <table>
         <thead>
             <tr>
@@ -47,6 +55,10 @@
 
 <section class="panel">
     <h2>Force Login</h2>
+    <p>
+        This panel allows you to login to another user account as long as it is not an admin.
+        You are required to re-enter your password.
+    </p>
     <form action="{{ url_for('.post_user_force_login') }}" method="post">
         <label for="user-id">User</label>
         <select name="user-id" id="user-id" required>
