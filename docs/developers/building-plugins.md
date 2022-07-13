@@ -139,7 +139,7 @@ The `version_specifier` in the PLUGIN_META variable takes PEP 440 version specif
 ```
 
 ## Reference Plugin
-If you are looking for a example plugin, well your in luck. Web Portal comes with a plugin called "core". You can use this as a good reference on how a plugin should be laid out.
+If you are looking for a example plugin, well your in luck. Web Portal comes with plugins called "core" and "core_extras". You can use this as a good reference on how a plugin should be laid out.
 
 ## Plugin Creation
 This section will walk-through creating a plugin. Before making a plugin an internal name must be decided, for this tutorial we will use "my_plugin" as that.

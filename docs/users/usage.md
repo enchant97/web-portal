@@ -3,9 +3,10 @@ This section will guide you through to finish setting up Web Portal. It assumes 
 
 After finishing the install wizard you will either be met by the public dashboard or a login screen, this will depend on what you set the "Public Portal" setting to.
 
-> This guide will not show any setup of plugins other than the "Core" plugin.
+> This guide will not show any setup of plugins other than the "Core" & "Core-Extras" plugin.
 
 > Please read the whole guide, to understand all base functionality
+
 
 ## Terminology
 ### The Public User
@@ -13,6 +14,9 @@ Web Portal and the documentation reference a user with the username of "public".
 
 ### Core
 When "Core" is referenced it means the "Core" plugin, which is the plugin built-in to Web Portal. It can also be removed if needed.
+
+### Core-Extras
+When "Core-Extras" is referenced it means the "Core-Extras" plugin, which is the plugin built-in to Web Portal. It can also be removed if needed.
 
 
 ## Logging In
@@ -63,6 +67,8 @@ Depending on what plugins you have installed you may have more options. However 
 
 > Core widgets are spoken about in the "Plugin - Core" section
 
+> Core-Extras widgets are spoken about in the "Plugin - Core-Extras" section
+
 ### Manage Placed Widget
 Once a widget has been placed, the dashboard editor will display the widgets and their corresponding management buttons (Edit, Delete).
 
@@ -90,8 +96,6 @@ The Core plugin which is built-in to Web Portal (unless you removed it). It prov
 - Digital Clock - A digital clock which also displays the date
 - Links - The links widget allows for placement of customisable links
 - Web Search - Add your own search engine to search the internet
-- Embed HTML - Embed some custom HTML code (also known as injection)
-- Embed Website - Embed a website by providing its url, uses an iframe so may not work with all sites
 
 ### Administration Settings
 This plugin also has a management page, which is accessed from the "Plugin Settings" page. It has the following sub pages:
@@ -99,6 +103,13 @@ This plugin also has a management page, which is accessed from the "Plugin Setti
 - Search Engines - Allows admin to add search engines which can be selected from the search widget
 - Links Management - Allows admin to add links which can be selected from the links widget
 - Upload Icons - Allows admin to upload icons which can be used in the links widget for a app icon
+
+
+## Plugin - Core-Extras
+The Core-Extras plugin which is built-in to Web Portal (unless you removed it). It provides several widgets which are listed below:
+
+- Embed HTML - Embed some custom HTML code (also known as injection)
+- Embed Website - Embed a website by providing its url, uses an iframe so may not work with all sites
 
 
 ## The End
