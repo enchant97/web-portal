@@ -3,6 +3,8 @@ Web-Portal is a web app written in Python using Quart, that aims to provide an e
 
 It has been designed to run through docker and it is recommended to put it behind a proxy like Nginx for custom routing and domain names.
 
+> **IMPORTANT**: When V2 is merged, it has been decided to rename the 'master' branch to 'main'.
+
 ## Features
 - Access a grid of beautiful links to your web services
 - Minimal use of Javascript, to provide a lightning fast experience
