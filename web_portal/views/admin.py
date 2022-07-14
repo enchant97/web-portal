@@ -86,9 +86,10 @@ async def post_users_new():
 @blueprint.get("/users/<int:user_id>/delete")
 @login_admin_required
 async def get_users_delete(user_id: int):
-    # TODO deny deletion for public account
     if user_id == current_user.auth_id:
         await flash("You cannot delete yourself", "error")
+    elif (await models.User.get(id=user_id)).username == PUBLIC_ACCOUNT_USERNAME:
+        await flash("You cannot delete the virtual public", "error")
     else:
         await models.User.filter(id=user_id).delete()
         await flash("deleted user", "ok")
