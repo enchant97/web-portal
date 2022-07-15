@@ -1,24 +1,13 @@
 import asyncio
 import logging
-from functools import lru_cache
-from typing import Optional
 
-from pydantic import BaseSettings
 from quart import render_template
 from web_portal.plugin_api import PluginMeta
 
 from . import models, views
+from .helpers import get_settings
 
 logger = logging.getLogger("web-portal")
-
-
-class PluginSettings(BaseSettings):
-    OPEN_TO_NEW_TAB: Optional[bool] = True
-
-
-@lru_cache
-def get_settings():
-    return PluginSettings()
 
 
 async def render_widget_link(link_ids: tuple[int]) -> str:

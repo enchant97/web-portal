@@ -113,9 +113,10 @@ This table shows how the `DB_URI` values should look:
 #### Core Plugin
 If you have the "core" plugin installed, which comes built-in to Web Portal unless you have removed it. These are the configs:
 
-| Name            | Description                                        | Default |
-| :-------------- | :------------------------------------------------- | :------ |
-| OPEN_TO_NEW_TAB | Whether to open the link widget links in a new tab | True    |
+| Name               | Description                                        | Default |
+| :----------------- | :------------------------------------------------- | :------ |
+| ALLOW_ICON_UPLOADS | Whether to allow icon uploads                      | True    |
+| OPEN_TO_NEW_TAB    | Whether to open the link widget links in a new tab | True    |
 
 #### Docker Specific
 

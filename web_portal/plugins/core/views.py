@@ -5,6 +5,7 @@ from tempfile import TemporaryDirectory
 from quart import (Blueprint, abort, flash, redirect, render_template, request,
                    send_file, url_for)
 from web_portal.plugin_api import (PORTAL_ENDPOINT, current_user,
+                                   get_plugin_system_setting,
                                    get_widget_details, get_widget_owner_id,
                                    login_admin_required,
                                    login_required_if_secured,
@@ -12,7 +13,8 @@ from web_portal.plugin_api import (PORTAL_ENDPOINT, current_user,
 
 from . import models
 from .helpers import (VALID_UPLOAD_EXTENTIONS, copy_icons_from_import,
-                      extract_upload, get_icon_names, get_icon_path)
+                      extract_upload, get_icon_names, get_icon_path,
+                      get_settings)
 
 logger = logging.getLogger("web-portal")
 blueprint = Blueprint("core", __name__, static_folder="static", template_folder="templates")
@@ -40,12 +42,19 @@ async def get_icon(icon_name):
 @blueprint.get("/upload-icons")
 @login_admin_required
 async def get_upload_icons():
+    if not get_settings().ALLOW_ICON_UPLOADS:
+        await flash("icon upload has been disabled by the admin", "error")
+        return redirect(url_for(".get_index"))
+
     return await render_template("core/upload-icons.jinja")
 
 
 @blueprint.post("/upload-icons")
 @login_admin_required
 async def post_upload_icons():
+    if not get_settings().ALLOW_ICON_UPLOADS:
+        abort(403)
+
     file = (await request.files)["file"]
 
     if (suffixes := "".join(Path(file.filename).suffixes)) in VALID_UPLOAD_EXTENTIONS:

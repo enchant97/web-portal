@@ -1,13 +1,25 @@
+from functools import lru_cache
 from pathlib import Path
 from shutil import copytree
+from typing import Optional
 from zipfile import ZipFile
 
+from pydantic import BaseSettings
 from web_portal.plugin_api import get_plugin_data_path
 
 ICONS_PATH = get_plugin_data_path("core") / "icons"
 VALID_UPLOAD_EXTENTIONS = (
     ".zip",
 )
+
+class PluginSettings(BaseSettings):
+    ALLOW_ICON_UPLOADS: Optional[bool] = True
+    OPEN_TO_NEW_TAB: Optional[bool] = True
+
+
+@lru_cache
+def get_settings():
+    return PluginSettings()
 
 
 def get_icon_names(sort: bool = False) -> set[str]:
