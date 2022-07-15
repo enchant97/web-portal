@@ -13,6 +13,7 @@ class Settings(BaseSettings):
     LOG_LEVEL: Optional[str] = "INFO"
 
     DISABLE_PLUGIN_LOADER: bool = False
+    PLUGIN_SKIP_LIST: Optional[list[str]] = None
 
     class Config:
         case_sensitive = True

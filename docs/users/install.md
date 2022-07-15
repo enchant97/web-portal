@@ -100,8 +100,11 @@ All configs shown here should be given as environment variables, or in a `.env` 
 | SECURE_COOKIES        | Whether to require https for cookies   | False                |
 | LOG_LEVEL             | What log level to use                  | "INFO"               |
 | DISABLE_PLUGIN_LOADER | Disable the plugin loader              | False                |
+| PLUGIN_SKIP_LIST      | Skip loading specific plugins          | -                    |
 
 > SECRET_KEY should be set, otherwise logins will be reset on server restart
+
+> Lists must be given in Python format e.g. `["core", "core_extras"]` or `["core_extras"]`
 
 This table shows how the `DB_URI` values should look:
 

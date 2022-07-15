@@ -59,7 +59,7 @@ def context_get_head_injects():
 
 def load_plugins(app: Quart) -> dict:
     db_models = {}
-    for plugin in PluginHandler.load_plugins(__version__):
+    for plugin in PluginHandler.load_plugins(__version__, get_settings().PLUGIN_SKIP_LIST):
         # register plugin settings
         if plugin.meta.get_settings:
             app.config[f"plugin__{plugin.internal_name}"] = plugin.meta.get_settings()

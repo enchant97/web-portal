@@ -7,7 +7,7 @@ from dataclasses import dataclass
 from importlib import import_module
 from pathlib import Path
 from types import ModuleType
-from typing import Any, Optional
+from typing import Any, Iterable, Optional
 
 from packaging.specifiers import InvalidSpecifier, SpecifierSet
 from quart import Blueprint
@@ -149,8 +149,11 @@ class PluginHandler:
             raise PluginNameConflictException(f"plugin with name '{name}' already loaded")
 
     @staticmethod
-    def load_plugins(app_version: str) -> Generator[LoadedPlugin, None, None]:
+    def load_plugins(app_version: str, skip_list: Iterable[str] = None) -> Generator[LoadedPlugin, None, None]:
         for name in PluginHandler.get_plugin_names():
+            if skip_list is not None and name in skip_list:
+                logger.info("skipping loading plugin as in skip list::plugin_name='%s'", name)
+                continue
             try:
                 logger.debug("loading plugin::plugin_name='%s'", name)
 
