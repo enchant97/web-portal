@@ -6,6 +6,7 @@ from tortoise.exceptions import IntegrityError
 
 from ..core.auth import AuthUserEnhanced, current_user, login_admin_required
 from ..core.constants import PUBLIC_ACCOUNT_USERNAME
+from ..core.helpers import get_system_setting
 from ..core.validation import check_password, is_username_allowed
 from ..database import models
 from ..import_export import Widget_V1, import_v1_widgets
@@ -86,10 +87,15 @@ async def post_users_new():
 @blueprint.get("/users/<int:user_id>/delete")
 @login_admin_required
 async def get_users_delete(user_id: int):
-    if user_id == current_user.auth_id:
+    user = await models.User.get(id=user_id)
+
+    if user.id == int(current_user.auth_id):
         await flash("You cannot delete yourself", "error")
-    elif (await models.User.get(id=user_id)).username == PUBLIC_ACCOUNT_USERNAME:
+    elif user.username == PUBLIC_ACCOUNT_USERNAME:
         await flash("You cannot delete the virtual public", "error")
+    elif await get_system_setting("DEMO_MODE", default=False) and \
+            user.username in ("admin", "demo"):
+        await flash("You cannot delete this user while in demo mode", "error")
     else:
         await models.User.filter(id=user_id).delete()
         await flash("deleted user", "ok")
@@ -108,6 +114,10 @@ async def get_users_toggle_admin(user_id: int):
 
     if user.username == PUBLIC_ACCOUNT_USERNAME:
         await flash("This account cannot become an admin", "error")
+        return redirect(url_for(".get_users"))
+    elif await get_system_setting("DEMO_MODE", default=False) and \
+            user.username in ("admin", "demo"):
+        await flash("You cannot change role of user while in demo mode", "error")
         return redirect(url_for(".get_users"))
 
     user.is_admin = not user.is_admin

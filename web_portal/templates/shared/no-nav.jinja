@@ -31,8 +31,13 @@
         {% block main %}
         {% endblock %}
     </main>
-    <footer>Running Web-Portal V{{ config["__VERSION__"] }}, provided by <strong><a
-                href="https://github.com/enchant97">enchant97</a></strong></footer>
+    <footer>
+        {% if config.DEMO_MODE %}
+        <p><strong class="panel red">Running in "Demo Mode". Some features are restricted.</strong></p>
+        {% endif %}
+        Running Web-Portal V{{ config["__VERSION__"] }}, provided by <strong><a
+                href="https://github.com/enchant97">enchant97</a></strong>
+    </footer>
 </body>
 
 </html>

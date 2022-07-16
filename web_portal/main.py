@@ -12,6 +12,7 @@ from . import __version__
 from .core.auth import AuthUserEnhanced
 from .core.config import get_settings
 from .core.constants import PUBLIC_ACCOUNT_USERNAME
+from .core.helpers import get_system_setting
 from .core.plugin import PluginHandler, make_combined_widget_name
 from .database import models
 
@@ -45,6 +46,9 @@ async def first_request():
             await models.Widget.update_or_create(internal_name=name, defaults={
                 "plugin": plugin_model
             })
+
+    # HACK Quart's config needs to have db loading added
+    await get_system_setting("DEMO_MODE")
 
 
 @app.context_processor

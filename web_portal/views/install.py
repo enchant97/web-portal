@@ -47,6 +47,8 @@ async def get_demo_install():
         if plugin.meta.do_demo_setup is not None:
             await plugin.meta.do_demo_setup()
 
+    await set_system_setting("DEMO_MODE", True)
+
     return redirect(url_for("login.get_login"))
 
 
