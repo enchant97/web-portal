@@ -75,6 +75,7 @@ class PluginMeta:
     get_rendered_widget_edit: Callable[[str, int, dict | None, str], Awaitable[str]]
     get_settings: Callable[[], dict] | None = None
     get_injected_head: Callable[[], Awaitable[str]] | None = None
+    do_demo_setup: Callable[[], Awaitable] | None = None
 
     def is_supported_version(self, app_version: str) -> bool:
         """

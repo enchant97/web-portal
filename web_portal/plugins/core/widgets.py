@@ -111,6 +111,60 @@ async def render_injected_head() -> str:
     return await render_template("core/includes/head.jinja")
 
 
+async def demo_install():
+    links = (
+        models.Link(
+            name="Bitwarden",
+            url="",
+            color_name="cyan",
+            icon_name="bitwarden",
+        ),
+        models.Link(
+            name="Enchanted Code",
+            url="https://enchantedcode.co.uk/",
+            color_name="green",
+        ),
+        models.Link(
+            name="Router",
+            url="",
+            color_name="grey",
+            icon_name="router",
+        ),
+        models.Link(
+            name="Self Hosted",
+            url="",
+            color_name="white",
+            icon_name="selfhosted",
+        ),
+        models.Link(
+            name="Pihole",
+            url="",
+            color_name="red",
+            icon_name="pihole",
+        ),
+    )
+
+    engines = (
+        models.SearchEngine(
+            name="Google",
+            url="https://google.com/search",
+            query_param="q",
+            method=models.SearchEngineMethod.GET,
+        ),
+        models.SearchEngine(
+            name="DuckDuckGo",
+            url="https://start.duckduckgo.com/",
+            query_param="q",
+            method=models.SearchEngineMethod.GET,
+        ),
+    )
+
+    await asyncio.gather(
+        models.Link.bulk_create(links),
+        models.SearchEngine.bulk_create(engines),
+    )
+
+
 PLUGIN_META = PluginMeta(
     version_specifier="== 2",
     human_name="Core",
@@ -126,4 +180,5 @@ PLUGIN_META = PluginMeta(
     get_rendered_widget_edit=render_widget_edit,
     get_settings=get_settings,
     get_injected_head=render_injected_head,
+    do_demo_setup=demo_install,
 )
