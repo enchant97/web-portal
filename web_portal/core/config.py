@@ -15,6 +15,8 @@ class Settings(BaseSettings):
     DISABLE_PLUGIN_LOADER: bool = False
     PLUGIN_SKIP_LIST: Optional[list[str]] = None
 
+    UNATTENDED_DEMO_INSTALL: Optional[bool] = False
+
     class Config:
         case_sensitive = True
         env_file = '.env'
