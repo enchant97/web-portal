@@ -12,6 +12,7 @@ VALID_UPLOAD_EXTENTIONS = (
     ".zip",
 )
 
+
 class PluginSettings(BaseSettings):
     ALLOW_ICON_UPLOADS: Optional[bool] = True
     OPEN_TO_NEW_TAB: Optional[bool] = True

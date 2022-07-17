@@ -150,7 +150,9 @@ class PluginHandler:
             raise PluginNameConflictException(f"plugin with name '{name}' already loaded")
 
     @staticmethod
-    def load_plugins(app_version: str, skip_list: Iterable[str] = None) -> Generator[LoadedPlugin, None, None]:
+    def load_plugins(
+            app_version: str,
+            skip_list: Iterable[str] = None) -> Generator[LoadedPlugin, None, None]:
         for name in PluginHandler.get_plugin_names():
             if skip_list is not None and name in skip_list:
                 logger.info("skipping loading plugin as in skip list::plugin_name='%s'", name)
