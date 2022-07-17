@@ -30,6 +30,15 @@ Web-Portal is a web app written in Python using Quart, that aims to provide an e
 ## Showcase
 [![web-portal showcase image, showing dark and light themes](assets/portal-view.png)](assets/portal-view.png)
 
+## Public Demo Instance
+There is a public demo instance of Web Portal, kindly hosted by a friend access it here: <https://webportal.demo.enchantedcode.co.uk/>. Read the following notes:
+
+- Some features have been disabled to ensure the public instance can be accessed by everyone
+- Resets on a schedule
+- **Do not** put personal information as it is publicly viewable
+- Server may appear as down, please try again later
+- You may use the 'admin' or 'demo' account
+
 ## Guide Links
 - [For Users](users/index.md)
 - [For Developers](developers/index.md)

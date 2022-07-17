@@ -40,6 +40,15 @@ If you want just a basic link panel configured with a yaml file checkout Web Por
 
 <https://youtu.be/VIWvmfFK5V0>
 
+## Public Demo Instance (V2)
+There is a public demo instance of Web Portal, kindly hosted by a friend access it here: <https://webportal.demo.enchantedcode.co.uk/>. Read the following notes:
+
+- Some features have been disabled to ensure the public instance can be accessed by everyone
+- Resets on a schedule
+- **Do not** put personal information as it is publicly viewable
+- Server may appear as down, please try again later
+- You may use the 'admin' or 'demo' account
+
 ## Branches
 | Name         | Description            | State         |
 | :----------- | :--------------------- | :------------ |
