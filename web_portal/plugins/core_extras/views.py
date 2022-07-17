@@ -16,13 +16,17 @@ async def get_index():
 @blueprint.post("/widget/embed_html/<int:widget_id>/update")
 @login_standard_required
 async def post_widget_update_embed_html(widget_id: int):
-    # TODO check widget internal_name to ensure it is valid for this request
     if await get_widget_owner_id(widget_id) != current_user.auth_id:
         abort(401)
 
     new_content = (await request.form)["content"].strip()
 
     widget_details = await get_widget_details(widget_id)
+
+    if widget_details.plugin_name != "core_extras" or \
+            widget_details.internal_name != "embed_html":
+        abort(400)
+
     widget_config = widget_details.config
     if widget_config is None:
         widget_config = {"content": ""}
@@ -41,7 +45,6 @@ async def post_widget_update_embed_html(widget_id: int):
 @blueprint.post("/widget/iframe/<int:widget_id>/update")
 @login_standard_required
 async def post_widget_update_iframe(widget_id: int):
-    # TODO check widget internal_name to ensure it is valid for this request
     if await get_widget_owner_id(widget_id) != current_user.auth_id:
         abort(401)
 
@@ -50,6 +53,11 @@ async def post_widget_update_iframe(widget_id: int):
     iframe_height = form.get("height", 150, int)
 
     widget_details = await get_widget_details(widget_id)
+
+    if widget_details.plugin_name != "core_extras" or \
+            widget_details.internal_name != "iframe":
+        abort(400)
+
     widget_config = widget_details.config
     if widget_config is None:
         widget_config = {"src": ""}

@@ -5,7 +5,6 @@ from tempfile import TemporaryDirectory
 from quart import (Blueprint, abort, flash, redirect, render_template, request,
                    send_file, url_for)
 from web_portal.plugin_api import (PORTAL_ENDPOINT, current_user,
-                                   get_plugin_system_setting,
                                    get_widget_details, get_widget_owner_id,
                                    login_admin_required,
                                    login_required_if_secured,
@@ -193,13 +192,19 @@ async def post_link_new():
 @blueprint.post("/widget/search/<int:widget_id>/update")
 @login_standard_required
 async def post_widget_update_search(widget_id: int):
-    # TODO check widget internal_name to ensure it is valid for this request
     if await get_widget_owner_id(widget_id) != current_user.auth_id:
         abort(401)
 
     engine_id = (await request.form)["engine-id"]
 
     engine = await models.SearchEngine.get(id=engine_id)
+
+    widget_details = await get_widget_details(widget_id)
+
+    if widget_details.plugin_name != "core" or \
+            widget_details.internal_name != "search":
+        abort(400)
+
     await set_widget_config(widget_id, {"engine_id": engine.id})
 
     await flash(f"updated search engine to '{engine.name}'", "ok")
@@ -212,7 +217,6 @@ async def post_widget_update_search(widget_id: int):
 @blueprint.post("/widget/links/<int:widget_id>/add")
 @login_standard_required
 async def post_widget_add_link(widget_id: int):
-    # TODO check widget internal_name to ensure it is valid for this request
     if await get_widget_owner_id(widget_id) != current_user.auth_id:
         abort(401)
 
@@ -220,6 +224,11 @@ async def post_widget_add_link(widget_id: int):
     link = await models.Link.get(id=link_id)
 
     widget_details = await get_widget_details(widget_id)
+
+    if widget_details.plugin_name != "core" or \
+            widget_details.internal_name != "links":
+        abort(400)
+
     widget_config = widget_details.config
 
     if widget_config is None:
@@ -240,11 +249,15 @@ async def post_widget_add_link(widget_id: int):
 @blueprint.get("/widget/links/<int:widget_id>/<int:link_index>/delete")
 @login_standard_required
 async def get_widget_remove_link(widget_id: int, link_index: int):
-    # TODO check widget internal_name to ensure it is valid for this request
     if await get_widget_owner_id(widget_id) != current_user.auth_id:
         abort(401)
 
     widget_details = await get_widget_details(widget_id)
+
+    if widget_details.plugin_name != "core" or \
+            widget_details.internal_name != "links":
+        abort(400)
+
     widget_config = widget_details.config
 
     redirect_response = redirect(url_for(PORTAL_ENDPOINT))
