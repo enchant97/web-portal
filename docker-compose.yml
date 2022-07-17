@@ -1,18 +1,20 @@
-version: "3.3"
+# ** IMPORTANT **
+# This is to host a demo
+# please read the docs on how to deploy
+version: "3"
 
 services:
   web-portal:
-    container_name: web-portal
-    image: ghcr.io/enchant97/web-portal:1
+    container_name: demo-web-portal
+    build: .
     restart: unless-stopped
     volumes:
-      - web-portal:/data
+      - ./data:/data
     ports:
-      - 8000:8000
+      - 127.0.0.1:8000:8000
     environment:
-      - "DB_URI=sqlite:///data/db.sqlite"
-      # This must be secure
-      - "SECRET_KEY=my_super_secret_123"
-
-volumes:
-  web-portal:
+      - "DATA_PATH=/data"
+      - "DB_URI=sqlite://:memory:"
+      - "PLUGIN_SKIP_LIST=[\"core_extras\"]"
+      - "ALLOW_ICON_UPLOADS=0"
+      - "UNATTENDED_DEMO_INSTALL=1"
