@@ -28,6 +28,15 @@ It has been designed to run through docker and it is recommended to put it behin
 
 <https://youtu.be/VIWvmfFK5V0>
 
+## Public Demo Instance (V2)
+There is a public demo instance of Web Portal V2, kindly hosted by a friend access it here: <https://webportal.demo.enchantedcode.co.uk/>. Read the following notes:
+
+- Some features have been disabled to ensure the public instance can be accessed by everyone
+- Resets on a schedule
+- **Do not** put personal information as it is publicly viewable
+- Server may appear as down, please try again later
+- You may use the 'admin' or 'demo' account
+
 ## About The Repo
 - This repo uses 'master' as the develop branch and should be treating unstable or unfinished. If you want a stable release please use the tags/releases.
 - The [CHANGELOG](CHANGELOG.md) contains a history of changes that happened with each release.
