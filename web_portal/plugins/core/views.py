@@ -99,6 +99,10 @@ async def post_engines_new():
     query_param = form["query-param"].strip()
     method = models.SearchEngineMethod(form["method"].upper())
 
+    if not name:
+        await flash("engine name cannot be blank", "error")
+        return redirect(url_for(".get_engines_new"))
+
     await models.SearchEngine.create(
         name=name,
         url=url,
@@ -159,6 +163,10 @@ async def post_link_new():
     url = form["url"].strip()
     color_name = form["color_name"].strip()
     icon_name = form.get("icon-name")
+
+    if not name:
+        await flash("link name cannot be blank", "error")
+        return redirect(url_for(".get_link_new"))
 
     if icon_name:
         if get_icon_path(icon_name) is None:

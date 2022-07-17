@@ -49,6 +49,10 @@ async def post_add_widget():
     name = form["name"].strip()
     widget_id = form["widget-id"]
 
+    if not name:
+        await flash("widget name cannot be blank", "error")
+        return redirect(url_for(".get_edit_dashboard"))
+
     dashboard = (await models.Dashboard
                  .filter(owner_id=current_user.auth_id)
                  .get()
