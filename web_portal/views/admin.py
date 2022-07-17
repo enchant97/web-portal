@@ -7,9 +7,9 @@ from tortoise.exceptions import IntegrityError
 from ..core.auth import AuthUserEnhanced, current_user, login_admin_required
 from ..core.constants import PUBLIC_ACCOUNT_USERNAME
 from ..core.helpers import get_system_setting
+from ..core.import_export import Widget_V1, import_v1_widgets
 from ..core.validation import check_password, is_username_allowed
 from ..database import models
-from ..import_export import Widget_V1, import_v1_widgets
 
 blueprint = Blueprint("admin", __name__, url_prefix="/admin")
 
@@ -35,15 +35,18 @@ async def get_switch_to_public():
 @login_admin_required
 async def post_import_v1_widgets():
     file = (await request.files)["file"]
-    loaded_json = json.load(file.stream)
-    if not isinstance(loaded_json, list):
-        raise ValueError()
-    widgets = [Widget_V1.parse_obj(widget) for widget in loaded_json]
-    count = await import_v1_widgets(widgets)
-    if count == -1:
-        await flash("Unable to import, are you missing the core plugin?", "error")
-    else:
-        await flash(f"Imported {count} widgets", "ok")
+    try:
+        loaded_json = json.load(file.stream)
+        if not isinstance(loaded_json, list):
+            raise ValueError()
+        widgets = [Widget_V1.parse_obj(widget) for widget in loaded_json]
+        count = await import_v1_widgets(widgets)
+        if count == -1:
+            await flash("Unable to import, are you missing the core plugin?", "error")
+        else:
+            await flash(f"Imported {count} widgets", "ok")
+    except json.JSONDecodeError:
+        await flash("failed to parse file, is it valid JSON?", "error")
 
     return redirect(url_for(".get_index"))
 

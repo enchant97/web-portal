@@ -5,7 +5,7 @@ from pydantic import BaseModel, constr
 from tortoise.exceptions import IntegrityError
 from tortoise.transactions import atomic
 
-from .core.plugin import PluginHandler
+from .plugin import PluginHandler
 
 logger = logging.getLogger("web-portal")
 
