@@ -1,9 +1,11 @@
 import asyncio
 
-from quart import Blueprint, flash, redirect, render_template, url_for
+from quart import (Blueprint, flash, redirect, render_template, send_file,
+                   url_for)
 
 from ..core.auth import (current_user, login_admin_required,
                          login_required_if_secured, login_standard_required)
+from ..core.config import get_settings
 from ..core.constants import PUBLIC_ACCOUNT_USERNAME
 from ..core.plugin import PluginHandler, deconstruct_widget_name
 from ..database import models
@@ -67,6 +69,16 @@ async def portal():
         "portal.jinja",
         rendered_widgets=rendered_widgets,
     )
+
+
+@blueprint.get("/static/custom.css")
+async def get_custom_css():
+    file_path = get_settings().DATA_PATH / "custom.css"
+
+    if not file_path.is_file():
+        return ""
+
+    return await send_file(file_path)
 
 
 @blueprint.get("/plugins")
