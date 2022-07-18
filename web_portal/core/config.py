@@ -11,6 +11,7 @@ class Settings(BaseSettings):
     SECRET_KEY: Optional[str] = None
     SECURE_COOKIES: Optional[bool] = False
     LOG_LEVEL: Optional[str] = "INFO"
+    SHOW_VERSION_NUMBER: Optional[bool] = True
 
     DISABLE_PLUGIN_LOADER: bool = False
     PLUGIN_SKIP_LIST: Optional[list[str]] = None
