@@ -3,10 +3,15 @@
 {% block main %}
 <section class="panel">
     <h2>Menu</h2>
-    <a class="icon-bnt" href="{{ url_for('portal.get_plugins_index') }}">{{ macros.feather_img('box') }} Plugins</a>
-    <a class="icon-bnt" href="{{ url_for('admin.get_switch_to_public') }}">{{ macros.feather_img('user') }} Switch To
-        Public</a>
-    <a class="icon-bnt" href="{{ url_for('admin.get_users') }}">{{ macros.feather_img('users') }} Users</a>
+    <div class="bnt-group">
+        <a class="icon-bnt" href="{{ url_for('portal.get_plugins_index') }}">{{ macros.feather_img('box') }} Plugins</a>
+        <a class="icon-bnt" href="{{ url_for('admin.get_switch_to_public') }}">{{ macros.feather_img('user') }} Switch
+            To
+            Public</a>
+        <a class="icon-bnt" href="{{ url_for('admin.get_users') }}">{{ macros.feather_img('users') }} Users</a>
+        <a class="icon-bnt" href="{{ url_for('admin.get_system_settings') }}">{{ macros.feather_img('tool') }} System
+            Settings</a>
+    </div>
 </section>
 
 <section class="panel">

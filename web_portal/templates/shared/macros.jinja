@@ -3,3 +3,9 @@
     <use href="{{ url_for('static', filename='feather-sprite.svg') }}#{{ icon_name }}"></use>
 </svg>
 {% endmacro -%}
+
+{%- macro checkbox_checked(is_checked) -%}
+{% if is_checked %}
+checked
+{% endif %}
+{%- endmacro -%}

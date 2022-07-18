@@ -1,3 +1,4 @@
+import asyncio
 import json
 
 from quart import Blueprint, flash, redirect, render_template, request, url_for
@@ -6,7 +7,7 @@ from tortoise.exceptions import IntegrityError
 
 from ..core.auth import AuthUserEnhanced, current_user, login_admin_required
 from ..core.constants import PUBLIC_ACCOUNT_USERNAME
-from ..core.helpers import get_system_setting
+from ..core.helpers import get_system_setting, set_system_setting
 from ..core.import_export import Widget_V1, import_v1_widgets
 from ..core.validation import check_password, is_username_allowed
 from ..database import models
@@ -49,6 +50,47 @@ async def post_import_v1_widgets():
         await flash("failed to parse file, is it valid JSON?", "error")
 
     return redirect(url_for(".get_index"))
+
+
+@blueprint.get("/system-settings/")
+@login_admin_required
+async def get_system_settings():
+
+    public_portal, show_widget_headers = await asyncio.gather(
+        get_system_setting("PORTAL_SECURED", default=False, skip_cache=True),
+        get_system_setting("SHOW_WIDGET_HEADERS", default=False, skip_cache=True),
+    )
+
+    # PORTAL_SECURED has a different meaning to public_portal
+    public_portal = not public_portal
+
+    return await render_template(
+        "admin/system-settings.jinja",
+        public_portal=public_portal,
+        show_widget_headers=show_widget_headers,
+    )
+
+
+@blueprint.post("/system-settings/")
+@login_admin_required
+async def post_system_settings():
+    form = await request.form
+
+    portal_secured = not form.get("public-portal", False, bool)
+    show_widget_headers = form.get("show-widget-headers", False, bool)
+
+    if not portal_secured and await get_system_setting("DEMO_MODE", default=False):
+        await flash("cannot make portal public when in demo mode", "error")
+        return redirect(url_for(".get_system_settings"))
+
+    await asyncio.gather(
+        set_system_setting("PORTAL_SECURED", portal_secured),
+        set_system_setting("SHOW_WIDGET_HEADERS", show_widget_headers),
+    )
+
+    await flash("saved system settings", "ok")
+
+    return redirect(url_for(".get_system_settings"))
 
 
 @blueprint.get("/users/")
