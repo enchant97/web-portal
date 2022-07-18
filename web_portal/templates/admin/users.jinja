@@ -44,7 +44,7 @@
                     {% else %}
                     <a class="bnt" href="{{ url_for('.get_users_toggle_admin', user_id=user.id) }}">Make Admin</a>
                     {% endif %}
-                    <a class="bnt" href="{{ url_for('.get_users_delete', user_id=user.id) }}">Delete</a>
+                    <a class="icon-bnt" href="{{ url_for('.get_users_delete', user_id=user.id) }}" title="Delete">{{ macros.feather_img('x') }}</a>
                     {% endif %}
                 </td>
             </tr>

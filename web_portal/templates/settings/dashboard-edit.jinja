@@ -22,8 +22,8 @@
     <div>
         <h3>{{ widget.name }}, {{ widget.widget.internal_name }}</h3>
         <div class="bnt-group">
-            <a class="bnt" href="{{ url_for('.get_edit_dashboard_widget', widget_id=widget.id) }}">Edit</a>
-            <a class="bnt" href="{{ url_for('.get_delete_widget', widget_id=widget.id) }}">Delete</a>
+            <a class="icon-bnt" href="{{ url_for('.get_edit_dashboard_widget', widget_id=widget.id) }}" title="Edit">{{ macros.feather_img('settings') }}</a>
+            <a class="icon-bnt" href="{{ url_for('.get_delete_widget', widget_id=widget.id) }}" title="Delete">{{ macros.feather_img('x') }}</a>
         </div>
     </div>
     {% endfor %}
