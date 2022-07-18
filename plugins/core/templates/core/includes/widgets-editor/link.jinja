@@ -19,11 +19,23 @@
     </p>
 </section>
 {% else %}
+
+<section class="panel">
+    <h2>Customise Widget</h2>
+    <form action="{{ url_for('core.post_widget_customise_link', widget_id=dash_widget_id, back_to=back_to_url) }}"
+        method="post">
+        <label for="core-widget-link-is_compact">Compact Links</label>
+        <input type="checkbox" name="is_compact" id="core-widget-link-is_compact" value="1" {% if
+            widget_config.is_compact %}checked{% endif %}>
+        <button type="submit">Save</button>
+    </form>
+</section>
+
 <section class="panel">
     <h2>Add Link</h2>
     <form action="{{ url_for('core.post_widget_add_link', widget_id=dash_widget_id, back_to=back_to_url) }}"
         method="post">
-        <label for="core-widget-link">Link</label>
+        <label for="core-widget-link-id">Link</label>
         <select name="link-id" id="core-widget-link-id" required>
             <option value="">** Select Link **</option>
             {% for link in links %}

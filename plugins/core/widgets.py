@@ -10,13 +10,14 @@ from .helpers import get_settings
 logger = logging.getLogger("web-portal")
 
 
-async def render_widget_link(link_ids: tuple[int]) -> str:
+async def render_widget_link(config: dict) -> str:
     # TODO auto remove links that haven't been found due to deletion
-    links = await models.Link.filter(id__in=link_ids).order_by("name").all()
+    links = await models.Link.filter(id__in=config.get("links", [])).order_by("name").all()
 
     return await render_template(
         "core/includes/widgets/link.jinja",
         links=links,
+        widget_config=config,
     )
 
 
@@ -41,7 +42,7 @@ async def render_widget(internal_name, widget_id: int, config: dict | None) -> s
         case "clock":
             return await render_template("core/includes/widgets/clock.jinja", widget_id=widget_id)
         case "links":
-            return await render_widget_link(config.get("links", []))
+            return await render_widget_link(config)
         case "search":
             return await render_widget_search(config)
         case _:
@@ -69,7 +70,7 @@ async def render_widget_edit_search(
 
 async def render_widget_edit_link(
         dash_widget_id: int,
-        config: dict | None,
+        config: dict,
         back_to_url: str) -> str:
     links, added_links = await asyncio.gather(
         models.Link.all(),
@@ -82,6 +83,7 @@ async def render_widget_edit_link(
         links=links,
         added_links=added_links,
         back_to_url=back_to_url,
+        widget_config=config,
     )
 
 

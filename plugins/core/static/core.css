@@ -45,6 +45,10 @@
     object-fit: contain;
 }
 
+.widget-inner.core__links a.compact {
+    padding: 1rem;
+}
+
 .core__search-form {
     max-width: none;
     width: 100%;

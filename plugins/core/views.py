@@ -307,6 +307,34 @@ async def post_widget_update_search(widget_id: int):
     return redirect(url_for(PORTAL_ENDPOINT))
 
 
+@blueprint.post("/widget/links/<int:widget_id>/customise")
+@login_standard_required
+async def post_widget_customise_link(widget_id: int):
+    if await get_widget_owner_id(widget_id) != current_user.auth_id:
+        abort(401)
+
+    widget_details = await get_widget_details(widget_id)
+
+    if widget_details.plugin_name != "core" or \
+            widget_details.internal_name != "links":
+        abort(400)
+
+    widget_config = widget_details.config
+
+    if widget_config is None:
+        widget_config = {"links": []}
+
+    is_compact = (await request.form).get("is_compact", False, bool)
+
+    widget_config["is_compact"] = is_compact
+
+    await set_widget_config(widget_id, widget_config)
+
+    if (back_to_url := request.args.get("back_to")) is not None:
+        return redirect(back_to_url)
+    return redirect(url_for(PORTAL_ENDPOINT))
+
+
 @blueprint.post("/widget/links/<int:widget_id>/add")
 @login_standard_required
 async def post_widget_add_link(widget_id: int):
