@@ -28,6 +28,12 @@ RESTRICTED_PLUGIN_NAMES = (
     "plugin",
 )
 
+# NOTE this controls where the plugins are loaded from (very important)
+# folder path location
+PLUGINS_PATH = Path(__file__).parent.parent.parent / "plugins"
+# how you would import it absolutely in python
+PLUGINS_PACKAGE_PATH = "plugins"
+
 logger = logging.getLogger("web-portal")
 
 
@@ -108,7 +114,7 @@ class PluginHandler:
 
     @staticmethod
     def get_plugins_path() -> Path:
-        return Path(__file__).parent.parent / "plugins"
+        return PLUGINS_PATH
 
     @staticmethod
     def get_plugin_names():
@@ -120,7 +126,7 @@ class PluginHandler:
 
     @staticmethod
     def load_plugin(name: str, app_version: str) -> LoadedPlugin:
-        imported_module = import_module("." + name, "web_portal.plugins")
+        imported_module = import_module("." + name, PLUGINS_PACKAGE_PATH)
         plugin_meta: PluginMeta = imported_module.PLUGIN_META
 
         # ensure version requested matches app version

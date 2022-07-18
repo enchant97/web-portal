@@ -112,5 +112,50 @@ The Core-Extras plugin which is built-in to Web Portal (unless you removed it). 
 - Embed Website - Embed a website by providing its url, uses an iframe so may not work with all sites
 
 
+## Plugins Folder
+The plugin folder is where plugins are stored, it allows you to easily install a new plugin (or remove).
+
+### Add
+To install a plugin into this folder follow these steps:
+
+1. Ensure Web Portal is shutdown
+2. Ensure plugin loader is enabled (set by the environment variable)
+3. Ensure "plugins" directory has a empty file called `__init__.py` in it.
+4. Copy/Move plugin package into folder
+5. Startup Web Portal
+6. Plugin should now be registered
+
+### Remove
+To remove follow these steps:
+
+1. Follow any steps given by the plugins guide
+2. Ensure Web Portal is shutdown
+3. Move/Delete the specific plugin package from the "plugins" directory
+4. Startup Web Portal
+5. Go to `"Plugin Settings" > "Missing Plugins"` (as admin) to remove plugin data
+
+### Where Is The Plugins Directory?
+Assuming you are running the official Docker image; Web Portal is structured as shown below:
+
+```
+app/
+    web_portal/
+        ...
+
+    plugins/
+        __init__.py
+        ...
+```
+
+To add plugins you can mount a volume as shown below using Docker Compose:
+
+```yml
+# filepath: docker-compose.yml
+volumes:
+  - ./data:/data
+  - ./plugins:/app/plugins
+```
+
+
 ## The End
 This is the end of the usage tutorial for Web Portal, maybe checkout the upgrading and migrating guide next [here](upgrading.md)

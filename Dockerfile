@@ -25,6 +25,7 @@ FROM python:${PYTHON_VERSION}-alpine
     COPY --from=builder /app/.venv .venv
 
     COPY web_portal web_portal
+    COPY plugins plugins
 
     COPY scripts/* ./
 

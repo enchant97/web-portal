@@ -231,4 +231,17 @@ The "my_widget" template:
 Now plugin is ready for install.
 
 ## Install Plugin
-To install the created plugin simply copy the plugin folder into the plugins directory inside web_portal, this is located at: `web_portal/plugins`. Then start a instance of web-portal, if one was already running it will need to be restarted.
+To install the created plugin simply copy the plugin folder into the plugins directory inside web_portal, this is located at: `plugins/` (shown below in more detail). Then start a instance of web-portal, if one was already running it will need to be restarted.
+
+Reference of app hierarchy:
+
+```
+app/
+    web_portal/
+        __init__.py
+        ...
+
+    plugins/
+        __init__.py
+        ...
+```
