@@ -1,3 +1,8 @@
+.no-color {
+    background-color: var(--bg-sub-2);
+    color: var(--font-dark);
+}
+
 .white {
     background-color: #e4e4e4;
     color: var(--font-dark-no-adjust);
