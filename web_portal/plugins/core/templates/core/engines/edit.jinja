@@ -1,0 +1,24 @@
+{% extends "/shared/base.jinja" %}
+{% block title %}Core - Search Engine Edit{% endblock %}
+{% block main %}
+<section class="panel">
+    <h2>Edit Search Engine</h2>
+    <form action="{{ url_for('.post_engines_edit', engine_id=engine.id) }}" method="post">
+        <label for="core-engine-name">Name</label>
+        <input type="text" name="name" id="core-engine-name" placeholder="search..." maxlength="128"
+            value="{{ engine.name }}" required>
+        <label for="core-engine-url">Search Url</label>
+        <input type="url" name="url" id="core-engine-url" placeholder="https://" value="{{ engine.url }}" required>
+        <label for="core-engine-query-param">Query Parameter</label>
+        <input type="text" name="query-param" id="core-engine-query-param" maxlength="128"
+            value="{{ engine.query_param }}" required>
+        <label for="core-engine-method">Submission Method</label>
+        <select name="method" id="core-engine-method">
+            <option {% if engine.method.value=="GET" %}selected{% endif %} value="GET">GET</option>
+            <option {% if engine.method.value=="POST" %}selected{% endif %} value="POST">POST</option>
+        </select>
+        <button type="submit">Save</button>
+    </form>
+</section>
+
+{% endblock %}

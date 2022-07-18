@@ -88,6 +88,17 @@ async def get_engines_new():
     return await render_template("core/engines/new.jinja")
 
 
+@blueprint.get("/engines/<int:engine_id>/edit")
+@login_admin_required
+async def get_engines_edit(engine_id: int):
+    engine = await models.SearchEngine.get(id=engine_id)
+
+    return await render_template(
+        "core/engines/edit.jinja",
+        engine=engine,
+    )
+
+
 @blueprint.post("/engines/new")
 @login_admin_required
 async def post_engines_new():
@@ -110,6 +121,35 @@ async def post_engines_new():
     )
 
     await flash(f"created engine with name '{name}'", "ok")
+
+    return redirect(url_for(".get_engines_index"))
+
+
+@blueprint.post("/engines/<int:engine_id>/edit")
+async def post_engines_edit(engine_id: int):
+    engine = await models.SearchEngine.get(id=engine_id)
+
+    form = await request.form
+
+    name = form["name"].strip()
+    url = form["url"].strip()
+    query_param = form["query-param"].strip()
+    method = models.SearchEngineMethod(form["method"].upper())
+
+    if not name:
+        await flash("engine name cannot be blank", "error")
+        return redirect(url_for(".get_engines_edit", engine_id=engine_id))
+
+    engine = engine.update_from_dict(dict(
+        name=name,
+        url=url,
+        query_param=query_param,
+        method=method,
+    ))
+
+    await engine.save()
+
+    await flash(f"updated engine with name '{name}'", "ok")
 
     return redirect(url_for(".get_engines_index"))
 

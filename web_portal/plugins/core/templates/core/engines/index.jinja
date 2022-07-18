@@ -9,12 +9,11 @@
 <section class="panel">
     <h2>Available Engines</h2>
     <table>
-        <caption></caption>
         <thead>
             <tr>
                 <th>Name</th>
-                <th>URL</th>
-                <th>Method</th>
+                <th class="hide-on-narrow">URL</th>
+                <th class="hide-on-narrow">Method</th>
                 <th></th>
             </tr>
         </thead>
@@ -22,10 +21,13 @@
             {% for engine in engines %}
             <tr>
                 <td>{{ engine.name }}</td>
-                <td><input type="text" value="{{ engine.url }}" readonly></td>
-                <td>{{ engine.method.value }}</td>
+                <td class="hide-on-narrow"><input type="text" value="{{ engine.url }}" readonly></td>
+                <td class="hide-on-narrow">{{ engine.method.value }}</td>
                 <td class="bnt-group">
-                    <a href="{{ url_for('.get_engines_delete', engine_id=engine.id) }}" class="bnt">Delete</a>
+                    <a class="icon-bnt" href="{{ url_for('.get_engines_edit', engine_id=engine.id) }}" title="Edit">{{
+                        macros.feather_img('settings') }}</a>
+                    <a class="icon-bnt" href="{{ url_for('.get_engines_delete', engine_id=engine.id) }}"
+                        title="Delete">{{ macros.feather_img('x') }}</a>
                 </td>
             </tr>
             {% endfor %}
