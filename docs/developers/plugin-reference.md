@@ -19,6 +19,7 @@ from web_portal import plugin_api
 ::: web_portal.plugin_api.login_admin_required
 ::: web_portal.plugin_api.login_required_if_secured
 ::: web_portal.plugin_api.login_standard_required
+::: web_portal.plugin_api.redirect_using_back_to
 
 ## Settings Access
 ::: web_portal.plugin_api.get_plugin_system_setting

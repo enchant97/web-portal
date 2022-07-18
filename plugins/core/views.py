@@ -4,11 +4,11 @@ from tempfile import TemporaryDirectory
 
 from quart import (Blueprint, abort, flash, redirect, render_template, request,
                    send_file, url_for)
-from web_portal.plugin_api import (PORTAL_ENDPOINT, current_user,
-                                   get_widget_details, get_widget_owner_id,
-                                   login_admin_required,
+from web_portal.plugin_api import (current_user, get_widget_details,
+                                   get_widget_owner_id, login_admin_required,
                                    login_required_if_secured,
-                                   login_standard_required, set_widget_config)
+                                   login_standard_required,
+                                   redirect_using_back_to, set_widget_config)
 
 from . import models
 from .helpers import (VALID_UPLOAD_EXTENTIONS, copy_icons_from_import,
@@ -284,6 +284,7 @@ async def post_link_edit(link_id: int):
 
 @blueprint.post("/widget/search/<int:widget_id>/update")
 @login_standard_required
+@redirect_using_back_to
 async def post_widget_update_search(widget_id: int):
     if await get_widget_owner_id(widget_id) != current_user.auth_id:
         abort(401)
@@ -302,13 +303,10 @@ async def post_widget_update_search(widget_id: int):
 
     await flash(f"updated search engine to '{engine.name}'", "ok")
 
-    if (back_to_url := request.args.get("back_to")) is not None:
-        return redirect(back_to_url)
-    return redirect(url_for(PORTAL_ENDPOINT))
-
 
 @blueprint.post("/widget/links/<int:widget_id>/customise")
 @login_standard_required
+@redirect_using_back_to
 async def post_widget_customise_link(widget_id: int):
     if await get_widget_owner_id(widget_id) != current_user.auth_id:
         abort(401)
@@ -330,13 +328,10 @@ async def post_widget_customise_link(widget_id: int):
 
     await set_widget_config(widget_id, widget_config)
 
-    if (back_to_url := request.args.get("back_to")) is not None:
-        return redirect(back_to_url)
-    return redirect(url_for(PORTAL_ENDPOINT))
-
 
 @blueprint.post("/widget/links/<int:widget_id>/add")
 @login_standard_required
+@redirect_using_back_to
 async def post_widget_add_link(widget_id: int):
     if await get_widget_owner_id(widget_id) != current_user.auth_id:
         abort(401)
@@ -362,13 +357,10 @@ async def post_widget_add_link(widget_id: int):
         await set_widget_config(widget_id, widget_config)
         await flash(f"added new link '{link.name}' to widget '{widget_details.human_name}'", "ok")
 
-    if (back_to_url := request.args.get("back_to")) is not None:
-        return redirect(back_to_url)
-    return redirect(url_for(PORTAL_ENDPOINT))
-
 
 @blueprint.get("/widget/links/<int:widget_id>/<int:link_index>/delete")
 @login_standard_required
+@redirect_using_back_to
 async def get_widget_remove_link(widget_id: int, link_index: int):
     if await get_widget_owner_id(widget_id) != current_user.auth_id:
         abort(401)
@@ -381,18 +373,12 @@ async def get_widget_remove_link(widget_id: int, link_index: int):
 
     widget_config = widget_details.config
 
-    redirect_response = redirect(url_for(PORTAL_ENDPOINT))
-    if (back_to_url := request.args.get("back_to")) is not None:
-        redirect_response = redirect(back_to_url)
-
     if widget_config is None or len(widget_config.get("links")) < link_index+1:
         await flash("cannot find link to delete", "error")
-        return redirect_response
+        return
 
     widget_config["links"].pop(link_index)
 
     await set_widget_config(widget_id, widget_config)
 
     await flash(f"removed link from widget '{widget_details.human_name}'", "ok")
-
-    return redirect_response

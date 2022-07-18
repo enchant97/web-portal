@@ -1,10 +1,11 @@
 """
 Misc functions that will assist with other modules
 """
-
+from collections.abc import Callable
+from functools import wraps
 from typing import Any
 
-from quart import current_app
+from quart import Response, current_app, redirect, request, url_for
 
 from ..database import models
 
@@ -57,3 +58,22 @@ async def remove_system_setting(key: str, /):
     """
     await models.SystemSetting.filter(key=key).delete()
     current_app.config.pop(key, None)
+
+
+def redirect_using_back_to(func: Callable) -> Callable:
+    """
+    Used to decorate a Quart response,
+    allowing redirects to a provided back_to request arg
+    """
+    @wraps(func)
+    async def wrapper(*args: Any, **kwargs: Any) -> Response:
+        response = await func(*args, **kwargs)
+        if response is not None:
+            # allow the function to overide wrapper
+            return response
+        # redirect from request args
+        if (back_to_url := request.args.get("back_to")) is not None:
+            return redirect(back_to_url)
+        # failover if nothing else applies
+        return redirect(url_for("portal.portal"))
+    return wrapper
