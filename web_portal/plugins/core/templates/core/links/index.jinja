@@ -12,9 +12,9 @@
         <thead>
             <tr>
                 <th>Name</th>
-                <th>Color</th>
-                <th>Icon</th>
-                <th>URL</th>
+                <th class="hide-on-narrow">Color</th>
+                <th class="hide-on-narrow">Icon</th>
+                <th class="hide-on-narrow">URL</th>
                 <th></th>
             </tr>
         </thead>
@@ -22,11 +22,14 @@
             {% for link in links %}
             <tr>
                 <td>{{ link.name }}</td>
-                <td>{{ link.color_name }}</td>
-                <td>{{ link.icon_name }}</td>
-                <td><input type="text" readonly value="{{ link.url }}"></td>
+                <td class="hide-on-narrow">{{ link.color_name }}</td>
+                <td class="hide-on-narrow">{{ link.icon_name }}</td>
+                <td class="hide-on-narrow"><input type="text" readonly value="{{ link.url }}"></td>
                 <td class="bnt-group">
-                    <a class="bnt" href="{{ url_for('.get_link_delete', link_id=link.id) }}">Delete</a>
+                    <a class="icon-bnt" href="{{ url_for('.get_link_edit', link_id=link.id) }}" title="Edit">{{
+                        macros.feather_img('settings') }}</a>
+                    <a class="icon-bnt" href="{{ url_for('.get_link_delete', link_id=link.id) }}" title="Delete">{{
+                        macros.feather_img('x') }}</a>
                 </td>
             </tr>
             {% endfor %}

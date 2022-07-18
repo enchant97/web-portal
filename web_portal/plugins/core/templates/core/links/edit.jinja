@@ -1,0 +1,25 @@
+{% extends "/shared/base.jinja" %}
+{% block title %}Core - Links Edit{% endblock %}
+{% block main %}
+<section class="panel">
+    <h2>Edit Link</h2>
+    <form action="{{ url_for('.post_link_edit', link_id=link.id) }}" method="post">
+        <label for="core-link-url">URL</label>
+        <input type="text" name="url" id="core-link-url" placeholder="https://..." value="{{ link.url }}" required>
+        <label for="core-link-name">Name</label>
+        <input type="text" name="name" id="core-link-name" placeholder="name..." value="{{ link.name }}" required>
+        <label for="core-link-color-name">Color</label>
+        <select name="color_name" id="core-link-color-name">
+            {% include "/shared/includes/options-color.jinja" %}
+        </select>
+        <label for="core-link-icon-name">Icon Name</label>
+        <select name="icon-name" id="core-link-icon-name">
+            <option value="">** No Icon **</option>
+            {% for name in icon_names %}
+            <option {% if link.icon_name==name %}selected{% endif %} value="{{ name }}">{{ name }}</option>
+            {% endfor %}
+        </select>
+        <button type="submit">Save</button>
+    </form>
+</section>
+{% endblock %}

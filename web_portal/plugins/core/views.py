@@ -144,6 +144,19 @@ async def get_link_new():
     )
 
 
+@blueprint.get("/links/<int:link_id>/edit")
+@login_admin_required
+async def get_link_edit(link_id: int):
+    icon_names = get_icon_names(True)
+    link = await models.Link.filter(id=link_id).get()
+
+    return await render_template(
+        "core/links/edit.jinja",
+        icon_names=icon_names,
+        link=link,
+    )
+
+
 @blueprint.get("/links/<int:link_id>/delete")
 @login_admin_required
 async def get_link_delete(link_id: int):
@@ -185,6 +198,46 @@ async def post_link_new():
     )
 
     await flash(f"created link with name '{name}'", "ok")
+
+    return redirect(url_for(".get_links_index"))
+
+
+@blueprint.post("/links/<int:link_id>/edit")
+@login_admin_required
+async def post_link_edit(link_id: int):
+    link = await models.Link.filter(id=link_id).get()
+
+    form = await request.form
+
+    name = form["name"].strip()
+    url = form["url"].strip()
+    color_name = form["color_name"].strip()
+    icon_name = form.get("icon-name")
+
+    if not name:
+        await flash("link name cannot be blank", "error")
+        return redirect(url_for(".get_link_edit", link_id=link_id))
+
+    if icon_name:
+        if get_icon_path(icon_name) is None:
+            logger.warning(
+                "icon name requested not found, " +
+                "or permission to read is missing::name='%s'",
+                icon_name,
+            )
+            await flash("failed to find icon", "error")
+            return redirect(url_for(".get_link_edit", link_id=link_id))
+
+    link = link.update_from_dict(dict(
+        name=name,
+        url=url,
+        color_name=color_name,
+        icon_name=icon_name,
+    ))
+
+    await link.save()
+
+    await flash(f"updated link with name '{name}'", "ok")
 
     return redirect(url_for(".get_links_index"))
 

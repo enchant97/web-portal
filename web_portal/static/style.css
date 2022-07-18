@@ -306,6 +306,10 @@ table td.bnt-group {
     #theme-picker-selector button {
         min-width: 50%;
     }
+
+    .hide-on-narrow {
+        display: none;
+    }
 }
 
 @media(max-width:500px) {
