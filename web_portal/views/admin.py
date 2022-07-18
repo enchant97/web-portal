@@ -99,6 +99,10 @@ async def post_system_settings():
 @blueprint.post("/system-settings/custom-css")
 @login_admin_required
 async def post_custom_css():
+    if await get_system_setting("DEMO_MODE", default=False):
+        await flash("cannot upload custom css in demo mode", "error")
+        return redirect(url_for(".get_system_settings"))
+
     custom_css = (await request.files)["custom-css"]
 
     await custom_css.save(get_settings().DATA_PATH / "custom.css")
@@ -111,6 +115,10 @@ async def post_custom_css():
 @blueprint.get("/system-settings/custom-css/delete")
 @login_admin_required
 async def get_delete_custom_css():
+    if await get_system_setting("DEMO_MODE", default=False):
+        await flash("cannot delete custom css in demo mode", "error")
+        return redirect(url_for(".get_system_settings"))
+
     filepath = get_settings().DATA_PATH / "custom.css"
 
     if filepath.is_file():
