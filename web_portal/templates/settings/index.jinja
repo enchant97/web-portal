@@ -5,6 +5,19 @@
 
 <section class="panel">
     <h2>Dashboard</h2>
+    {% if not is_personal_dash %}
+    <p>
+        It looks like you haven't made a dashboard yet.
+        You will inherit the 'public' user one if it was setup.
+        If you want a custom one click the "Create Custom" button.
+    </p>
+    {% else %}
+    <p>
+        Here you can access your personal dashboard editor,
+        if you want to reset to defaults (meaning it will use the 'public' user dashboard,
+        if one was setup) click the "Restore To Defaults" button.
+    </p>
+    {% endif %}
     <div class="bnt-group">
         {% if is_personal_dash %}
         <a class="icon-bnt" href="{{ url_for('.get_edit_dashboard') }}">{{ macros.feather_img('grid') }} Editor</a>

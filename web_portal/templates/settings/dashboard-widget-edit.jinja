@@ -4,6 +4,10 @@
 <section class="panel">
     <h2>{{ widget.name }}, {{ widget.widget.internal_name }}</h2>
     <a class="icon-bnt" href="{{ url_for('.get_edit_dashboard') }}">{{ macros.feather_img('arrow-left') }} Back</a>
+    <p>
+        Here you can configure a placed widget.
+        Depending on the widget you may not have an editor available.
+    </p>
 </section>
 
 {{ rendered_editor | safe }}
