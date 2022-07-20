@@ -5,10 +5,11 @@ Module to assist with authentication
 from functools import wraps
 from typing import Any, Callable
 
-from quart import abort
 import quart_auth
+from quart import abort
 
 from ..database import models
+from .constants import SystemSettingKeys
 from .helpers import get_system_setting
 
 
@@ -31,7 +32,7 @@ def login_required_if_secured(func: Callable) -> Callable:
     """
     @wraps(func)
     async def wrapper(*args: Any, **kwargs: Any) -> Any:
-        if await get_system_setting("PORTAL_SECURED", default=False):
+        if await get_system_setting(SystemSettingKeys.PORTAL_SECURED, default=False):
             if not (await current_user.is_authenticated):
                 raise quart_auth.Unauthorized()
         return await func(*args, **kwargs)
@@ -45,7 +46,7 @@ login_standard_required = quart_auth.login_required
 
 def login_admin_required(func: Callable) -> Callable:
     """
-    used the same as login_reqired,
+    used the same as login_required
     but checks whether user is admin
     """
     @wraps(func)
@@ -65,7 +66,7 @@ def ensure_not_setup(func: Callable) -> Callable:
     @wraps(func)
     async def wrapper(*args: Any, **kwargs: Any) -> Any:
 
-        if await get_system_setting("has_setup", default=False):
+        if await get_system_setting(SystemSettingKeys.HAS_SETUP, default=False):
             abort(404)
         return await func(*args, **kwargs)
     return wrapper

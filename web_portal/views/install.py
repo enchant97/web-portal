@@ -4,7 +4,7 @@ from quart import Blueprint, flash, redirect, render_template, request, url_for
 from tortoise.exceptions import IntegrityError
 
 from ..core.auth import ensure_not_setup
-from ..core.constants import PUBLIC_ACCOUNT_USERNAME
+from ..core.constants import PUBLIC_ACCOUNT_USERNAME, SystemSettingKeys
 from ..core.demo import do_demo_install
 from ..core.helpers import set_system_setting
 from ..core.validation import check_password, is_username_allowed
@@ -85,8 +85,8 @@ async def post_set_configs():
     show_widget_headers = form.get("show-widget-headers", False, bool)
 
     await asyncio.gather(
-        set_system_setting("PORTAL_SECURED", portal_secured),
-        set_system_setting("SHOW_WIDGET_HEADERS", show_widget_headers),
+        set_system_setting(SystemSettingKeys.PORTAL_SECURED, portal_secured),
+        set_system_setting(SystemSettingKeys.SHOW_WIDGET_HEADERS, show_widget_headers),
     )
 
     return redirect(url_for(".get_finish"))
@@ -95,7 +95,7 @@ async def post_set_configs():
 @blueprint.get("/finish")
 @ensure_not_setup
 async def get_finish():
-    await models.SystemSetting.update_or_create(key="has_setup", defaults=dict(value=True))
+    await set_system_setting(SystemSettingKeys.HAS_SETUP, True),
 
     return await render_template(
         "install/finish.jinja",

@@ -2,7 +2,7 @@ from quart import Blueprint, flash, redirect, render_template, request, url_for
 from quart_auth import login_user, logout_user
 
 from ..core.auth import AuthUserEnhanced, current_user, login_standard_required
-from ..core.constants import PUBLIC_ACCOUNT_USERNAME
+from ..core.constants import PUBLIC_ACCOUNT_USERNAME, SystemSettingKeys
 from ..core.helpers import get_system_setting
 from ..database import models
 
@@ -44,7 +44,7 @@ async def get_logout():
 
     await flash("You have been logged out", "ok")
 
-    if await get_system_setting("PORTAL_SECURED", default=False):
+    if await get_system_setting(SystemSettingKeys.PORTAL_SECURED, default=False):
         return redirect(url_for(".get_login"))
 
     return redirect(url_for("portal.portal"))

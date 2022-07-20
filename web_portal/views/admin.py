@@ -7,7 +7,7 @@ from tortoise.exceptions import IntegrityError
 
 from ..core.auth import AuthUserEnhanced, current_user, login_admin_required
 from ..core.config import get_settings
-from ..core.constants import PUBLIC_ACCOUNT_USERNAME
+from ..core.constants import PUBLIC_ACCOUNT_USERNAME, SystemSettingKeys
 from ..core.helpers import get_system_setting, set_system_setting
 from ..core.import_export import Widget_V1, import_v1_widgets
 from ..core.validation import check_password, is_username_allowed
@@ -57,8 +57,8 @@ async def post_import_v1_widgets():
 @login_admin_required
 async def get_system_settings():
     public_portal, show_widget_headers = await asyncio.gather(
-        get_system_setting("PORTAL_SECURED", default=False, skip_cache=True),
-        get_system_setting("SHOW_WIDGET_HEADERS", default=False, skip_cache=True),
+        get_system_setting(SystemSettingKeys.PORTAL_SECURED, default=False, skip_cache=True),
+        get_system_setting(SystemSettingKeys.SHOW_WIDGET_HEADERS, default=False, skip_cache=True),
     )
 
     # PORTAL_SECURED has a different meaning to public_portal
@@ -82,13 +82,13 @@ async def post_system_settings():
     portal_secured = not form.get("public-portal", False, bool)
     show_widget_headers = form.get("show-widget-headers", False, bool)
 
-    if not portal_secured and await get_system_setting("DEMO_MODE", default=False):
+    if not portal_secured and await get_system_setting(SystemSettingKeys.DEMO_MODE, default=False):
         await flash("cannot make portal public when in demo mode", "error")
         return redirect(url_for(".get_system_settings"))
 
     await asyncio.gather(
-        set_system_setting("PORTAL_SECURED", portal_secured),
-        set_system_setting("SHOW_WIDGET_HEADERS", show_widget_headers),
+        set_system_setting(SystemSettingKeys.PORTAL_SECURED, portal_secured),
+        set_system_setting(SystemSettingKeys.SHOW_WIDGET_HEADERS, show_widget_headers),
     )
 
     await flash("saved system settings", "ok")
@@ -99,7 +99,7 @@ async def post_system_settings():
 @blueprint.post("/system-settings/custom-css")
 @login_admin_required
 async def post_custom_css():
-    if await get_system_setting("DEMO_MODE", default=False):
+    if await get_system_setting(SystemSettingKeys.DEMO_MODE, default=False):
         await flash("cannot upload custom css in demo mode", "error")
         return redirect(url_for(".get_system_settings"))
 
@@ -115,7 +115,7 @@ async def post_custom_css():
 @blueprint.get("/system-settings/custom-css/delete")
 @login_admin_required
 async def get_delete_custom_css():
-    if await get_system_setting("DEMO_MODE", default=False):
+    if await get_system_setting(SystemSettingKeys.DEMO_MODE, default=False):
         await flash("cannot delete custom css in demo mode", "error")
         return redirect(url_for(".get_system_settings"))
 
@@ -172,7 +172,7 @@ async def get_users_delete(user_id: int):
         await flash("You cannot delete yourself", "error")
     elif user.username == PUBLIC_ACCOUNT_USERNAME:
         await flash("You cannot delete the virtual public", "error")
-    elif await get_system_setting("DEMO_MODE", default=False) and \
+    elif await get_system_setting(SystemSettingKeys.DEMO_MODE, default=False) and \
             user.username in ("admin", "demo"):
         await flash("You cannot delete this user while in demo mode", "error")
     else:
@@ -194,7 +194,7 @@ async def get_users_toggle_admin(user_id: int):
     if user.username == PUBLIC_ACCOUNT_USERNAME:
         await flash("This account cannot become an admin", "error")
         return redirect(url_for(".get_users"))
-    elif await get_system_setting("DEMO_MODE", default=False) and \
+    elif await get_system_setting(SystemSettingKeys.DEMO_MODE, default=False) and \
             user.username in ("admin", "demo"):
         await flash("You cannot change role of user while in demo mode", "error")
         return redirect(url_for(".get_users"))
