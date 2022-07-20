@@ -8,4 +8,4 @@ then
     args="$args --certfile $CERT_FILE --keyfile $KEY_FILE"
 fi
 
-hypercorn 'web_portal.main:create_app()' $args
+exec hypercorn 'web_portal.main:create_app()' $args
