@@ -1,3 +1,22 @@
+from pathlib import Path
+
+# names for plugins that would cause problems with internal functions
+RESTRICTED_PLUGIN_NAMES = (
+    "web_portal",
+    "admin",
+    "install",
+    "login",
+    "portal",
+    "settings",
+    "static",
+    "plugin",
+)
+# NOTE this controls where the plugins are loaded from (very important)
+# folder path location
+PLUGINS_PATH = Path(__file__).parent.parent.parent / "plugins"
+# how you would import it absolutely in python
+PLUGINS_PACKAGE_PATH = "plugins"
+
 PUBLIC_ACCOUNT_USERNAME = "public"
 
 VALID_USERNAME_RE = r"^[a-zA-Z0-9]+$"

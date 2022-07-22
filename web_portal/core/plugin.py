@@ -14,25 +14,10 @@ from quart import Blueprint
 
 from ..database import models as app_models
 from .config import get_settings
+from .constants import (PLUGINS_PACKAGE_PATH, PLUGINS_PATH,
+                        RESTRICTED_PLUGIN_NAMES)
 from .helpers import (get_system_setting, remove_system_setting,
                       set_system_setting)
-
-RESTRICTED_PLUGIN_NAMES = (
-    "web_portal",
-    "admin",
-    "install",
-    "login",
-    "portal",
-    "settings",
-    "static",
-    "plugin",
-)
-
-# NOTE this controls where the plugins are loaded from (very important)
-# folder path location
-PLUGINS_PATH = Path(__file__).parent.parent.parent / "plugins"
-# how you would import it absolutely in python
-PLUGINS_PACKAGE_PATH = "plugins"
 
 logger = logging.getLogger("web-portal")
 
