@@ -41,7 +41,7 @@ async def portal():
         widget_name = deconstruct_widget_name(plugin_name, widget.internal_name)
         loaded_plugin = PluginHandler.get_loaded_plugin(plugin_name)
 
-        if loaded_plugin is None:
+        if loaded_plugin is None or loaded_plugin.meta.get_rendered_widget is None:
             # skips loading plugin and warn user
             await flash(
                 f"widget with name '{dashboard_widget.name}' could not be loaded, " +

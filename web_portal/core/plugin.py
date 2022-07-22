@@ -62,8 +62,8 @@ class PluginMeta:
     db_models: tuple[str | ModuleType]
     blueprints: tuple[Blueprint]
     index_route_url: str
-    get_rendered_widget: Callable[[str, int, dict | None], Awaitable[str]]
-    get_rendered_widget_edit: Callable[[str, int, dict | None, str], Awaitable[str]]
+    get_rendered_widget: Callable[[str, int, dict | None], Awaitable[str]] | None = None
+    get_rendered_widget_edit: Callable[[str, int, dict | None, str], Awaitable[str]] | None = None
     get_settings: Callable[[], dict] | None = None
     get_injected_head: Callable[[], Awaitable[str]] | None = None
     do_demo_setup: Callable[[], Awaitable] | None = None

@@ -78,7 +78,7 @@ async def get_edit_dashboard_widget(widget_id: int):
 
     loaded_plugin = PluginHandler.get_loaded_plugin(widget.widget.plugin.internal_name)
 
-    if loaded_plugin is None:
+    if loaded_plugin is None or loaded_plugin.meta.get_rendered_widget_edit is None:
         await flash("Editor could not be loaded, please contact administrator", "error")
         return redirect(url_for(".get_edit_dashboard"))
 

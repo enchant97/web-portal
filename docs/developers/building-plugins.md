@@ -5,7 +5,7 @@ This guide is aimed at developers and will aid with the creation of new and amaz
 - Easily installable package
 - Integrates into a running web-portal instance
 - Provide custom placeable widgets
-- Widgets included with web-portal are actually a plugin called "core"
+- Widgets included with web-portal are actually two plugins called "core" and "core_extras"
 
 ## Important Notes
 - Web Portal plugins must be compatible with the Python version that it is based on, this is currently 3.10
@@ -204,8 +204,8 @@ PLUGIN_META = PluginMeta(
         },
     db_models=[],
     blueprints=[blueprint],
-    get_rendered_widget,
-    get_rendered_widget_edit,
+    get_rendered_widget=render_widget,
+    get_rendered_widget_edit=render_widget_edit,
     # NOTE there are other fields to add more functionality
 )
 ```
