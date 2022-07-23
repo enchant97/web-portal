@@ -4,6 +4,7 @@
 
 .vscode
 data/
+site/
 .env
 
 __pycache__
