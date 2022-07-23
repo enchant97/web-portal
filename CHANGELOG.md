@@ -4,6 +4,30 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.0.0] - 2022-07-23
+Due to major version number change; all changes are not listed here.
+### Added
+- Setup Wizard
+- Plugin Loader
+- Plugins
+  - Core
+    - Digital Clock
+    - Links
+      - Groups
+      - Colors
+      - Icons
+    - Search bar
+  - Core-Extras
+    - HTML embed
+    - Website embed (through iframe)
+- Users can now have personal dashboards
+- Public dashboard
+### Changed
+- Rewritten entire project
+- Widgets are now in plugins
+### Fixed
+- Minor style changes
+
 ## [1.6.1] - 2022-07-22
 ### Fixed
 - Change run.sh file to launch app using `exec`, ensuring app can be shutdown safely

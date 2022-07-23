@@ -11,6 +11,8 @@ It has been designed to run through docker and it is recommended to put it behin
 
 If you want just a basic link panel configured with a yaml file checkout Web Portal Lite available here: <https://github.com/enchant97/web-portal-lite>.
 
+> If you are looking for V1 please switch to historical-1
+
 ## Features
 - Minimal use of Javascript, to provide a lightning fast experience
 - Icon based UI
