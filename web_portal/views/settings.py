@@ -106,6 +106,28 @@ async def get_edit_dashboard_widget(widget_id: int):
         return redirect(url_for(".get_edit_dashboard"))
 
 
+@blueprint.post("/dashboard/<int:widget_id>/edit")
+@login_standard_required
+async def post_edit_dashboard_widget(widget_id: int):
+    dashboard = await models.Dashboard.get(owner_id=current_user.auth_id)
+    widget: models.DashboardWidget = await dashboard.widgets.filter(id=widget_id).get()
+
+    form = await request.form
+
+    widget_name = form["name"].strip()
+
+    if not widget_name:
+        await flash("widget name cannot be blank", "error")
+        return redirect(url_for(".get_edit_dashboard_widget", widget_id=widget_id))
+
+    widget.name = widget_name
+    await widget.save()
+
+    await flash("updated widget", "ok")
+
+    return redirect(url_for(".get_edit_dashboard_widget", widget_id=widget_id))
+
+
 @blueprint.get("/dashboard/widget/<int:widget_id>/delete")
 @login_standard_required
 async def get_delete_widget(widget_id: int):

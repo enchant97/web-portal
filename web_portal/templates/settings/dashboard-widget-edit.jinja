@@ -6,8 +6,18 @@
     <a class="icon-bnt" href="{{ url_for('.get_edit_dashboard') }}">{{ macros.feather_img('arrow-left') }} Back</a>
     <p>
         Here you can configure a placed widget.
-        Depending on the widget you may not have an editor available.
+        Depending on the widget you may not have any widget specific settings available.
     </p>
+</section>
+
+<section class="panel">
+    <h2>General</h2>
+    <form action="{{ url_for('.post_edit_dashboard_widget', widget_id=widget.id) }}" method="post">
+        <label for="widget-name">Name</label>
+        <input type="text" name="name" id="widget-name" placeholder="Name..." maxlength="128" value="{{ widget.name }}"
+            required>
+        <button type="submit">Save</button>
+    </form>
 </section>
 
 {{ rendered_editor | safe }}
