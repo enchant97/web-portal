@@ -32,7 +32,7 @@ If you want just a basic link panel configured with a yaml file checkout Web Por
 - Optionally secure the portal with user accounts & passwords
 - MySQL/MariaDB and sqlite support
 
-## Showcase (V1)
+## Showcase
 [![web-portal showcase image, showing dark and light themes](docs/assets/portal-view.png)](docs/assets/portal-view.png)
 
 ## Demo Video (V1)
