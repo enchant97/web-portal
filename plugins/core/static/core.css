@@ -27,6 +27,8 @@
     text-align: center;
     box-shadow: 4px 4px 0px black;
     word-wrap: break-word;
+    border-top: 1px solid black;
+    border-left: 1px solid black;
     /* for icon based links */
     display: flex;
     justify-content: center;
