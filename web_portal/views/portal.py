@@ -33,6 +33,7 @@ async def portal():
         await dashboard.fetch_related("widgets", "widgets__widget", "widgets__widget__plugin")
 
     rendered_widgets = []
+    failed_widgets = []
 
     for dashboard_widget in dashboard.widgets:
         dashboard_widget: models.DashboardWidget
@@ -43,11 +44,7 @@ async def portal():
 
         if loaded_plugin is None or loaded_plugin.meta.get_rendered_widget is None:
             # skips loading plugin and warn user
-            await flash(
-                f"widget with name '{dashboard_widget.name}' could not be loaded, " +
-                "please contact administrator",
-                "error"
-            )
+            failed_widgets.append(dashboard_widget.name)
             continue
 
         try:
@@ -59,11 +56,14 @@ async def portal():
             rendered_widgets.append((dashboard_widget, rendered_widget))
         except ValueError:
             # skips loading widget and warn user
-            await flash(
-                f"widget with name '{dashboard_widget.name}' could not be loaded, " +
-                "please contact administrator",
-                "error"
-            )
+            failed_widgets.append(dashboard_widget.name)
+
+    if failed_widgets:
+        await flash(
+            f"placed widgets with names {failed_widgets} could not be loaded, " +
+            "please contact administrator",
+            "error",
+        )
 
     return await render_template(
         "portal.jinja",
