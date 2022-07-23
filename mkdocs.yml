@@ -1,11 +1,11 @@
 site_name: Web Portal
 repo_url: https://github.com/enchant97/web-portal
 use_directory_urls: false
-copyright: Copyright © 2022 Leo Spratt
+copyright: Copyright © 2022 Leo Spratt under FDLv1.3-or-later
 theme:
   name: material
   palette:
-
+    primary: light blue
     # Palette toggle for light mode
     - scheme: default
       toggle:

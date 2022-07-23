@@ -70,7 +70,7 @@ Contributing to this project is welcome, whether that is an issue or pull reques
 - Don't change the version number
 
 ## Documentation
-More details and guides on installing can be found in `docs`, or click [here](docs/index.md).
+More details and guides on installing can be found at: [enchantedcode.co.uk/web-portal/](https://enchantedcode.co.uk/web-portal/) or view the markdown in the `docs` folder [here](docs/index.md).
 
 ## License
 This project is Copyright (c) 2022 Leo Spratt, licences shown below:
