@@ -21,11 +21,12 @@ FROM python:${PYTHON_VERSION}-alpine
     ENV LOG_LEVEL="INFO"
     ENV HOST="0.0.0.0"
     ENV PORT="8000"
-    ENV UNSECURE_LOGIN=1
+    ENV DATA_PATH="/app/data"
 
     COPY --from=builder /app/.venv .venv
 
     COPY web_portal web_portal
+    COPY plugins plugins
 
     COPY scripts/* ./
 

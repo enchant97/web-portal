@@ -1,0 +1,78 @@
+{% extends "/shared/base.jinja" %}
+{% block title %}Admin - Users{% endblock %}
+{% block main %}
+<section class="panel">
+    <h2>Add User</h2>
+    <p>
+        This allows you to add new users to Web Portal.
+        You can also decide whether to make them an admin or not.
+    </p>
+    <form action="{{ url_for('.post_users_new') }}" method="post">
+        <label for="new-user-username">Username</label>
+        <input type="text" name="username" id="new-user-username" maxlength="128" required>
+        <label for="new-user-password">Password</label>
+        <input type="password" name="password" id="new-user-password" required>
+        <label for="new-user-is-admin">Is Admin</label>
+        <input type="checkbox" name="is-admin" id="new-user-is-admin" value="1">
+        <button type="submit">Add</button>
+    </form>
+</section>
+
+<section class="panel">
+    <h2>Existing Users</h2>
+    <p>
+        This panel displays all user accounts.
+        Please note some accounts cannot be modified, so the management controls will not show.
+    </p>
+    <table>
+        <thead>
+            <tr>
+                <th>Username</th>
+                <th>Admin</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for user in users %}
+            <tr id="user-row-id-{{ user.id }}">
+                <td>{{ user.username }}</td>
+                <td>{{ user.is_admin }}</td>
+                <td class="bnt-group">
+                    {% if user.username != config.PUBLIC_ACCOUNT_USERNAME and user.id != current_user.auth_id %}
+                    {% if user.is_admin %}
+                    <a class="bnt" href="{{ url_for('.get_users_toggle_admin', user_id=user.id) }}">Remove Admin</a>
+                    {% else %}
+                    <a class="bnt" href="{{ url_for('.get_users_toggle_admin', user_id=user.id) }}">Make Admin</a>
+                    {% endif %}
+                    <a class="icon-bnt" href="{{ url_for('.get_users_delete', user_id=user.id) }}" title="Delete">{{ macros.feather_img('x') }}</a>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</section>
+
+<section class="panel">
+    <h2>Force Login</h2>
+    <p>
+        This panel allows you to login to another user account as long as it is not an admin.
+        You are required to re-enter your password.
+    </p>
+    <form action="{{ url_for('.post_user_force_login') }}" method="post">
+        <label for="user-id">User</label>
+        <select name="user-id" id="user-id" required>
+            <option value="">** Select User **</option>
+            {% for user in users %}
+            {% if user.is_admin == False %}
+            <option value="{{ user.id }}">{{ user.username }}</option>
+            {% endif %}
+            {% endfor %}
+        </select>
+        <label for="password">Your Password</label>
+        <input type="password" name="password" id="password" required>
+        <button type="submit">Force Login</button>
+    </form>
+</section>
+
+{% endblock %}

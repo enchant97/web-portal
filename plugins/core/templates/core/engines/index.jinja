@@ -1,0 +1,38 @@
+{% extends "/shared/base.jinja" %}
+{% block title %}Core - Search Engines{% endblock %}
+{% block main %}
+<section class="panel">
+    <h2>Menu</h2>
+    <a class="icon-bnt" href="{{ url_for('.get_engines_new') }}">{{ macros.feather_img('plus') }} New Engine</a>
+</section>
+
+<section class="panel">
+    <h2>Available Engines</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th class="hide-on-narrow">URL</th>
+                <th class="hide-on-narrow">Method</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for engine in engines %}
+            <tr>
+                <td>{{ engine.name }}</td>
+                <td class="hide-on-narrow"><input type="text" value="{{ engine.url }}" readonly></td>
+                <td class="hide-on-narrow">{{ engine.method.value }}</td>
+                <td class="bnt-group">
+                    <a class="icon-bnt" href="{{ url_for('.get_engines_edit', engine_id=engine.id) }}" title="Edit">{{
+                        macros.feather_img('settings') }}</a>
+                    <a class="icon-bnt" href="{{ url_for('.get_engines_delete', engine_id=engine.id) }}"
+                        title="Delete">{{ macros.feather_img('x') }}</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</section>
+
+{% endblock %}

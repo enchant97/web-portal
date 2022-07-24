@@ -1,0 +1,22 @@
+{% extends "/shared/base.jinja" %}
+{% block title %}Core - Search Engine New{% endblock %}
+{% block main %}
+<section class="panel">
+    <h2>New Search Engine</h2>
+    <form action="{{ url_for('.post_engines_new') }}" method="post">
+        <label for="core-engine-name">Name</label>
+        <input type="text" name="name" id="core-engine-name" placeholder="search..." maxlength="128" required>
+        <label for="core-engine-url">Search Url</label>
+        <input type="url" name="url" id="core-engine-url" placeholder="https://" required>
+        <label for="core-engine-query-param">Query Parameter</label>
+        <input type="text" name="query-param" id="core-engine-query-param" value="q" maxlength="128" required>
+        <label for="core-engine-method">Submission Method</label>
+        <select name="method" id="core-engine-method">
+            <option value="GET">GET</option>
+            <option value="POST">POST</option>
+        </select>
+        <button type="submit">Save</button>
+    </form>
+</section>
+
+{% endblock %}

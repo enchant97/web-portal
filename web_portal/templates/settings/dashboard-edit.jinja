@@ -1,0 +1,36 @@
+{% extends "/shared/base.jinja" %}
+{% block title %}Dashboard Editor{% endblock %}
+{% block main %}
+<section class="panel">
+    <h2>Add Widget</h2>
+    <p>
+        Here you can place available widgets onto your dashboard.
+        The name will show up as a heading if it is enabled in the settings.
+    </p>
+    <form action="{{ url_for('.post_add_widget') }}" method="post">
+        <label for="widget-name">Name</label>
+        <input type="text" name="name" id="widget-name" required placeholder="Name..." maxlength="128">
+        <label for="widget-widget-id">Widget</label>
+        <select name="widget-id" id="widget-widget-id">
+            {% for widget in widgets %}
+            <option value="{{ widget.id }}">{{ widget.internal_name }}</option>
+            {% endfor %}
+        </select>
+        <button type="submit">Add</button>
+    </form>
+</section>
+
+<section class="panel">
+    <h2>Placed Widgets</h2>
+    {% for widget in placed_widgets %}
+    <div>
+        <h3>{{ widget.name }}, {{ widget.widget.internal_name }}</h3>
+        <div class="bnt-group">
+            <a class="icon-bnt" href="{{ url_for('.get_edit_dashboard_widget', widget_id=widget.id) }}" title="Edit">{{ macros.feather_img('settings') }}</a>
+            <a class="icon-bnt" href="{{ url_for('.get_delete_widget', widget_id=widget.id) }}" title="Delete">{{ macros.feather_img('x') }}</a>
+        </div>
+    </div>
+    {% endfor %}
+</section>
+
+{% endblock %}

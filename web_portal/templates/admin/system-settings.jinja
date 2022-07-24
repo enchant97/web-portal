@@ -1,0 +1,35 @@
+{% extends "/shared/base.jinja" %}
+{% block title %}Admin - System Settings{% endblock %}
+{% block main %}
+<section class="panel">
+    <h2>System Settings</h2>
+    <form action="{{ url_for('.post_system_settings') }}" method="post">
+        <label for="system-setting-public-portal">Public Portal</label>
+        <input type="checkbox" name="public-portal" id="system-setting-public-portal" value="1" {{
+            macros.checkbox_checked(public_portal) }}>
+        <label for="system-setting-show-widget-headers">Show Widget Headers</label>
+        <input type="checkbox" name="show-widget-headers" id="system-setting-show-widget-headers" value="1" {{
+            macros.checkbox_checked(show_widget_headers) }}>
+
+        <button type="submit">Save</button>
+    </form>
+</section>
+
+<section class="panel">
+    <h2>Custom CSS</h2>
+    <p>
+        This allows for a easy way to inject custom css into the app.
+        It will be placed in the html document head at the end,
+        ensuring it will override already defined styles.
+    </p>
+    <form action="{{ url_for('.post_custom_css') }}" method="post" enctype="multipart/form-data">
+        <label for="system-setting-custom-css">Upload CSS File</label>
+        <input type="file" name="custom-css" id="system-setting-custom-css" accept="text/css">
+        <button type="submit">Upload</button>
+    </form>
+    {% if has_custom_css %}
+    <a class="bnt" href="{{ url_for('.get_delete_custom_css') }}">Delete Existing</a>
+    {% endif %}
+</section>
+
+{% endblock %}

@@ -1,31 +1,50 @@
 from quart import Blueprint, flash, redirect, render_template, request, url_for
-from quart_auth import (AuthUser, current_user, login_required,
-                        login_user, logout_user)
+from quart_auth import login_user, logout_user
 
-from ..database.crud import check_user
+from ..core.auth import AuthUserEnhanced, current_user, login_standard_required
+from ..core.constants import PUBLIC_ACCOUNT_USERNAME, SystemSettingKeys
+from ..core.helpers import get_system_setting
+from ..database import models
 
-blueprint = Blueprint("login", __name__)
+blueprint = Blueprint("login", __name__, url_prefix="/auth")
 
-@blueprint.route("/login", methods=['GET', 'POST'])
-async def login():
-    if request.method == "POST":
-        username = (await request.form)['username']
-        password = (await request.form).get('password', '')
-        user = await check_user(username, password)
-        if user:
-            login_user(AuthUser(user.id))
-            return redirect(url_for("portal.portal"))
-        await flash("username or password incorrect", "red")
 
+@blueprint.get("/login")
+async def get_login():
     if (await current_user.is_authenticated):
         # if user is already logged in redirect to portal
         return redirect(url_for("portal.portal"))
 
-    return await render_template("login.jinja2")
+    return await render_template("login.jinja")
 
-@blueprint.route("/logout")
-@login_required
-async def logout():
+
+@blueprint.post("/login")
+async def post_login():
+    form = await request.form
+
+    username = form["username"]
+    password = form["password"]
+
+    # prevents logging in with 'public virtual' account
+    if username != PUBLIC_ACCOUNT_USERNAME:
+        user = await models.User.filter(username=username).get_or_none()
+        if user and user.check_password(password):
+            login_user(AuthUserEnhanced(user.id))
+            return redirect(url_for("portal.portal"))
+
+    await flash("Username or password incorrect", "error")
+
+    return redirect(url_for(".get_login"))
+
+
+@blueprint.get("/logout")
+@login_standard_required
+async def get_logout():
     logout_user()
-    await flash("You have been logged out", "green")
+
+    await flash("You have been logged out", "ok")
+
+    if await get_system_setting(SystemSettingKeys.PORTAL_SECURED, default=False):
+        return redirect(url_for(".get_login"))
+
     return redirect(url_for("portal.portal"))

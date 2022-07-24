@@ -1,0 +1,10 @@
+{% extends "/shared/no-nav.jinja" %}
+{% block title %}Install{% endblock %}
+{% block main %}
+<section class="panel">
+    <h2>Finish</h2>
+    <p>You have now completed the install wizard. You may now navigate to the portal.</p>
+    <a class="bnt" href="{{ url_for('portal.portal') }}">Take Me To The Portal</a>
+</section>
+
+{% endblock %}

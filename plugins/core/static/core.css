@@ -1,0 +1,95 @@
+.widget-inner.core__clock .core__clock_display {
+    text-align: center;
+    font-weight: bold;
+}
+
+.widget-inner.core__clock .core__clock_display .time {
+    font-size: 3.5rem;
+}
+
+.widget-inner.core__clock .core__clock_display .date {
+    font-size: 2rem;
+}
+
+.widget-inner.core__links {
+    display: grid;
+    grid-template-columns: repeat(3, 32%);
+    justify-content: center;
+    gap: 10px;
+}
+
+.widget-inner.core__links a {
+    border-radius: var(--border-radius);
+    padding: 3rem;
+    text-decoration: none;
+    font-family: var(--font-family-title);
+    font-size: 1.5rem;
+    text-align: center;
+    box-shadow: 4px 4px 0px black;
+    word-wrap: break-word;
+    border-top: 1px solid black;
+    border-left: 1px solid black;
+    /* for icon based links */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.widget-inner.core__links a:hover {
+    transition-duration: 400ms;
+    background-color: black;
+    color: var(--font-light);
+}
+
+.widget-inner.core__links a img {
+    width: 3rem;
+    height: 3rem;
+    object-fit: contain;
+}
+
+.widget-inner.core__links a.compact {
+    padding: 1rem;
+}
+
+.core__search-form {
+    max-width: none;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    margin-bottom: 10px;
+}
+
+.core__search-form input {
+    width: 50%;
+}
+
+.core__search-form input:focus {
+    outline: solid black 2px;
+}
+
+@media(max-width:640px) {
+    .widget-inner.core__links {
+        grid-template-columns: repeat(2, 200px);
+    }
+
+    .widget-inner.core__clock .core__clock_display .time {
+        font-size: 2rem;
+    }
+
+    .widget-inner.core__clock .core__clock_display .date {
+        font-size: 1.4rem;
+    }
+}
+
+@media(max-width:500px) {
+    .widget-inner.core__links a {
+        padding: 2rem 1rem;
+    }
+}
+
+@media(max-width:490px) {
+    .widget-inner.core__links {
+        grid-template-columns: 100%;
+    }
+}

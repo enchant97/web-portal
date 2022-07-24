@@ -1,0 +1,45 @@
+{% import "/shared/macros.jinja" as macros %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}{% endblock %} - Web Portal</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&family=Roboto&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='colors.css') }}">
+    <script src="{{ url_for('static', filename='theme-changer.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='script.js') }}" defer></script>
+    {% for injection in get_head_injects() %}{{ injection | safe }}{% endfor %}
+    <link rel="stylesheet" href="{{ url_for('portal.get_custom_css') }}">
+</head>
+
+<body>
+    <header>
+        <h1>{{ self.title() }}</h1>
+        <nav>
+            {% block nav %}{% endblock %}
+            <button class="icon-bnt hidden" id="themeToggleBnt" title="Theme Picker">{{ macros.feather_img('sun') }}|{{
+                macros.feather_img('moon') }}</button>
+        </nav>
+    </header>
+    <main>
+        {% include "/shared/includes/flashed-messages.jinja" %}
+        {% block main %}
+        {% endblock %}
+    </main>
+    <footer>
+        {% if config.DEMO_MODE %}
+        <p><strong class="panel red">Running in "Demo Mode". Some features are restricted.</strong></p>
+        {% endif %}
+        Running Web-Portal
+        {%- if config.SHOW_VERSION_NUMBER %} V{{ config["__VERSION__"] }}{%- endif -%},
+        provided by <strong><a href="https://github.com/enchant97">enchant97</a></strong>
+    </footer>
+</body>
+
+</html>

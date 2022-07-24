@@ -1,0 +1,43 @@
+{% extends "/shared/base.jinja" %}
+{% block title %}Settings{% endblock %}
+{% block main %}
+<h2>Welcome {{ user.username }}</h2>
+
+<section class="panel">
+    <h2>Dashboard</h2>
+    {% if not is_personal_dash %}
+    <p>
+        It looks like you haven't made a dashboard yet.
+        You will inherit the 'public' user one if it was setup.
+        If you want a custom one click the "Create Custom" button.
+    </p>
+    {% else %}
+    <p>
+        Here you can access your personal dashboard editor,
+        if you want to reset to defaults (meaning it will use the 'public' user dashboard,
+        if one was setup) click the "Restore To Defaults" button.
+    </p>
+    {% endif %}
+    <div class="bnt-group">
+        {% if is_personal_dash %}
+        <a class="icon-bnt" href="{{ url_for('.get_edit_dashboard') }}">{{ macros.feather_img('grid') }} Editor</a>
+        <a class="icon-bnt" href="{{ url_for('.get_restore_defaults') }}">{{ macros.feather_img('refresh-cw') }} Restore
+            To Defaults</a>
+        {% else %}
+        <a class="icon-bnt" href="{{ url_for('.get_edit_dashboard') }}">{{ macros.feather_img('grid') }} Create
+            Custom</a>
+        {% endif %}
+    </div>
+</section>
+
+<section class="panel">
+    <h2>Other</h2>
+    <div class="bnt-group">
+        {% if current_user.is_authenticated_admin %}
+        <a class="icon-bnt" href="{{ url_for('admin.get_index') }}">{{ macros.feather_img('tool') }} Administration</a>
+        {% endif %}
+        <a class="icon-bnt" href="{{ url_for('portal.get_plugins_index') }}">{{ macros.feather_img('box') }} Plugins</a>
+    </div>
+</section>
+
+{% endblock %}

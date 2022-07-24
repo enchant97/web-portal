@@ -1,0 +1,25 @@
+{% extends "/shared/base.jinja" %}
+{% block title %}Core{% endblock %}
+{% block main %}
+<section class="panel">
+    <h2>Web Portal Core</h2>
+    <a class="icon-bnt" href="{{ url_for('portal.get_plugins_index') }}">{{ macros.feather_img('arrow-left') }} Back</a>
+</section>
+
+<section class="panel">
+    <h2>Welcome</h2>
+    <p>Welcome to Core, a built-in plugin for Web-Portal.</p>
+</section>
+
+{% if current_user.is_authenticated_admin %}
+<section class="panel">
+    <h2>Plugin Settings</h2>
+    <a class="bnt" href="{{ url_for('.get_engines_index') }}">Engine Management</a>
+    <a class="bnt" href="{{ url_for('.get_links_index') }}">Links Management</a>
+    {% if config.plugin__core.ALLOW_ICON_UPLOADS %}
+    <a class="bnt" href="{{ url_for('.get_upload_icons') }}">Upload Icons</a>
+    {% endif %}
+</section>
+{% endif %}
+
+{% endblock %}

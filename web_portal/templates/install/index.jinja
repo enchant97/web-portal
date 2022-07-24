@@ -1,0 +1,27 @@
+{% extends "/shared/no-nav.jinja" %}
+{% block title %}Install{% endblock %}
+{% block main %}
+<section class="panel">
+    <h2>Welcome to Web Portal</h2>
+    <p>
+        As this is the first time running Web Portal,
+        this wizard will guide you through setting up.
+    </p>
+    <p>Click the "next" button to continue to the next step.</p>
+    <a class="bnt" href="{{ url_for('.get_admin_user') }}">Next</a>
+</section>
+
+<section class="panel">
+    <h2>Demo Install</h2>
+    <p>
+        This allows you to try out Web Portal as a demo.
+        Will use internally defined values.
+    </p>
+    <p>
+        Default users will be created (demo and admin),
+        the passwords will be the same as the username.
+    </p>
+    <a class="bnt" href="{{ url_for('.get_demo_install') }}">Install As Demo</a>
+</section>
+
+{% endblock %}

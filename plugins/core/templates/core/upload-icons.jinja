@@ -1,0 +1,41 @@
+{% extends "/shared/base.jinja" %}
+{% block title %}Core{% endblock %}
+{% block main %}
+<section class="panel">
+    <h2>Upload Format</h2>
+    <p>
+        Before uploading please follow the below layout.
+        Please note if there are any other files/folders they will be skipped.
+    </p>
+    <ul>
+        <li>
+            icons.zip
+            <ul>
+                <li>svg/
+                    <ul>
+                        <li>example.svg</li>
+                        <li>...</li>
+                    </ul>
+                </li>
+                <li>png/
+                    <ul>
+                        <li>example.png</li>
+                        <li>...</li>
+                    </ul>
+                </li>
+            </ul>
+        </li>
+    </ul>
+</section>
+
+<section class="panel">
+    <h2>Upload Icons</h2>
+    <form action="{{ url_for('.post_upload_icons') }}" method="post" enctype="multipart/form-data">
+        <label for="icons-file">Zip</label>
+        <input type="file" name="file" id="icons-file" accept=".zip" required>
+        <button type="submit">Upload</button>
+    </form>
+</section>
+
+
+{% endblock %}

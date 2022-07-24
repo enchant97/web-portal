@@ -1,0 +1,10 @@
+<section class="panel">
+    <h2>Configure</h2>
+    <form action="{{ url_for('core_extras.post_widget_update_embed_html', widget_id=dash_widget_id, back_to=back_to_url) }}"
+        method="post">
+        <label for="core_extras-widget-embed_html-content">HTML Content</label>
+        <textarea name="content" id="core_extras-widget-embed_html-content" rows="10"
+            placeholder="enter HTML here...">{{ content }}</textarea>
+        <button type="submit">Save</button>
+    </form>
+</section>

@@ -1,0 +1,124 @@
+.no-color {
+    background-color: var(--bg-sub-alt);
+    color: var(--font-dark);
+}
+
+.white {
+    background-color: #e4e4e4;
+    color: var(--font-dark-no-adjust);
+}
+
+.grey {
+    background-color: #7c7c7c;
+    color: var(--font-light);
+}
+
+.grey-black {
+    background-color: #292929;
+    color: var(--font-light);
+}
+
+.black {
+    background-color: #000000;
+    color: var(--font-light);
+}
+
+.red {
+    background-color: #c24141;
+    color: var(--font-light);
+}
+
+.red-alt {
+    background-color: #c24141;
+    color: var(--font-light);
+}
+
+.orange {
+    background-color: #b96f32;
+    color: var(--font-light);
+}
+
+.orange-alt {
+    background-color: #ad641b;
+    color: var(--font-light);
+}
+
+.yellow {
+    background-color: #8b971e;
+    color: var(--font-light);
+}
+
+.yellow-alt {
+    background-color: #c1c10b;
+    color: var(--font-dark-no-adjust);
+}
+
+.green {
+    background-color: #3c9630;
+    color: var(--font-light);
+}
+
+.green-alt {
+    background-color: #00b500;
+    color: var(--font-dark-no-adjust);
+}
+
+.green-blue {
+    background-color: #309663;
+    color: var(--font-light);
+}
+
+.green-blue-alt {
+    background-color: #00af57;
+    color: var(--font-dark-no-adjust);
+}
+
+.cyan {
+    background-color: #0e7b9d;
+    color: var(--font-light);
+}
+
+.cyan-alt {
+    background-color: #00a6cc;
+    color: var(--font-dark-no-adjust);
+}
+
+.blue {
+    background-color: #4175b9;
+    color: var(--font-light);
+}
+
+.blue-alt {
+    background-color: #003aba;
+    color: var(--font-light);
+}
+
+.purple {
+    background-color: #5d2aaf;
+    color: var(--font-light);
+}
+
+.purple-alt {
+    background-color: #6700cf;
+    color: var(--font-light);
+}
+
+.pink {
+    background-color: #aa2aaf;
+    color: var(--font-light);
+}
+
+.pink-alt {
+    background-color: #da00e1;
+    color: var(--font-dark-no-adjust);
+}
+
+.pink-red {
+    background-color: #af2a7c;
+    color: var(--font-light);
+}
+
+.pink-red-alt {
+    background-color: #dc0188;
+    color: var(--font-dark-no-adjust);
+}

@@ -1,0 +1,40 @@
+{% extends "/shared/base.jinja" %}
+{% block title %}Core - Links{% endblock %}
+{% block main %}
+<section class="panel">
+    <h2>Menu</h2>
+    <a class="icon-bnt" href="{{ url_for('.get_link_new') }}">{{ macros.feather_img('plus') }} New Link</a>
+</section>
+
+<section class="panel">
+    <h2>Available Links</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th class="hide-on-narrow">Color</th>
+                <th class="hide-on-narrow">Icon</th>
+                <th class="hide-on-narrow">URL</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for link in links %}
+            <tr>
+                <td>{{ link.name }}</td>
+                <td class="hide-on-narrow">{{ link.color_name }}</td>
+                <td class="hide-on-narrow">{{ link.icon_name }}</td>
+                <td class="hide-on-narrow"><input type="text" readonly value="{{ link.url }}"></td>
+                <td class="bnt-group">
+                    <a class="icon-bnt" href="{{ url_for('.get_link_edit', link_id=link.id) }}" title="Edit">{{
+                        macros.feather_img('settings') }}</a>
+                    <a class="icon-bnt" href="{{ url_for('.get_link_delete', link_id=link.id) }}" title="Delete">{{
+                        macros.feather_img('x') }}</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</section>
+
+{% endblock %}

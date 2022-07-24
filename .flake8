@@ -1,0 +1,4 @@
+[flake8]
+per-file-ignores=
+    web_portal/plugin_api.py:F401
+max-line-length=100

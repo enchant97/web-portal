@@ -1,0 +1,12 @@
+<section class="panel">
+    <h2>Configure</h2>
+    <form action="{{ url_for('core_extras.post_widget_update_iframe', widget_id=dash_widget_id, back_to=back_to_url) }}"
+        method="post">
+        <label for="core_extras-widget-iframe-src">Website Url</label>
+        <input type="url" name="src" id="core_extras-widget-iframe-src" placeholder="https://example.com" value="{{ iframe_src }}"
+            required>
+        <label for="core_extras-widget-iframe-height">Height (In Pixels)</label>
+        <input type="number" name="height" id="core_extras-widget-iframe-height" min="10" value="{{ iframe_height }}" required>
+        <button type="submit">Save</button>
+    </form>
+</section>

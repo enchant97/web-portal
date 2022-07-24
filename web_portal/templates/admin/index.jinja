@@ -1,0 +1,29 @@
+{% extends "/shared/base.jinja" %}
+{% block title %}Admin{% endblock %}
+{% block main %}
+<section class="panel">
+    <h2>Menu</h2>
+    <div class="bnt-group">
+        <a class="icon-bnt" href="{{ url_for('portal.get_plugins_index') }}">{{ macros.feather_img('box') }} Plugins</a>
+        <a class="icon-bnt" href="{{ url_for('admin.get_switch_to_public') }}">{{ macros.feather_img('user') }} Switch
+            To
+            Public</a>
+        <a class="icon-bnt" href="{{ url_for('admin.get_users') }}">{{ macros.feather_img('users') }} Users</a>
+        <a class="icon-bnt" href="{{ url_for('admin.get_system_settings') }}">{{ macros.feather_img('tool') }} System
+            Settings</a>
+    </div>
+</section>
+
+<section class="panel">
+    <h2>Import V1 Widgets</h2>
+    <p>
+        This panel allows you to import an exported V1 widgets file,
+        allowing for easier migration. Please note this feature
+        requires the "core" plugin to be installed, if you have removed it.
+    </p>
+    <form enctype="multipart/form-data" action="{{ url_for('.post_import_v1_widgets') }}" method="post">
+        <input type="file" name="file" accept="application/json" aria-label="v1 file to upload" required>
+        <button type="submit">Upload</button>
+    </form>
+</section>
+{% endblock %}

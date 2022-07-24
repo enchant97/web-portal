@@ -1,0 +1,57 @@
+{% extends "/shared/base.jinja" %}
+{% block title %}Plugins{% endblock %}
+{% block main %}
+<section class="panel">
+    <h2>Loaded Plugins</h2>
+    {% if current_user.is_authenticated_admin %}
+    <p>
+        These plugins are registered and loaded. If you wish to delete the plugin data,
+        please first remove the plugin from the plugin folder (while app is shutdown).
+    </p>
+    {% endif %}
+    <ul>
+        {% for plugin in loaded_plugins %}
+        <li>
+            <a href="{{ url_for(plugin.meta.index_route_url) }}">{{ plugin.meta.human_name }}</a>
+            <ul>
+                {% for widget in plugin.meta.widgets.values() %}
+                <li>{{ widget }}</li>
+                {% endfor %}
+            </ul>
+        </li>
+        {% endfor %}
+    </ul>
+</section>
+
+{% if missing_plugins %}
+{% if current_user.is_authenticated_admin %}
+<section class="panel">
+    <h2>Missing Plugins</h2>
+    <p>
+        These plugins have not been loaded by the plugin system.
+        If you do not want the plugin you can safely remove the registered data.
+    </p>
+    <table>
+        <thead>
+            <tr>
+                <th>Internal Name</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for plugin in missing_plugins %}
+            <tr>
+                <td>{{ plugin.internal_name }}</td>
+                <td class="bnt-group">
+                    <a class="bnt"
+                        href="{{ url_for('.get_delete_plugin_data', plugin_name=plugin.internal_name) }}">Delete</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</section>
+{% endif %}
+{% endif %}
+
+{% endblock %}
