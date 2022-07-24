@@ -100,10 +100,19 @@ The Core plugin which is built-in to Web Portal (unless you removed it). It prov
 ### Administration Settings
 This plugin also has a management page, which is accessed from the "Plugin Settings" page. It has the following sub pages:
 
-- Search Engines - Allows admin to add search engines which can be selected from the search widget
+- Engine Management - Allows admin to add search engines which can be selected from the search widget
 - Links Management - Allows admin to add links which can be selected from the links widget
 - Upload Icons - Allows admin to upload icons which can be used in the links widget for a app icon
 
+### Widget Editor (In Dashboard)
+Some widgets included in this plugin allow you to configure them.
+#### Links
+In the widget editor you can place links onto the widget. These links have to be added by an admin first, by going to the plugin "Administration Settings" page and navigating to "Links Management".
+
+You may also set "Compact Links" configuration which allows the links widget to display in a compact format, useful for when you have lots of links.
+
+#### Web Search
+In the widget editor you to select a specific search engine. These search engines have to be added by an admin first, by going to the plugin "Administration Settings" page and navigating to "Engine Management".
 
 ## Plugin - Core-Extras
 The Core-Extras plugin which is built-in to Web Portal (unless you removed it). It provides several widgets which are listed below:
@@ -112,8 +121,10 @@ The Core-Extras plugin which is built-in to Web Portal (unless you removed it). 
 - Embed Website - Embed a website by providing its url, uses an iframe so may not work with all sites
 
 
-## Plugins Folder
-The plugin folder is where plugins are stored, it allows you to easily install a new plugin (or remove).
+## Plugins
+Web Portal works by implementing a plugin system allowing for different widgets to be installed.
+
+Plugins are stored in a plugins folder, this plugin system allows you to easily install a new plugin (or remove) without requiring Web Portal to be re-installed.
 
 ### Add
 To install a plugin into this folder follow these steps:
@@ -138,12 +149,17 @@ To remove follow these steps:
 Assuming you are running the official Docker image; Web Portal is structured as shown below:
 
 ```
+data/
+    ...
+
 app/
     web_portal/
         ...
 
     plugins/
-        __init__.py
+        core
+        core_extras
+        another_plugin
         ...
 ```
 
@@ -152,9 +168,11 @@ To add plugins you can mount a volume as shown below using Docker Compose:
 ```yml
 # filepath: docker-compose.yml
 volumes:
-  - ./data:/data
+  - ./data:/app/data
   - ./plugins:/app/plugins
 ```
+
+> IMPORTANT: When you mount the plugins folder as a docker volume it will disable the built-in plugins provided by the image.
 
 
 ## The End

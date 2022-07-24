@@ -9,11 +9,10 @@ services:
     build: .
     restart: unless-stopped
     volumes:
-      - ./data:/data
+      - ./data:/app/data
     ports:
       - 127.0.0.1:8000:8000
     environment:
-      - "DATA_PATH=/data"
       - "DB_URI=sqlite://:memory:"
       - "PLUGIN_SKIP_LIST=[\"core_extras\"]"
       - "ALLOW_ICON_UPLOADS=0"

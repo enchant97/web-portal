@@ -27,6 +27,7 @@ This file should be placed in a directory where you are going to store all your 
 web_portal/
     docker-compose.yml
     data/
+    plugins/
 ```
 
 ### Example Compose File
@@ -43,12 +44,15 @@ services:
     image: ghcr.io/enchant97/web-portal:2
     restart: unless-stopped
     volumes:
-      - ./data:/data
+      - ./data:/app/data
+      # Uncomment if you want custom plugins
+      # - ./plugins:/app/plugins
     ports:
       # Change only left side
       - 8000:8000
     environment:
-      - "DATA_PATH=/data"
+      # This config is built into the Docker image
+      # - "DATA_PATH=/app/data"
       - "DB_URI=sqlite:///data/db.sqlite"
       # This must be secure
       - "SECRET_KEY=replace_me_123"

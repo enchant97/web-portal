@@ -13,16 +13,16 @@ Web-Portal is a web app written in Python using Quart, that aims to provide an e
 - Adjustable site theme
 - Plugin support
 - Inbuilt Plugin Widgets
-  - Core
-    - Digital Clock
-    - Links
-      - Groups
-      - Colors
-      - Icons
-    - Search bar
-  - Core-Extras
-    - HTML embed
-    - Website embed (through iframe)
+    - Core
+        - Digital Clock
+        - Links
+            - Groups
+            - Colors
+            - Icons
+        - Search bar
+    - Core-Extras
+        - HTML embed
+        - Website embed (through iframe)
 - Password protection for admin modification
 - Optionally secure the portal with user accounts & passwords
 - MySQL/MariaDB and SQLite support
