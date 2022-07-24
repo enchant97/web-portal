@@ -54,7 +54,7 @@ There is a public demo instance of Web Portal, kindly hosted by a friend access 
 ## Branches
 | Name         | Description            | State         |
 | :----------- | :--------------------- | :------------ |
-| master       | Work ready for release | Stable        |
+| main         | Work ready for release | Stable        |
 | next         | Work for next version  | Very Unstable |
 | historical-X | Historical versions    | Unsupported   |
 
