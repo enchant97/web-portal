@@ -51,7 +51,7 @@ async def post_admin_user():
     elif username == PUBLIC_ACCOUNT_USERNAME:
         await flash("This username is reserved, please use another", "error")
     elif (message := check_password(username, password, password_confirm)) is not None:
-        await flash(message.value, "error")
+        await flash(message, "error")
     else:
         try:
             user = models.User(
