@@ -147,7 +147,7 @@ async def post_users_new():
     if not is_username_allowed(username):
         await flash("Entered username contains invalid characters", "error")
     elif (message := check_password(username, password)) is not None:
-        await flash(message.value, "error")
+        await flash(message, "error")
     else:
         try:
             user = models.User(
