@@ -4,6 +4,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.1.0] - 2022-11-30
+### Changed
+- Updated dependencies
+### Added
+- When using the public virtual account you can switch back to the admin account, without requiring to log-in
+- Show banner when using public virtual account
+### Fixed
+- Fix misuse of password checker method
+- Fix plugins required version numbers only allowing v2 and not v2.+
+
 ## [2.0.0] - 2022-07-23
 Due to major version number change; all changes are not listed here.
 ### Added
