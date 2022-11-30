@@ -86,7 +86,7 @@ async def render_widget_edit(
 
 
 PLUGIN_META = PluginMeta(
-    version_specifier="== 2",
+    version_specifier="~=2.0",
     human_name="Core-Extras",
     widgets={
         "embed_html": "Embed HTML",
