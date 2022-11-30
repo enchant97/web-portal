@@ -9,16 +9,37 @@ import quart_auth
 from quart import abort
 
 from ..database import models
-from .constants import SystemSettingKeys
+from .constants import PUBLIC_ACCOUNT_USERNAME, SystemSettingKeys
 from .helpers import get_system_setting
 
 
 class AuthUserEnhanced(quart_auth.AuthUser):
+    # cached public user id, loaded on first use
+    __public_user_id: str | None
+
+    def __init__(self, auth_id: str | None) -> None:
+        super().__init__(auth_id)
+        self.__public_user_id = None
+
+    async def get_public_user_id(self) -> str | None:
+        if self.__public_user_id is None:
+            public_user = await models.User.filter(
+                username=PUBLIC_ACCOUNT_USERNAME).get_or_none().only("id")
+            if public_user:
+                self.__public_user_id = str(public_user.id)
+        return self.__public_user_id
+
     @property
     async def is_authenticated_admin(self):
         if await self.is_authenticated:
             if await models.User.filter(id=current_user.auth_id, is_admin=True).get_or_none():
                 return True
+        return False
+
+    @property
+    async def is_public_user(self):
+        if self.auth_id is not None and str(self.auth_id) == await self.get_public_user_id():
+            return True
         return False
 
 

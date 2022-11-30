@@ -63,7 +63,8 @@ textarea,
 select,
 button,
 label,
-div {
+div,
+strong {
     color: var(--font-dark);
     font-size: 1rem;
     font-family: var(--font-family-main);
@@ -274,6 +275,10 @@ table td.bnt-group {
 
 .hidden {
     display: none;
+}
+
+.public-user-warning {
+    text-align: center;
 }
 
 #theme-picker-selector {

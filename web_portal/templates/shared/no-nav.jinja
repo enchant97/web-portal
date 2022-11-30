@@ -19,6 +19,11 @@
 </head>
 
 <body>
+    {% if current_user.is_public_user %}
+    <p class="public-user-warning">
+        <strong class="panel orange">Currently logged into virtual public account.</strong>
+    </p>
+    {% endif %}
     <header>
         <h1>{{ self.title() }}</h1>
         <nav>
