@@ -20,9 +20,11 @@
 
 <body>
     {% if current_user.is_public_user %}
-    <p class="public-user-warning">
-        <strong class="panel orange">Currently logged into virtual public account.</strong>
-    </p>
+    <div class="public-user-warning panel">
+        <p><strong>Currently logged into virtual public account.</strong></p>
+        <a href="{{ url_for('admin.get_switch_from_public') }}" class="icon-bnt">{{ macros.feather_img('user') }} Switch
+            Back</a>
+    </div>
     {% endif %}
     <header>
         <h1>{{ self.title() }}</h1>

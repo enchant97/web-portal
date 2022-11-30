@@ -1,4 +1,5 @@
-from quart import Blueprint, flash, redirect, render_template, request, url_for
+from quart import (Blueprint, flash, redirect, render_template, request,
+                   session, url_for)
 from quart_auth import login_user, logout_user
 
 from ..core.auth import AuthUserEnhanced, current_user, login_standard_required
@@ -41,6 +42,7 @@ async def post_login():
 @login_standard_required
 async def get_logout():
     logout_user()
+    session.clear()
 
     await flash("You have been logged out", "ok")
 

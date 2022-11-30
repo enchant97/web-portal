@@ -1,11 +1,13 @@
 import asyncio
 import json
 
-from quart import Blueprint, flash, redirect, render_template, request, url_for
+from quart import (Blueprint, flash, redirect, render_template, request,
+                   session, url_for)
 from quart_auth import login_user
 from tortoise.exceptions import IntegrityError
 
-from ..core.auth import AuthUserEnhanced, current_user, login_admin_required
+from ..core.auth import (AuthUserEnhanced, current_user, login_admin_required,
+                         login_standard_required)
 from ..core.config import get_settings
 from ..core.constants import PUBLIC_ACCOUNT_USERNAME, SystemSettingKeys
 from ..core.helpers import get_system_setting, set_system_setting
@@ -25,11 +27,26 @@ async def get_index():
 @blueprint.get("/switch-to-public")
 @login_admin_required
 async def get_switch_to_public():
+    current_user_id = current_user.auth_id
     public_user = await models.User.filter(username=PUBLIC_ACCOUNT_USERNAME).get().only("id")
 
     login_user(AuthUserEnhanced(public_user.id))
     await flash(f"switched to {PUBLIC_ACCOUNT_USERNAME} account", "ok")
 
+    session["prev-user-id"] = str(current_user_id)
+
+    return redirect(url_for("portal.portal"))
+
+
+@blueprint.get("/switch-from-public")
+@login_standard_required
+async def get_switch_from_public():
+    if await current_user.is_public_user:
+        prev_user_id = session.get("prev-user-id")
+        if prev_user_id:
+            login_user(AuthUserEnhanced(prev_user_id))
+            await flash("switch out of public account", "ok")
+    session.pop("prev-user-id", None)
     return redirect(url_for("portal.portal"))
 
 
