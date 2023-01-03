@@ -15,12 +15,12 @@
     display: grid;
     grid-template-columns: repeat(3, 32%);
     justify-content: center;
-    gap: 10px;
+    gap: .6rem;
 }
 
 .widget-inner.core__links a {
     border-radius: var(--border-radius);
-    padding: 3rem;
+    padding: 2.5rem 1.4rem;
     text-decoration: none;
     font-family: var(--font-family-title);
     font-size: 1.5rem;
@@ -31,7 +31,6 @@
     border-left: 1px solid black;
     /* for icon based links */
     display: flex;
-    justify-content: center;
     align-items: center;
 }
 
@@ -42,13 +41,19 @@
 }
 
 .widget-inner.core__links a img {
-    width: 3rem;
-    height: 3rem;
+    margin-right: .5rem;
+    width: 2.5rem;
+    height: 2.5rem;
     object-fit: contain;
 }
 
 .widget-inner.core__links a.compact {
     padding: 1rem;
+}
+
+.widget-inner.core__links a.compact img {
+    width: 2rem;
+    height: 2rem;
 }
 
 .core__search-form {
@@ -84,7 +89,7 @@
 
 @media(max-width:500px) {
     .widget-inner.core__links a {
-        padding: 2rem 1rem;
+        padding: 1rem;
     }
 }
 
