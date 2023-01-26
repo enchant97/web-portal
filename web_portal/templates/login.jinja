@@ -2,7 +2,7 @@
 {% block title %}Login{% endblock %}
 {% block main %}
 <form class="panel login" action="{{ url_for('.post_login') }}" method="post">
-    <img class="img-branding" src="{{ url_for('static', filename='icon-256.png') }}" alt="web-portal icon">
+    <img class="img-branding" src="{{ url_for('static', filename='icon.svg') }}" alt="web-portal icon">
     {% if config.DEMO_MODE %}
     <p>
         Welcome to the Web Portal demo. Login details shown below:
