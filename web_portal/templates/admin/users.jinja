@@ -9,9 +9,9 @@
     </p>
     <form action="{{ url_for('.post_users_new') }}" method="post">
         <label for="new-user-username">Username</label>
-        <input type="text" name="username" id="new-user-username" maxlength="128" required>
+        <input type="text" name="username" id="new-user-username" autocomplete="off" placeholder="e.g. leo" maxlength="128" required>
         <label for="new-user-password">Password</label>
-        <input type="password" name="password" id="new-user-password" required>
+        <input type="password" name="password" id="new-user-password" autocomplete="off" placeholder="e.g. ••••••••" required>
         <label for="new-user-is-admin">Is Admin</label>
         <input type="checkbox" name="is-admin" id="new-user-is-admin" value="1">
         <button type="submit">Add</button>
@@ -44,7 +44,8 @@
                     {% else %}
                     <a class="bnt" href="{{ url_for('.get_users_toggle_admin', user_id=user.id) }}">Make Admin</a>
                     {% endif %}
-                    <a class="icon-bnt" href="{{ url_for('.get_users_delete', user_id=user.id) }}" title="Delete">{{ macros.feather_img('x') }}</a>
+                    <a class="icon-bnt" href="{{ url_for('.get_users_delete', user_id=user.id) }}" title="Delete">{{
+                        macros.feather_img('x') }}</a>
                     {% endif %}
                 </td>
             </tr>
@@ -69,8 +70,10 @@
             {% endif %}
             {% endfor %}
         </select>
+        <input class="hidden" type="text" name="username" id="username" autocomplete="username">
         <label for="password">Your Password</label>
-        <input type="password" name="password" id="password" required>
+        <input type="password" name="password" id="password" autocomplete="current-password" placeholder="e.g. ••••••••"
+            required>
         <button type="submit">Force Login</button>
     </form>
 </section>

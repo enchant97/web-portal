@@ -9,11 +9,11 @@
     </p>
     <form action="{{ url_for('.post_admin_user') }}" method="post">
         <label for="admin-user-username">Username</label>
-        <input type="text" name="username" id="admin-user-username" maxlength="128" value="{{ username }}" required>
+        <input type="text" name="username" id="admin-user-username" maxlength="128" value="{{ username }}" autocomplete="username" placeholder="e.g. leo" required autofocus>
         <label for="admin-user-password">Password</label>
-        <input type="password" name="password" id="admin-user-password" required>
+        <input type="password" name="password" id="admin-user-password" autocomplete="new-password" placeholder="e.g. ••••••••" required>
         <label for="admin-user-password-confirm">Password Confirm</label>
-        <input type="password" name="password-confirm" id="admin-user-password-confirm" required>
+        <input type="password" name="password-confirm" id="admin-user-password-confirm" autocomplete="new-password" placeholder="e.g. ••••••••" required>
         <button type="submit">Next</button>
     </form>
 </section>
