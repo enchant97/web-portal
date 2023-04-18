@@ -53,7 +53,7 @@ services:
     environment:
       # This config is built into the Docker image
       # - "DATA_PATH=/app/data"
-      - "DB_URI=sqlite:///data/db.sqlite"
+      - "DB_URI=sqlite:///app/data/db.sqlite"
       # This must be secure
       - "SECRET_KEY=replace_me_123"
 ```
