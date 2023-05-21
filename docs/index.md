@@ -25,7 +25,7 @@ Web-Portal is a web app written in Python using Quart, that aims to provide an e
         - Website embed (through iframe)
 - Password protection for admin modification
 - Optionally secure the portal with user accounts & passwords
-- MySQL/MariaDB and SQLite support
+- MySQL & SQLite support
 
 ## Showcase
 [![web-portal showcase image, showing dark and light themes](assets/portal-view.png)](assets/portal-view.png)

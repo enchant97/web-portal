@@ -32,12 +32,12 @@ If you want just a basic link panel configured with a yaml file checkout Web Por
     - Website embed (through iframe)
 - Password protection for admin modification
 - Optionally secure the portal with user accounts & passwords
-- MySQL/MariaDB and sqlite support
+- MySQL & SQLite support
 
 ## Showcase
 [![web-portal showcase image, showing dark and light themes](docs/assets/portal-view.png)](docs/assets/portal-view.png)
 
-## Demo Video (V1)
+## Demo Video (V1) - **OLD**
 [![Demo Video](https://img.youtube.com/vi/VIWvmfFK5V0/0.jpg)](https://youtu.be/VIWvmfFK5V0 "Demo Video")
 
 <https://youtu.be/VIWvmfFK5V0>
@@ -75,7 +75,7 @@ Contributing to this project is welcome, whether that is an issue or pull reques
 More details and guides on installing can be found at: [enchantedcode.co.uk/web-portal/](https://enchantedcode.co.uk/web-portal/) or view the markdown in the `docs` folder [here](docs/index.md).
 
 ## License
-This project is Copyright (c) 2022 Leo Spratt, licences shown below:
+This project is Copyright (c) 2023 Leo Spratt, licences shown below:
 
 Code
 
