@@ -72,16 +72,29 @@ async def render_widget_edit_link(
         dash_widget_id: int,
         config: dict,
         back_to_url: str) -> str:
-    links, added_links = await asyncio.gather(
+    available_links, added_links = await asyncio.gather(
         models.Link.all(),
         models.Link.filter(id__in=config.get("links", [])).all(),
     )
 
+    # added links need sorting (and unavailable ones replaced with "None")
+    added_links_sorted = []
+    for link_id in config.get("links", []):
+            found_i = None
+            for i, link in enumerate(added_links):
+                if link.id == link_id:
+                    found_i = i
+                    break
+            if found_i is not None:
+                added_links_sorted.append(added_links.pop(found_i))
+            else:
+                added_links_sorted.append(None)
+
     return await render_template(
         "core/includes/widgets-editor/link.jinja",
         dash_widget_id=dash_widget_id,
-        links=links,
-        added_links=added_links,
+        available_links=available_links,
+        added_links=added_links_sorted,
         back_to_url=back_to_url,
         widget_config=config,
     )

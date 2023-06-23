@@ -1,4 +1,4 @@
-{% if not links %}
+{% if not available_links %}
 <section class="panel">
     <h2>No Links Available Yet...</h2>
     {% if current_user.is_authenticated_admin %}
@@ -38,7 +38,7 @@
         <label for="core-widget-link-id">Link</label>
         <select name="link-id" id="core-widget-link-id" required>
             <option value="">** Select Link **</option>
-            {% for link in links %}
+            {% for link in available_links %}
             <option value="{{ link.id }}">{{ link.name }}</option>
             {% endfor %}
         </select>
@@ -58,7 +58,7 @@
         <tbody>
             {% for link in added_links %}
             <tr>
-                <td>{{ link.name }}</td>
+                <td>{{ link.name or "__Unavailable__" }}</td>
                 <td class="bnt-group">
                     <a class="bnt"
                         href="{{ url_for('core.get_widget_remove_link', widget_id=dash_widget_id, link_index=loop.index0, back_to=back_to_url) }}">Delete</a>
