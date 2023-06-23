@@ -2,9 +2,7 @@
 
 # Web Portal
 ![GitHub](https://img.shields.io/github/license/enchant97/web-portal?style=flat-square)
-![Supported Python Version](https://img.shields.io/badge/python%20version-3.10-blue?style=flat-square)
-![Lines of code](https://img.shields.io/tokei/lines/github/enchant97/web-portal?style=flat-square)
-![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/enchant97/web-portal?style=flat-square)
+![Supported Python Version](https://img.shields.io/badge/python%20version-3.11-blue?style=flat-square)
 ![GitHub release (latest by date including pre-releases)](https://img.shields.io/github/v/release/enchant97/web-portal?include_prereleases&label=latest%20release&style=flat-square)
 
 Web Portal is a all-in-one web dashboard, providing many widgets to build a personal portal. With the ability to load external plugins.

@@ -8,7 +8,7 @@ This guide is aimed at developers and will aid with the creation of new and amaz
 - Widgets included with web-portal are actually two plugins called "core" and "core_extras"
 
 ## Important Notes
-- Web Portal plugins must be compatible with the Python version that it is based on, this is currently 3.10
+- Web Portal plugins must be compatible with the Python version that it is based on, this is currently 3.11
 - Try to make use of asyncio in api async methods this will greatly improve performance
 - Try not to use extra pip packages
 - Don't override Web Portal internal functions, this will cause instability and may cause damage

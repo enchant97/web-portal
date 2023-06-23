@@ -2,7 +2,7 @@
 This sections will guide you though installing web-portal.
 
 - If following the Docker guide it is expected you have Docker and Docker Compose installed
-- If following without Docker you will need Python 3.10, older versions will not work
+- If following without Docker you will need Python 3.11, older versions will not work
 - Is recommended to install behind a reverse proxy like Nginx for custom routing and domain names.
 - Third-Party plugins may require additional configs to be set
 
