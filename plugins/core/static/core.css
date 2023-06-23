@@ -18,40 +18,53 @@
     gap: .6rem;
 }
 
-.widget-inner.core__links a {
+.widget-inner.core__links .outer {
+    display: flex;
     border-radius: var(--border-radius);
+    box-shadow: #0000005c 0px 0px 11px 0px;
+}
+
+.widget-inner.core__links .chip {
+    width: 1.2rem;
+    border-top-left-radius: var(--border-radius);
+    border-bottom-left-radius: var(--border-radius);
+}
+
+.widget-inner.core__links .inner {
+    flex: 1;
+    border-top-right-radius: var(--border-radius);
+    border-bottom-right-radius: var(--border-radius);
     padding: 2.5rem 1.4rem;
     text-decoration: none;
+    color: var(--font-dark);
     font-family: var(--font-family-title);
-    font-size: 1.5rem;
-    text-align: center;
-    box-shadow: 4px 4px 0px black;
+    font-size: 1.4rem;
+    text-align: left;
     word-wrap: break-word;
-    border-top: 1px solid black;
-    border-left: 1px solid black;
     /* for icon based links */
     display: flex;
+    justify-content: start;
     align-items: center;
 }
 
-.widget-inner.core__links a:hover {
+.widget-inner.core__links .inner:hover {
     transition-duration: 400ms;
     background-color: black;
     color: var(--font-light);
 }
 
-.widget-inner.core__links a img {
+.widget-inner.core__links .inner img {
     margin-right: .5rem;
     width: 2.5rem;
     height: 2.5rem;
     object-fit: contain;
 }
 
-.widget-inner.core__links a.compact {
+.widget-inner.core__links .inner.compact {
     padding: 1rem;
 }
 
-.widget-inner.core__links a.compact img {
+.widget-inner.core__links .inner.compact img {
     width: 2rem;
     height: 2rem;
 }
@@ -75,7 +88,11 @@
 
 @media(max-width:640px) {
     .widget-inner.core__links {
-        grid-template-columns: repeat(2, 200px);
+        grid-template-columns: repeat(2, 49%);
+    }
+
+    .widget-inner.core__links .inner {
+        font-size: 1.2rem;
     }
 
     .widget-inner.core__clock .core__clock_display .time {
@@ -88,13 +105,11 @@
 }
 
 @media(max-width:500px) {
-    .widget-inner.core__links a {
-        padding: 1rem;
-    }
-}
-
-@media(max-width:490px) {
     .widget-inner.core__links {
         grid-template-columns: 100%;
+    }
+
+    .widget-inner.core__links .inner {
+        padding: 1rem;
     }
 }
