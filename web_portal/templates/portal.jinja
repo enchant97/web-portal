@@ -1,5 +1,5 @@
 {% extends "/shared/base.jinja" %}
-{% block title %}Portal{% endblock %}
+{% block title %}{{ branding.title }}{% endblock %}
 {% block main %}
 <div id="widgets">
     {% for widget in rendered_widgets %}

@@ -8,7 +8,8 @@ from tortoise.exceptions import IntegrityError
 from ..core.auth import (AuthUserEnhanced, current_user, login_admin_required,
                          login_standard_required)
 from ..core.config import get_settings
-from ..core.constants import PUBLIC_ACCOUNT_USERNAME, SystemSettingKeys
+from ..core.constants import (DEFAULT_BRANDING, PUBLIC_ACCOUNT_USERNAME,
+                              SystemSettingKeys)
 from ..core.helpers import get_system_setting, set_system_setting
 from ..core.validation import check_password, is_username_allowed
 from ..database import models
@@ -51,9 +52,10 @@ async def get_switch_from_public():
 @blueprint.get("/system-settings/")
 @login_admin_required
 async def get_system_settings():
-    public_portal, show_widget_headers = await asyncio.gather(
+    public_portal, show_widget_headers, branding = await asyncio.gather(
         get_system_setting(SystemSettingKeys.PORTAL_SECURED, default=False, skip_cache=True),
         get_system_setting(SystemSettingKeys.SHOW_WIDGET_HEADERS, default=False, skip_cache=True),
+        get_system_setting(SystemSettingKeys.BRANDING, default=DEFAULT_BRANDING, skip_cache=True),
     )
 
     # PORTAL_SECURED has a different meaning to public_portal
@@ -65,6 +67,7 @@ async def get_system_settings():
         "admin/system-settings.jinja",
         public_portal=public_portal,
         show_widget_headers=show_widget_headers,
+        branding=branding,
         has_custom_css=has_custom_css,
     )
 
@@ -87,6 +90,24 @@ async def post_system_settings():
     )
 
     await flash("saved system settings", "ok")
+
+    return redirect(url_for(".get_system_settings"))
+
+
+@blueprint.post("/system-settings/branding")
+@login_admin_required
+async def post_system_settings_branding():
+    form = await request.form
+
+    new_branding = {
+        "title": form.get("title", DEFAULT_BRANDING["title"], str),
+    }
+
+    await asyncio.gather(
+        set_system_setting(SystemSettingKeys.BRANDING, new_branding),
+    )
+
+    await flash("saved custom brand settings", "ok")
 
     return redirect(url_for(".get_system_settings"))
 

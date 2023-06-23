@@ -25,6 +25,9 @@ MAX_USERNAME_LENGTH = 128
 MIN_PASSWORD_LENGTH = 8
 MAX_PASSWORD_LENGTH = 1024
 
+DEFAULT_BRANDING = {
+    "title": "Portal",
+}
 
 class SystemSettingKeys:
     """
@@ -32,5 +35,6 @@ class SystemSettingKeys:
     """
     PORTAL_SECURED = "PORTAL_SECURED"
     SHOW_WIDGET_HEADERS = "SHOW_WIDGET_HEADERS"
+    BRANDING = "BRANDING"
     DEMO_MODE = "DEMO_MODE"
     HAS_SETUP = "has_setup"

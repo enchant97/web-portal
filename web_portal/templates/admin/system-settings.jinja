@@ -2,7 +2,7 @@
 {% block title %}Admin - System Settings{% endblock %}
 {% block main %}
 <section class="panel">
-    <h2>System Settings</h2>
+    <h2>General</h2>
     <form action="{{ url_for('.post_system_settings') }}" method="post">
         <label for="system-setting-public-portal">Public Portal</label>
         <input type="checkbox" name="public-portal" id="system-setting-public-portal" value="1" {{
@@ -10,7 +10,15 @@
         <label for="system-setting-show-widget-headers">Show Widget Headers</label>
         <input type="checkbox" name="show-widget-headers" id="system-setting-show-widget-headers" value="1" {{
             macros.checkbox_checked(show_widget_headers) }}>
+        <button type="submit">Save</button>
+    </form>
+</section>
 
+<section class="panel">
+    <h2>Branding</h2>
+    <form action="{{ url_for('.post_system_settings_branding') }}" method="post">
+        <label for="branding-title">Title</label>
+        <input type="text" name="title" id="branding-title" placeholder="e.g. Home Portal" value="{{ branding.title }}" required>
         <button type="submit">Save</button>
     </form>
 </section>

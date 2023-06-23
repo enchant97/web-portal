@@ -6,7 +6,9 @@ from quart import (Blueprint, flash, redirect, render_template, send_file,
 from ..core.auth import (current_user, login_admin_required,
                          login_required_if_secured, login_standard_required)
 from ..core.config import get_settings
-from ..core.constants import PUBLIC_ACCOUNT_USERNAME
+from ..core.constants import (DEFAULT_BRANDING, PUBLIC_ACCOUNT_USERNAME,
+                              SystemSettingKeys)
+from ..core.helpers import get_system_setting
 from ..core.plugin import PluginHandler, deconstruct_widget_name
 from ..database import models
 
@@ -67,6 +69,7 @@ async def portal():
 
     return await render_template(
         "portal.jinja",
+        branding=await get_system_setting(SystemSettingKeys.BRANDING, default=DEFAULT_BRANDING),
         rendered_widgets=rendered_widgets,
     )
 
