@@ -11,8 +11,6 @@ It has been designed to run through docker and it is recommended to put it behin
 
 If you want just a basic link panel configured with a yaml file checkout Web Portal Lite available here: <https://github.com/enchant97/web-portal-lite>.
 
-> If you are looking for V1 please switch to historical-1
-
 ## Features
 - Minimal use of Javascript, to provide a lightning fast experience
 - Icon based UI
@@ -37,10 +35,8 @@ If you want just a basic link panel configured with a yaml file checkout Web Por
 ## Showcase
 [![web-portal showcase image, showing dark and light themes](docs/assets/portal-view.png)](docs/assets/portal-view.png)
 
-## Demo Video (V1) - **OLD**
-[![Demo Video](https://img.youtube.com/vi/VIWvmfFK5V0/0.jpg)](https://youtu.be/VIWvmfFK5V0 "Demo Video")
-
-<https://youtu.be/VIWvmfFK5V0>
+## Demo Video
+WIP
 
 ## Public Demo Instance (V2)
 There is a public demo instance of Web Portal, kindly hosted by a friend access it here: <https://webportal.demo.enchantedcode.co.uk/>. Read the following notes:

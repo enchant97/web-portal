@@ -53,7 +53,6 @@ Once at the "Administration" page. We have the following options:
 - Plugin Settings - Takes you to the same as the standard plugin settings button
 - Switch To Public - Switch to the Web Portal virtual public account, this can also be accessed in the user management page under "Force Login".
 - Users - Takes you into a manage users page; allowing for you to add new users, modify existing ones and force login to standard account users. It also display a table of all users currently registered with their corresponding management buttons.
-- Import V1 Widgets - Import links from Web Portal V1 (only works when Core plugin is installed)
 
 
 ## Dashboard Editor
