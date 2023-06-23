@@ -7,15 +7,17 @@
 
     --font-dark--light: var(--font-dark-no-adjust);
     --font-light--light: #f0f0f0;
-    --bg-body--light: #9299a5;
-    --bg-sub-1--light: #7b828f;
-    --bg-sub-2--light: #aaaeb5;
+    --bg-body--light: #ffffff;
+    --bg-sub-1--light: #f2f2f2;
+    --bg-sub-2--light: #e5e6e6;
+    --bg-btn--light: #c8c8c8ff;
 
     --font-dark--dark: var(--font-light--dark);
     --font-light--dark: #bcbcbc;
-    --bg-body--dark: #002b36;
-    --bg-sub-1--dark: #073642;
-    --bg-sub-2--dark: #0c414f;
+    --bg-body--dark: #1d232a;
+    --bg-sub-1--dark: #191e24;
+    --bg-sub-2--dark: #15191e;
+    --bg-btn--dark: #2a323c;
 
 
     color-scheme: light;
@@ -24,6 +26,7 @@
     --bg-body: var(--bg-body--light);
     --bg-sub-1: var(--bg-sub-1--light);
     --bg-sub-2: var(--bg-sub-2--light);
+    --bg-ne: var(--bg-btn--light);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -34,6 +37,7 @@
         --bg-body: var(--bg-body--dark);
         --bg-sub-1: var(--bg-sub-1--dark);
         --bg-sub-2: var(--bg-sub-2--dark);
+        --bg-ne: var(--bg-btn--dark);
     }
 }
 
@@ -44,6 +48,7 @@
     --bg-body: var(--bg-body--light);
     --bg-sub-1: var(--bg-sub-1--light);
     --bg-sub-2: var(--bg-sub-2--light);
+    --bg-ne: var(--bg-btn--light);
 }
 
 [data-theme=dark]:root {
@@ -53,6 +58,7 @@
     --bg-body: var(--bg-body--dark);
     --bg-sub-1: var(--bg-sub-1--dark);
     --bg-sub-2: var(--bg-sub-2--dark);
+    --bg-ne: var(--bg-btn--dark);
 }
 
 main,
@@ -139,7 +145,7 @@ button,
     border-radius: var(--border-radius);
     border-style: none;
     margin: .1rem;
-    background-color: var(--bg-sub-2);
+    background-color: var(--bg-ne);
 }
 
 input {
@@ -151,7 +157,6 @@ button,
 .icon-bnt {
     color: var(--font-dark);
     text-decoration: none;
-    background-color: var(--bg-sub-2);
     display: inline-block;
 }
 
@@ -178,9 +183,9 @@ header nav .icon-bnt {
 
 footer {
     text-align: center;
-    margin-top: 100px;
-    border-top: var(--font-light) solid;
-    padding-top: 10px;
+    margin-top: 12rem;
+    border-top: var(--bg-sub-2) solid .4rem;
+    padding-top: 1rem;
 }
 
 footer a {
