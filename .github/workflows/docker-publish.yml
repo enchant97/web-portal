@@ -1,4 +1,4 @@
-name: publish
+name: Publish App
 
 on:
   release:
@@ -23,7 +23,7 @@ jobs:
         uses: docker/metadata-action@v4
         with:
           images: |
-            ghcr.io/${{ github.repository }}-${{ matrix.service_name }}
+            ghcr.io/enchant97/web-portal
           tags: |
             type=raw,value=latest,enable={{ is_default_branch }}
             type=semver,pattern={{major}}
