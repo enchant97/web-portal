@@ -16,6 +16,8 @@
         <label for="widget-name">Name</label>
         <input type="text" name="name" id="widget-name" placeholder="Name..." maxlength="128" value="{{ widget.name }}"
             required>
+        <label for="widget-show-header">Show Header</label>
+        <input type="checkbox" name="show-header" id="widget-show-header" value="1" {{ macros.checkbox_checked(widget.show_header) }}>
         <button type="submit">Save</button>
     </form>
 </section>

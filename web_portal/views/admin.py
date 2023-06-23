@@ -52,9 +52,8 @@ async def get_switch_from_public():
 @blueprint.get("/system-settings/")
 @login_admin_required
 async def get_system_settings():
-    public_portal, show_widget_headers, branding = await asyncio.gather(
+    public_portal, branding = await asyncio.gather(
         get_system_setting(SystemSettingKeys.PORTAL_SECURED, default=False, skip_cache=True),
-        get_system_setting(SystemSettingKeys.SHOW_WIDGET_HEADERS, default=False, skip_cache=True),
         get_system_setting(SystemSettingKeys.BRANDING, default=DEFAULT_BRANDING, skip_cache=True),
     )
 
@@ -66,7 +65,6 @@ async def get_system_settings():
     return await render_template(
         "admin/system-settings.jinja",
         public_portal=public_portal,
-        show_widget_headers=show_widget_headers,
         branding=branding,
         has_custom_css=has_custom_css,
     )
@@ -78,7 +76,6 @@ async def post_system_settings():
     form = await request.form
 
     portal_secured = not form.get("public-portal", False, bool)
-    show_widget_headers = form.get("show-widget-headers", False, bool)
 
     if not portal_secured and await get_system_setting(SystemSettingKeys.DEMO_MODE, default=False):
         await flash("cannot make portal public when in demo mode", "error")
@@ -86,7 +83,6 @@ async def post_system_settings():
 
     await asyncio.gather(
         set_system_setting(SystemSettingKeys.PORTAL_SECURED, portal_secured),
-        set_system_setting(SystemSettingKeys.SHOW_WIDGET_HEADERS, show_widget_headers),
     )
 
     await flash("saved system settings", "ok")

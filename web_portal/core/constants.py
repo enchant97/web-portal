@@ -34,7 +34,6 @@ class SystemSettingKeys:
     Collection of all system setting keys for base app
     """
     PORTAL_SECURED = "PORTAL_SECURED"
-    SHOW_WIDGET_HEADERS = "SHOW_WIDGET_HEADERS"
     BRANDING = "BRANDING"
     DEMO_MODE = "DEMO_MODE"
     HAS_SETUP = "has_setup"

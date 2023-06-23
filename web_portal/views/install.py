@@ -82,11 +82,9 @@ async def post_set_configs():
     form = await request.form
 
     portal_secured = not form.get("public-portal", False, bool)
-    show_widget_headers = form.get("show-widget-headers", False, bool)
 
     await asyncio.gather(
         set_system_setting(SystemSettingKeys.PORTAL_SECURED, portal_secured),
-        set_system_setting(SystemSettingKeys.SHOW_WIDGET_HEADERS, show_widget_headers),
     )
 
     return redirect(url_for(".get_finish"))

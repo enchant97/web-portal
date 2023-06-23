@@ -115,12 +115,14 @@ async def post_edit_dashboard_widget(widget_id: int):
     form = await request.form
 
     widget_name = form["name"].strip()
+    show_header = form.get("show-header", False, bool)
 
     if not widget_name:
         await flash("widget name cannot be blank", "error")
         return redirect(url_for(".get_edit_dashboard_widget", widget_id=widget_id))
 
     widget.name = widget_name
+    widget.show_header = show_header
     await widget.save()
 
     await flash("updated widget", "ok")

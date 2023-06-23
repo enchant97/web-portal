@@ -67,6 +67,7 @@ class Dashboard(Model):
 class DashboardWidget(Model):
     id = IntField(pk=True)
     name = CharField(128)
+    show_header = BooleanField(default=False)
     dashboard: ForeignKeyRelation[Dashboard] = ForeignKeyField("models.Dashboard", "widgets")
     widget: ForeignKeyRelation[Widget] = ForeignKeyField("models.Widget")
     config = JSONField(null=True)

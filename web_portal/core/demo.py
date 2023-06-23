@@ -31,7 +31,6 @@ async def do_demo_install():
     await asyncio.gather(
         models.User.bulk_create((admin_user, demo_user)),
         set_system_setting(SystemSettingKeys.PORTAL_SECURED, True),
-        set_system_setting(SystemSettingKeys.SHOW_WIDGET_HEADERS, True),
         set_system_setting(SystemSettingKeys.HAS_SETUP, True),
         set_system_setting(SystemSettingKeys.DEMO_MODE, True),
         *plugins_to_setup,
