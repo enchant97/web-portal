@@ -1,5 +1,4 @@
 import asyncio
-import json
 
 from quart import (Blueprint, flash, redirect, render_template, request,
                    session, url_for)
@@ -11,7 +10,6 @@ from ..core.auth import (AuthUserEnhanced, current_user, login_admin_required,
 from ..core.config import get_settings
 from ..core.constants import PUBLIC_ACCOUNT_USERNAME, SystemSettingKeys
 from ..core.helpers import get_system_setting, set_system_setting
-from ..core.import_export import Widget_V1, import_v1_widgets
 from ..core.validation import check_password, is_username_allowed
 from ..database import models
 
@@ -48,26 +46,6 @@ async def get_switch_from_public():
             await flash("switch out of public account", "ok")
     session.pop("prev-user-id", None)
     return redirect(url_for("portal.portal"))
-
-
-@blueprint.post("/import-v1-widgets")
-@login_admin_required
-async def post_import_v1_widgets():
-    file = (await request.files)["file"]
-    try:
-        loaded_json = json.load(file.stream)
-        if not isinstance(loaded_json, list):
-            raise ValueError()
-        widgets = [Widget_V1.parse_obj(widget) for widget in loaded_json]
-        count = await import_v1_widgets(widgets)
-        if count == -1:
-            await flash("Unable to import, are you missing the core plugin?", "error")
-        else:
-            await flash(f"Imported {count} widgets", "ok")
-    except json.JSONDecodeError:
-        await flash("failed to parse file, is it valid JSON?", "error")
-
-    return redirect(url_for(".get_index"))
 
 
 @blueprint.get("/system-settings/")
