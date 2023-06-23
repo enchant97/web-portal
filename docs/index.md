@@ -2,7 +2,7 @@
 Welcome to the Web-Portal docs. The documentation is split into two sections one for users and the other for developers.
 
 ## What Is Web Portal?
-Web-Portal is a web app written in Python using Quart, that aims to provide an easy and fast way to manage the links to all of your web services.
+Web Portal is a all-in-one web dashboard, providing many widgets to build a personal portal. With the ability to load external plugins.
 
 > If you want just a basic link panel configured with a yaml file checkout Web Portal Lite available here: <https://github.com/enchant97/web-portal-lite>.
 
