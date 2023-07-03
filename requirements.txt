@@ -1,5 +1,5 @@
 quart~=0.18.4
-quart-auth~=0.8.0
+quart-auth~=0.9.0
 tortoise-orm[aiomysql]~=0.19.3
 pydantic[dotenv]~=1.10.9
 web-health-checker~=1.3.1
