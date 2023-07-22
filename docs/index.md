@@ -39,6 +39,16 @@ There is a public demo instance of Web Portal, kindly hosted by a friend access 
 - Server may appear as down, please try again later
 - You may use the 'admin' or 'demo' account
 
+## Third-Party Plugins
+It is encouraged to extend and build upon this app to make it the ultimate dashboard.
+
+Here are some ideas:
+- Server status widget
+- Home Automation
+- Messages widget (leave messages for users)
+
+You can discuss plugins [here](https://github.com/enchant97/web-portal/discussions/categories/third-party-plugins).
+
 ## Guide Links
 - [For Users](users/index.md)
 - [For Developers](developers/index.md)
