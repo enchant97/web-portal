@@ -1,14 +1,15 @@
 from functools import lru_cache
 from pathlib import Path
 from shutil import copytree
-from typing import Optional
+from typing import NamedTuple, Optional
 from zipfile import ZipFile
 
 from pydantic import BaseSettings
+
 from web_portal.plugin_api import get_plugin_data_path
 
 ICONS_PATH = get_plugin_data_path("core") / "icons"
-VALID_UPLOAD_EXTENTIONS = (
+VALID_UPLOAD_EXTENSIONS = (
     ".zip",
 )
 
@@ -21,6 +22,11 @@ class PluginSettings(BaseSettings):
 @lru_cache
 def get_settings():
     return PluginSettings()
+
+
+class IconsImportStats(NamedTuple):
+    png_count: int
+    svg_count: int
 
 
 def get_icon_names(sort: bool = False) -> set[str]:
@@ -55,9 +61,18 @@ def get_icon_path(icon_name: str) -> Path | None:
             return path
 
 
-def copy_icons_from_import(src: Path):
-    copytree(Path(src, "png"), ICONS_PATH / "png", dirs_exist_ok=True)
-    copytree(Path(src, "svg"), ICONS_PATH / "svg", dirs_exist_ok=True)
+def copy_icons_from_import(src: Path) -> IconsImportStats:
+    png_count = 0
+    svg_count = 0
+
+    if (png_import_path := Path(src, "png")).is_dir():
+        copytree(png_import_path, ICONS_PATH / "png", dirs_exist_ok=True)
+        png_count = len(tuple(png_import_path.glob("*.png")))
+    if (svg_import_path := Path(src, "svg")).is_dir():
+        copytree(svg_import_path, ICONS_PATH / "svg", dirs_exist_ok=True)
+        svg_count = len(tuple(svg_import_path.glob("*.svg")))
+
+    return IconsImportStats(png_count, svg_count)
 
 
 def _extract_upload_as_zip(upload_fp: Path, extract_into_fp: Path):
@@ -68,7 +83,7 @@ def _extract_upload_as_zip(upload_fp: Path, extract_into_fp: Path):
 def extract_upload(upload_fp: str | Path, extract_into_fp: Path):
     """
     extracts an uploaded compressed format,
-    accepted formats are taken from VALID_UPLOAD_EXTENTIONS
+    accepted formats are taken from VALID_UPLOAD_EXTENSIONS
 
         :param upload_fp: Location of the uploaded file
         :param extract_into_fp: Where to extract upload to

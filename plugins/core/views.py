@@ -4,6 +4,7 @@ from tempfile import TemporaryDirectory
 
 from quart import (Blueprint, abort, flash, redirect, render_template, request,
                    send_file, url_for)
+
 from web_portal.plugin_api import (current_user, get_widget_details,
                                    get_widget_owner_id, login_admin_required,
                                    login_required_if_secured,
@@ -11,7 +12,7 @@ from web_portal.plugin_api import (current_user, get_widget_details,
                                    redirect_using_back_to, set_widget_config)
 
 from . import models
-from .helpers import (VALID_UPLOAD_EXTENTIONS, copy_icons_from_import,
+from .helpers import (VALID_UPLOAD_EXTENSIONS, copy_icons_from_import,
                       extract_upload, get_icon_names, get_icon_path,
                       get_settings)
 
@@ -56,18 +57,22 @@ async def post_upload_icons():
 
     file = (await request.files)["file"]
 
-    if (suffixes := "".join(Path(file.filename).suffixes)) in VALID_UPLOAD_EXTENTIONS:
+    if (suffixes := "".join(Path(file.filename).suffixes)) in VALID_UPLOAD_EXTENSIONS:
         upload_fn = "icons" + suffixes
         with TemporaryDirectory(prefix="web-portal") as temp_location:
             temp_location = Path(temp_location)
             temp_upload_location = temp_location / upload_fn
             await file.save(temp_upload_location)
             extract_upload(temp_upload_location, temp_location)
-            copy_icons_from_import(temp_location)
+            upload_stats = copy_icons_from_import(temp_location)
 
-        await flash("uploaded icons", "ok")
+        if upload_stats.png_count == 0 and upload_stats.svg_count == 0:
+            await flash("detected no image files, did you put them in the correct format?", "error")
+        else:
+            await flash(f"uploaded icons (png={upload_stats.png_count}, \
+                        svg={upload_stats.svg_count})", "ok")
     else:
-        await flash("failed to upload icons, (unknown file extention)", "error")
+        await flash("failed to upload icons, (unknown file extension)", "error")
 
     return redirect(url_for(".get_upload_icons"))
 
