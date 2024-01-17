@@ -30,8 +30,7 @@ async def redirect_to_login(*_):
     return redirect(url_for("login.get_login"))
 
 
-@app.before_first_request
-async def first_request():
+async def setup_internals():
     # NOTE this ensures public virtual account is always created
     await models.User.update_or_create(
         defaults={"password_hash": None},
@@ -128,11 +127,14 @@ def create_app():
         logger.warning("plugin loading has been disabled by app config")
 
     logger.debug("registering tortoise-orm")
+    # NOTE must be setup before any other hooks
     register_tortoise(
         app,
         db_url=get_settings().DB_URI,
         modules=db_models,
         generate_schemas=True)
+
+    app.before_serving(setup_internals)
 
     auth_manager.init_app(app)
 

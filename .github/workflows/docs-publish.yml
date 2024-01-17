@@ -24,20 +24,12 @@ jobs:
       uses: actions/setup-python@v4
       with:
         python-version: "3.11"
-    - name: Cache Pip
-      uses: actions/cache@v3
-      with:
-        path: ~/.cache/pip
-        key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements-docs.txt') }}
-        restore-keys: |
-          ${{ runner.os }}-pip-
-    - name: Install dependencies
+    - name: Install tools
       run: |
-        python -m pip install --upgrade pip
-        pip install -r requirements-docs.txt
+        pip install hatch
     - name: Build docs
       id: pages
-      run: mkdocs build
+      run: hatch run docs:build
     - name: Upload artifact
       uses: actions/upload-pages-artifact@v1
       with:
