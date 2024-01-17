@@ -1,3 +1,4 @@
+import logging
 from quart import Blueprint, flash, redirect, render_template, request, session, url_for
 from quart_auth import login_user, logout_user
 
@@ -8,6 +9,7 @@ from ..database import models
 
 blueprint = Blueprint("login", __name__, url_prefix="/auth")
 
+logger = logging.getLogger("web-portal")
 
 @blueprint.get("/login")
 async def get_login():
@@ -33,6 +35,8 @@ async def post_login():
             return redirect(url_for("portal.portal"))
 
     await flash("Username or password incorrect", "error")
+
+    logger.warning("failed login attempt from '%s'", request.remote_addr)
 
     return redirect(url_for(".get_login"))
 
