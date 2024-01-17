@@ -30,15 +30,6 @@ Web Portal is a all-in-one web dashboard, providing many widgets to build a pers
 ## Showcase
 [![web-portal showcase image, showing dark and light themes](assets/portal-view.png)](assets/portal-view.png)
 
-## Public Demo Instance
-There is a public demo instance of Web Portal, kindly hosted by a friend access it here: <https://webportal.demo.enchantedcode.co.uk/>. Read the following notes:
-
-- Some features have been disabled to ensure the public instance can be accessed by everyone
-- Resets on a schedule
-- **Do not** put personal information as it is publicly viewable
-- Server may appear as down, please try again later
-- You may use the 'admin' or 'demo' account
-
 ## Third-Party Plugins
 It is encouraged to extend and build upon this app to make it the ultimate dashboard.
 

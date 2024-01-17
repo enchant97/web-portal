@@ -38,15 +38,6 @@ If you want just a basic link panel configured with a yaml file checkout Web Por
 ## Demo Video
 WIP
 
-## Public Demo Instance
-There is a public demo instance of Web Portal, kindly hosted by a friend access it here: <https://webportal.demo.enchantedcode.co.uk/>. Read the following notes:
-
-- Some features have been disabled to ensure the public instance can be accessed by everyone
-- Resets on a schedule
-- **Do not** put personal information as it is publicly viewable
-- Server may appear as down, please try again later
-- You may use the 'admin' or 'demo' account
-
 ## Third-Party Plugins
 It is encouraged to extend and build upon this app to make it the ultimate dashboard.
 
@@ -78,10 +69,10 @@ Contributing to this project is welcome, whether that is an issue or pull reques
 - Don't change the version number
 
 ## Documentation
-More details and guides on installing can be found at: [enchantedcode.co.uk/web-portal/](https://enchantedcode.co.uk/web-portal/) or view the markdown in the `docs` folder [here](docs/index.md).
+More details and guides on installing can be found at: [webportal.docs.enchantedcode.co.uk/](https://enchantedcode.co.uk/web-portal/) or view the markdown in the `docs` folder [here](docs/index.md).
 
 ## License
-This project is Copyright (c) 2023 Leo Spratt, licences shown below:
+This project is Copyright (c) 2024 Leo Spratt, licences shown below:
 
 Code
 
