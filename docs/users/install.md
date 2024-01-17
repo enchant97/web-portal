@@ -85,6 +85,7 @@ mkdir data
 ```bash
 # filepath: web-portal/.env
 
+PLUGINS_PATH="./plugins"
 DATA_PATH="./data"
 DB_URI="sqlite://data/db.sqlite"
 SECRET_KEY="replace_me_123"
@@ -99,7 +100,8 @@ All configs shown here should be given as environment variables, or in a `.env` 
 | Name                  | Description                                 | Default              |
 | :-------------------- | :------------------------------------------ | :------------------- |
 | DB_URI                | URI of where db is stored                   |                      |
-| DATA_PATH             | Where plugin & app data will be stored      |                      |
+| PLUGINS_PATH          | Where plugins are stored                    |                      |
+| DATA_PATH             | Where app data will be stored               |                      |
 | SECRET_KEY            | Your app secret (use something secure)      | (randomly generated) |
 | SECURE_COOKIES        | Whether to require https for cookies        | False                |
 | LOG_LEVEL             | What log level to use                       | "INFO"               |

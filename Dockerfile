@@ -5,13 +5,12 @@ FROM python:${PYTHON_VERSION}-slim as builder
 
     WORKDIR /app
 
-    COPY requirements.txt requirements.txt
+    COPY . .
 
     RUN python -m venv .venv
     ENV PATH="/app/.venv/bin:$PATH"
 
-    # caching with DOCKER_BUILDKIT=1
-    RUN --mount=type=cache,target=/root/.cache pip install -r requirements.txt
+    RUN --mount=type=cache,target=/root/.cache pip install .
 
 FROM python:${PYTHON_VERSION}-alpine
 
@@ -22,11 +21,13 @@ FROM python:${PYTHON_VERSION}-alpine
     ENV LOG_LEVEL="INFO"
     ENV HOST="0.0.0.0"
     ENV PORT="8000"
+    ENV PLUGINS_PATH="/app/plugins"
     ENV DATA_PATH="/app/data"
+
+    COPY LICENSE.txt THIRD-PARTY.txt ./
 
     COPY --from=builder --link /app/.venv .venv
 
-    COPY web_portal web_portal
     COPY plugins plugins
 
     COPY scripts/* ./

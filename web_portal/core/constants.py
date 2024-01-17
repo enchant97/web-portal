@@ -11,11 +11,6 @@ RESTRICTED_PLUGIN_NAMES = (
     "static",
     "plugin",
 )
-# NOTE this controls where the plugins are loaded from (very important)
-# folder path location
-PLUGINS_PATH = Path(__file__).parent.parent.parent / "plugins"
-# how you would import it absolutely in python
-PLUGINS_PACKAGE_PATH = "plugins"
 
 PUBLIC_ACCOUNT_USERNAME = "public"
 

@@ -7,6 +7,7 @@ from pydantic import BaseSettings
 
 class Settings(BaseSettings):
     DB_URI: str
+    PLUGINS_PATH: Path
     DATA_PATH: Path
     SECRET_KEY: Optional[str] = None
     SECURE_COOKIES: Optional[bool] = False

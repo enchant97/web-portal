@@ -4,18 +4,18 @@ Module to assist plugin functionalities
 import logging
 from collections.abc import Awaitable, Callable, Generator
 from dataclasses import dataclass
-from importlib import import_module
 from pathlib import Path
 from types import ModuleType
 from typing import Any, Iterable, Optional
+import importlib.util
+import sys
 
 from packaging.specifiers import InvalidSpecifier, SpecifierSet
 from quart import Blueprint
 
 from ..database import models as app_models
 from .config import get_settings
-from .constants import (PLUGINS_PACKAGE_PATH, PLUGINS_PATH,
-                        RESTRICTED_PLUGIN_NAMES)
+from .constants import RESTRICTED_PLUGIN_NAMES
 from .helpers import (get_system_setting, remove_system_setting,
                       set_system_setting)
 
@@ -99,7 +99,7 @@ class PluginHandler:
 
     @staticmethod
     def get_plugins_path() -> Path:
-        return PLUGINS_PATH
+        return get_settings().PLUGINS_PATH
 
     @staticmethod
     def get_plugin_names():
@@ -111,7 +111,15 @@ class PluginHandler:
 
     @staticmethod
     def load_plugin(name: str, app_version: str) -> LoadedPlugin:
-        imported_module = import_module("." + name, PLUGINS_PACKAGE_PATH)
+        spec = importlib.util.spec_from_file_location(
+            name,
+            PluginHandler.get_plugins_path() / name / "__init__.py"
+        )
+        if not spec:
+            raise PluginException(f"plugin '{name}' could not be found")
+        imported_module = importlib.util.module_from_spec(spec)
+        sys.modules[spec.name] = imported_module
+        spec.loader.exec_module(imported_module)  # type: ignore
         plugin_meta: PluginMeta = imported_module.PLUGIN_META
 
         # ensure version requested matches app version
