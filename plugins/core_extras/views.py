@@ -1,8 +1,13 @@
 from quart import Blueprint, abort, flash, render_template, request
-from web_portal.plugin_api import (current_user, get_widget_details,
-                                   get_widget_owner_id,
-                                   login_standard_required,
-                                   redirect_using_back_to, set_widget_config)
+
+from web_portal.plugin_api import (
+    current_user,
+    get_widget_details,
+    get_widget_owner_id,
+    login_standard_required,
+    redirect_using_back_to,
+    set_widget_config,
+)
 
 blueprint = Blueprint("core_extras", __name__, template_folder="templates")
 
@@ -24,8 +29,7 @@ async def post_widget_update_embed_html(widget_id: int):
 
     widget_details = await get_widget_details(widget_id)
 
-    if widget_details.plugin_name != "core_extras" or \
-            widget_details.internal_name != "embed_html":
+    if widget_details.plugin_name != "core_extras" or widget_details.internal_name != "embed_html":
         abort(400)
 
     widget_config = widget_details.config
@@ -52,8 +56,7 @@ async def post_widget_update_iframe(widget_id: int):
 
     widget_details = await get_widget_details(widget_id)
 
-    if widget_details.plugin_name != "core_extras" or \
-            widget_details.internal_name != "iframe":
+    if widget_details.plugin_name != "core_extras" or widget_details.internal_name != "iframe":
         abort(400)
 
     widget_config = widget_details.config

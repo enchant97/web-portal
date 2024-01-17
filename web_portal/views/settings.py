@@ -20,7 +20,7 @@ async def get_index():
     return await render_template(
         "settings/index.jinja",
         user=user,
-        is_personal_dash=True if dashboard else False,
+        is_personal_dash=bool(dashboard),
     )
 
 
@@ -53,10 +53,7 @@ async def post_add_widget():
         await flash("widget name cannot be blank", "error")
         return redirect(url_for(".get_edit_dashboard"))
 
-    dashboard = (await models.Dashboard
-                 .filter(owner_id=current_user.auth_id)
-                 .get()
-                 )
+    dashboard = await models.Dashboard.filter(owner_id=current_user.auth_id).get()
 
     await models.DashboardWidget.create(
         name=name,
@@ -71,10 +68,11 @@ async def post_add_widget():
 @login_standard_required
 async def get_edit_dashboard_widget(widget_id: int):
     dashboard = await models.Dashboard.get(owner_id=current_user.auth_id)
-    widget = (await dashboard.widgets.filter(id=widget_id)
-              .get()
-              .prefetch_related("widget", "widget__plugin")
-              )
+    widget = (
+        await dashboard.widgets.filter(id=widget_id)
+        .get()
+        .prefetch_related("widget", "widget__plugin")
+    )
 
     loaded_plugin = PluginHandler.get_loaded_plugin(widget.widget.plugin.internal_name)
 
@@ -133,10 +131,7 @@ async def post_edit_dashboard_widget(widget_id: int):
 @blueprint.get("/dashboard/widget/<int:widget_id>/delete")
 @login_standard_required
 async def get_delete_widget(widget_id: int):
-    dashboard = (await models.Dashboard
-                 .filter(owner_id=current_user.auth_id)
-                 .get()
-                 )
+    dashboard = await models.Dashboard.filter(owner_id=current_user.auth_id).get()
 
     await dashboard.widgets.filter(id=widget_id).delete()
 

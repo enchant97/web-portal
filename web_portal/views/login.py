@@ -1,5 +1,4 @@
-from quart import (Blueprint, flash, redirect, render_template, request,
-                   session, url_for)
+from quart import Blueprint, flash, redirect, render_template, request, session, url_for
 from quart_auth import login_user, logout_user
 
 from ..core.auth import AuthUserEnhanced, current_user, login_standard_required
@@ -12,7 +11,7 @@ blueprint = Blueprint("login", __name__, url_prefix="/auth")
 
 @blueprint.get("/login")
 async def get_login():
-    if (await current_user.is_authenticated):
+    if await current_user.is_authenticated:
         # if user is already logged in redirect to portal
         return redirect(url_for("portal.portal"))
 

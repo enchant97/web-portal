@@ -1,15 +1,17 @@
 import asyncio
 
-from quart import (Blueprint, flash, redirect, render_template, request,
-                   session, url_for)
+from quart import Blueprint, flash, redirect, render_template, request, session, url_for
 from quart_auth import login_user
 from tortoise.exceptions import IntegrityError
 
-from ..core.auth import (AuthUserEnhanced, current_user, login_admin_required,
-                         login_standard_required)
+from ..core.auth import (
+    AuthUserEnhanced,
+    current_user,
+    login_admin_required,
+    login_standard_required,
+)
 from ..core.config import get_settings
-from ..core.constants import (DEFAULT_BRANDING, PUBLIC_ACCOUNT_USERNAME,
-                              SystemSettingKeys)
+from ..core.constants import DEFAULT_BRANDING, PUBLIC_ACCOUNT_USERNAME, SystemSettingKeys
 from ..core.helpers import get_system_setting, set_system_setting
 from ..core.validation import check_password, is_username_allowed
 from ..database import models
@@ -184,8 +186,10 @@ async def get_users_delete(user_id: int):
         await flash("You cannot delete yourself", "error")
     elif user.username == PUBLIC_ACCOUNT_USERNAME:
         await flash("You cannot delete the virtual public", "error")
-    elif await get_system_setting(SystemSettingKeys.DEMO_MODE, default=False) and \
-            user.username in ("admin", "demo"):
+    elif await get_system_setting(SystemSettingKeys.DEMO_MODE, default=False) and user.username in (
+        "admin",
+        "demo",
+    ):
         await flash("You cannot delete this user while in demo mode", "error")
     else:
         await models.User.filter(id=user_id).delete()
@@ -206,8 +210,10 @@ async def get_users_toggle_admin(user_id: int):
     if user.username == PUBLIC_ACCOUNT_USERNAME:
         await flash("This account cannot become an admin", "error")
         return redirect(url_for(".get_users"))
-    elif await get_system_setting(SystemSettingKeys.DEMO_MODE, default=False) and \
-            user.username in ("admin", "demo"):
+    if await get_system_setting(SystemSettingKeys.DEMO_MODE, default=False) and user.username in (
+        "admin",
+        "demo",
+    ):
         await flash("You cannot change role of user while in demo mode", "error")
         return redirect(url_for(".get_users"))
 

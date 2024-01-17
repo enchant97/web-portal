@@ -1,5 +1,3 @@
-from pathlib import Path
-
 # names for plugins that would cause problems with internal functions
 RESTRICTED_PLUGIN_NAMES = (
     "web_portal",
@@ -24,10 +22,12 @@ DEFAULT_BRANDING = {
     "title": "Portal",
 }
 
+
 class SystemSettingKeys:
     """
     Collection of all system setting keys for base app
     """
+
     PORTAL_SECURED = "PORTAL_SECURED"
     BRANDING = "BRANDING"
     DEMO_MODE = "DEMO_MODE"

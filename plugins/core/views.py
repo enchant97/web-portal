@@ -2,19 +2,28 @@ import logging
 from pathlib import Path
 from tempfile import TemporaryDirectory
 
-from quart import (Blueprint, abort, flash, redirect, render_template, request,
-                   send_file, url_for)
+from quart import Blueprint, abort, flash, redirect, render_template, request, send_file, url_for
 
-from web_portal.plugin_api import (current_user, get_widget_details,
-                                   get_widget_owner_id, login_admin_required,
-                                   login_required_if_secured,
-                                   login_standard_required,
-                                   redirect_using_back_to, set_widget_config)
+from web_portal.plugin_api import (
+    current_user,
+    get_widget_details,
+    get_widget_owner_id,
+    login_admin_required,
+    login_required_if_secured,
+    login_standard_required,
+    redirect_using_back_to,
+    set_widget_config,
+)
 
 from . import models
-from .helpers import (VALID_UPLOAD_EXTENSIONS, copy_icons_from_import,
-                      extract_upload, get_icon_names, get_icon_path,
-                      get_settings)
+from .helpers import (
+    VALID_UPLOAD_EXTENSIONS,
+    copy_icons_from_import,
+    extract_upload,
+    get_icon_names,
+    get_icon_path,
+    get_settings,
+)
 
 logger = logging.getLogger("web-portal")
 blueprint = Blueprint("core", __name__, static_folder="static", template_folder="templates")
@@ -33,10 +42,7 @@ async def get_icon(icon_name):
     if full_path is None:
         abort(404)
 
-    return await send_file(
-        full_path,
-        attachment_filename=full_path.name
-    )
+    return await send_file(full_path, attachment_filename=full_path.name)
 
 
 @blueprint.get("/upload-icons")
@@ -59,18 +65,21 @@ async def post_upload_icons():
 
     if (suffixes := "".join(Path(file.filename).suffixes)) in VALID_UPLOAD_EXTENSIONS:
         upload_fn = "icons" + suffixes
-        with TemporaryDirectory(prefix="web-portal") as temp_location:
-            temp_location = Path(temp_location)
-            temp_upload_location = temp_location / upload_fn
+        with TemporaryDirectory(prefix="web-portal") as temp_dir:
+            temp_path = Path(temp_dir)
+            temp_upload_location = temp_path / upload_fn
             await file.save(temp_upload_location)
-            extract_upload(temp_upload_location, temp_location)
-            upload_stats = copy_icons_from_import(temp_location)
+            extract_upload(temp_upload_location, temp_path)
+            upload_stats = copy_icons_from_import(temp_path)
 
         if upload_stats.png_count == 0 and upload_stats.svg_count == 0:
             await flash("detected no image files, did you put them in the correct format?", "error")
         else:
-            await flash(f"uploaded icons (png={upload_stats.png_count}, \
-                        svg={upload_stats.svg_count})", "ok")
+            await flash(
+                f"uploaded icons (png={upload_stats.png_count}, \
+                        svg={upload_stats.svg_count})",
+                "ok",
+            )
     else:
         await flash("failed to upload icons, (unknown file extension)", "error")
 
@@ -145,12 +154,14 @@ async def post_engines_edit(engine_id: int):
         await flash("engine name cannot be blank", "error")
         return redirect(url_for(".get_engines_edit", engine_id=engine_id))
 
-    engine = engine.update_from_dict(dict(
-        name=name,
-        url=url,
-        query_param=query_param,
-        method=method,
-    ))
+    engine = engine.update_from_dict(
+        {
+            "name": name,
+            "url": url,
+            "query_param": query_param,
+            "method": method,
+        }
+    )
 
     await engine.save()
 
@@ -172,16 +183,13 @@ async def get_engines_delete(engine_id: int):
 @login_admin_required
 async def get_links_index():
     links = await models.Link.all()
-    return await render_template(
-        "core/links/index.jinja",
-        links=links
-    )
+    return await render_template("core/links/index.jinja", links=links)
 
 
 @blueprint.get("/links/new")
 @login_admin_required
 async def get_link_new():
-    icon_names = get_icon_names(True)
+    icon_names = sorted(get_icon_names())
 
     return await render_template(
         "core/links/new.jinja",
@@ -192,7 +200,7 @@ async def get_link_new():
 @blueprint.get("/links/<int:link_id>/edit")
 @login_admin_required
 async def get_link_edit(link_id: int):
-    icon_names = get_icon_names(True)
+    icon_names = sorted(get_icon_names())
     link = await models.Link.filter(id=link_id).get()
 
     return await render_template(
@@ -225,15 +233,13 @@ async def post_link_new():
         await flash("link name cannot be blank", "error")
         return redirect(url_for(".get_link_new"))
 
-    if icon_name:
-        if get_icon_path(icon_name) is None:
-            logger.warning(
-                "icon name requested not found, " +
-                "or permission to read is missing::name='%s'",
-                icon_name,
-            )
-            await flash("failed to find icon", "error")
-            return redirect(url_for(".get_link_new"))
+    if icon_name and get_icon_path(icon_name) is None:
+        logger.warning(
+            "icon name requested not found, " "or permission to read is missing::name='%s'",
+            icon_name,
+        )
+        await flash("failed to find icon", "error")
+        return redirect(url_for(".get_link_new"))
 
     await models.Link.create(
         name=name,
@@ -263,22 +269,22 @@ async def post_link_edit(link_id: int):
         await flash("link name cannot be blank", "error")
         return redirect(url_for(".get_link_edit", link_id=link_id))
 
-    if icon_name:
-        if get_icon_path(icon_name) is None:
-            logger.warning(
-                "icon name requested not found, " +
-                "or permission to read is missing::name='%s'",
-                icon_name,
-            )
-            await flash("failed to find icon", "error")
-            return redirect(url_for(".get_link_edit", link_id=link_id))
+    if icon_name and get_icon_path(icon_name) is None:
+        logger.warning(
+            "icon name requested not found, " "or permission to read is missing::name='%s'",
+            icon_name,
+        )
+        await flash("failed to find icon", "error")
+        return redirect(url_for(".get_link_edit", link_id=link_id))
 
-    link = link.update_from_dict(dict(
-        name=name,
-        url=url,
-        color_name=color_name,
-        icon_name=icon_name,
-    ))
+    link = link.update_from_dict(
+        {
+            "name": name,
+            "url": url,
+            "color_name": color_name,
+            "icon_name": icon_name,
+        }
+    )
 
     await link.save()
 
@@ -300,8 +306,7 @@ async def post_widget_update_search(widget_id: int):
 
     widget_details = await get_widget_details(widget_id)
 
-    if widget_details.plugin_name != "core" or \
-            widget_details.internal_name != "search":
+    if widget_details.plugin_name != "core" or widget_details.internal_name != "search":
         abort(400)
 
     await set_widget_config(widget_id, {"engine_id": engine.id})
@@ -318,8 +323,7 @@ async def post_widget_customise_link(widget_id: int):
 
     widget_details = await get_widget_details(widget_id)
 
-    if widget_details.plugin_name != "core" or \
-            widget_details.internal_name != "links":
+    if widget_details.plugin_name != "core" or widget_details.internal_name != "links":
         abort(400)
 
     widget_config = widget_details.config
@@ -346,8 +350,7 @@ async def post_widget_add_link(widget_id: int):
 
     widget_details = await get_widget_details(widget_id)
 
-    if widget_details.plugin_name != "core" or \
-            widget_details.internal_name != "links":
+    if widget_details.plugin_name != "core" or widget_details.internal_name != "links":
         abort(400)
 
     widget_config = widget_details.config
@@ -372,13 +375,12 @@ async def get_widget_remove_link(widget_id: int, link_index: int):
 
     widget_details = await get_widget_details(widget_id)
 
-    if widget_details.plugin_name != "core" or \
-            widget_details.internal_name != "links":
+    if widget_details.plugin_name != "core" or widget_details.internal_name != "links":
         abort(400)
 
     widget_config = widget_details.config
 
-    if widget_config is None or len(widget_config.get("links")) < link_index+1:
+    if widget_config is None or len(widget_config.get("links")) < link_index + 1:
         await flash("cannot find link to delete", "error")
         return
 

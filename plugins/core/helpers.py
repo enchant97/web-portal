@@ -1,7 +1,7 @@
 from functools import lru_cache
 from pathlib import Path
 from shutil import copytree
-from typing import NamedTuple, Optional
+from typing import NamedTuple
 from zipfile import ZipFile
 
 from pydantic_settings import BaseSettings
@@ -9,14 +9,12 @@ from pydantic_settings import BaseSettings
 from web_portal.plugin_api import get_plugin_data_path
 
 ICONS_PATH = get_plugin_data_path("core") / "icons"
-VALID_UPLOAD_EXTENSIONS = (
-    ".zip",
-)
+VALID_UPLOAD_EXTENSIONS = (".zip",)
 
 
 class PluginSettings(BaseSettings):
-    ALLOW_ICON_UPLOADS: Optional[bool] = True
-    OPEN_TO_NEW_TAB: Optional[bool] = True
+    ALLOW_ICON_UPLOADS: bool | None = True
+    OPEN_TO_NEW_TAB: bool | None = True
 
 
 @lru_cache
@@ -29,17 +27,14 @@ class IconsImportStats(NamedTuple):
     svg_count: int
 
 
-def get_icon_names(sort: bool = False) -> set[str]:
+def get_icon_names() -> set[str]:
     """
-    Gets all icon names found in the icons folder
+    Gets all icon names found in the icons folder.
+    Sort order unpredictable, will need sorting if needed.
 
-        :param sort: Sort the icon names into order
         :return: Icon names
     """
-    names = set(path.stem for path in ICONS_PATH.glob("**/*"))
-    if sort:
-        names = sorted(names)
-    return names
+    return {path.stem for path in ICONS_PATH.glob("**/*")}
 
 
 def get_icon_path(icon_name: str) -> Path | None:
@@ -59,6 +54,7 @@ def get_icon_path(icon_name: str) -> Path | None:
     for path in search_paths:
         if path.is_file():
             return path
+    return None
 
 
 def copy_icons_from_import(src: Path) -> IconsImportStats:
@@ -93,5 +89,5 @@ def extract_upload(upload_fp: str | Path, extract_into_fp: Path):
         case [".zip"]:
             _extract_upload_as_zip(upload_fp, extract_into_fp)
         case _:
-            # TODO throw custom exception
+            # TODO: throw custom exception
             raise ValueError("unknown file suffix, cannot guess file-type")

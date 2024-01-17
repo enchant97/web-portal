@@ -1,6 +1,13 @@
-from tortoise.fields import (BinaryField, BooleanField, CharField,
-                             ForeignKeyField, ForeignKeyRelation, IntField,
-                             JSONField, ReverseRelation)
+from tortoise.fields import (
+    BinaryField,
+    BooleanField,
+    CharField,
+    ForeignKeyField,
+    ForeignKeyRelation,
+    IntField,
+    JSONField,
+    ReverseRelation,
+)
 from tortoise.models import Model
 from werkzeug.security import check_password_hash, generate_password_hash
 
@@ -13,7 +20,7 @@ class SystemSetting(Model):
 
 
 class User(Model):
-    id = IntField(pk=True)
+    id = IntField(pk=True)  # noqa: A003
     username = CharField(128, unique=True)
     password_hash = BinaryField(null=True)
     is_admin = BooleanField(default=False)
@@ -45,27 +52,27 @@ class User(Model):
 
 
 class Plugin(Model):
-    id = IntField(pk=True)
+    id = IntField(pk=True)  # noqa: A003
     internal_name = CharField(128, unique=True)
 
     widgets = ReverseRelation["Widget"]
 
 
 class Widget(Model):
-    id = IntField(pk=True)
+    id = IntField(pk=True)  # noqa: A003
     internal_name = CharField(128, unique=True)
     plugin: ForeignKeyRelation[Plugin] = ForeignKeyField("models.Plugin", "widgets")
 
 
 class Dashboard(Model):
-    id = IntField(pk=True)
+    id = IntField(pk=True)  # noqa: A003
     owner: ForeignKeyRelation[User] = ForeignKeyField("models.User")
 
     widgets = ReverseRelation["DashboardWidget"]
 
 
 class DashboardWidget(Model):
-    id = IntField(pk=True)
+    id = IntField(pk=True)  # noqa: A003
     name = CharField(128)
     show_header = BooleanField(default=False)
     dashboard: ForeignKeyRelation[Dashboard] = ForeignKeyField("models.Dashboard", "widgets")

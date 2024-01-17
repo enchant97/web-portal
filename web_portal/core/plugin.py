@@ -1,14 +1,14 @@
 """
 Module to assist plugin functionalities
 """
+import importlib.util
 import logging
-from collections.abc import Awaitable, Callable, Generator
+import sys
+from collections.abc import Awaitable, Callable, Generator, Iterable
 from dataclasses import dataclass
 from pathlib import Path
 from types import ModuleType
-from typing import Any, Iterable, Optional
-import importlib.util
-import sys
+from typing import Any, ClassVar
 
 from packaging.specifiers import InvalidSpecifier, SpecifierSet
 from quart import Blueprint
@@ -16,8 +16,7 @@ from quart import Blueprint
 from ..database import models as app_models
 from .config import get_settings
 from .constants import RESTRICTED_PLUGIN_NAMES
-from .helpers import (get_system_setting, remove_system_setting,
-                      set_system_setting)
+from .helpers import get_system_setting, remove_system_setting, set_system_setting
 
 logger = logging.getLogger("web-portal")
 
@@ -44,6 +43,7 @@ class WidgetDetails:
     Used for storing information about a widget,
     returned by get_widget_details()
     """
+
     human_name: str
     internal_name: str
     plugin_name: str
@@ -56,6 +56,7 @@ class PluginMeta:
     Class used when creating a plugin,
     stores all information about a plugin and what it supports.
     """
+
     version_specifier: str
     human_name: str
     widgets: dict[str, str]
@@ -77,12 +78,12 @@ class PluginMeta:
         """
         try:
             ver_specifier = SpecifierSet(self.version_specifier)
-            return True if app_version in ver_specifier else False
         except InvalidSpecifier:
             raise PluginVersionException(
-                "unexpected version specifier, " +
-                "please use format from PEP 440 e.g. '== 2'"
+                "unexpected version specifier, " "please use format from PEP 440 e.g. '== 2'"
             ) from None
+        else:
+            return app_version in ver_specifier
 
 
 @dataclass
@@ -95,7 +96,8 @@ class PluginHandler:
     """
     static class for finding/loading plugins
     """
-    _loaded_plugins: dict[str, LoadedPlugin] = {}
+
+    _loaded_plugins: ClassVar[dict[str, LoadedPlugin]] = {}
 
     @staticmethod
     def get_plugins_path() -> Path:
@@ -112,8 +114,7 @@ class PluginHandler:
     @staticmethod
     def load_plugin(name: str, app_version: str) -> LoadedPlugin:
         spec = importlib.util.spec_from_file_location(
-            name,
-            PluginHandler.get_plugins_path() / name / "__init__.py"
+            name, PluginHandler.get_plugins_path() / name / "__init__.py"
         )
         if not spec:
             raise PluginException(f"plugin '{name}' could not be found")
@@ -125,7 +126,7 @@ class PluginHandler:
         # ensure version requested matches app version
         if not plugin_meta.is_supported_version(app_version):
             raise PluginVersionException(
-                f"running web-portal=={app_version}, " +
+                f"running web-portal=={app_version}, "
                 f"but plugin is wanting web-portal{plugin_meta.version_specifier.strip()}"
             )
 
@@ -150,8 +151,8 @@ class PluginHandler:
 
     @staticmethod
     def load_plugins(
-            app_version: str,
-            skip_list: Iterable[str] = None) -> Generator[LoadedPlugin, None, None]:
+        app_version: str, skip_list: Iterable[str] | None = None
+    ) -> Generator[LoadedPlugin, None, None]:
         for name in PluginHandler.get_plugin_names():
             if skip_list is not None and name in skip_list:
                 logger.info("skipping loading plugin as in skip list::plugin_name='%s'", name)
@@ -167,20 +168,23 @@ class PluginHandler:
                 yield plugin
 
             except PluginNameConflictException as err:
-                logger.error(
-                    "unable to load plugin, " +
+                logger.exception(
+                    "unable to load plugin, "
                     "plugin with same name already loaded::plugin_name='%s', err='%s'",
-                    name, err.args[0]
+                    name,
+                    err.args[0],
                 )
             except PluginRestrictedNameException as err:
-                logger.error(
+                logger.exception(
                     "unable to load plugin, using restricted name::plugin_name='%s', err='%s'",
-                    name, err.args[0]
+                    name,
+                    err.args[0],
                 )
             except PluginVersionException as err:
-                logger.error(
+                logger.exception(
                     "unable to load plugin, version incompatible::plugin_name='%s', err='%s'",
-                    name, err.args[0]
+                    name,
+                    err.args[0],
                 )
 
     @staticmethod
@@ -198,12 +202,11 @@ class PluginHandler:
         try:
             return PluginHandler._loaded_plugins[name]
         except KeyError:
-            logger.error("plugin is not loaded::plugin_name='%s'", name)
+            logger.exception("plugin is not loaded::plugin_name='%s'", name)
 
     @staticmethod
     def get_loaded_plugin_values() -> Generator[LoadedPlugin, None, None]:
-        for plugin in PluginHandler._loaded_plugins.values():
-            yield plugin
+        yield from PluginHandler._loaded_plugins.values()
 
     @staticmethod
     def get_loaded_plugin_names() -> list[str]:
@@ -223,12 +226,8 @@ def make_system_setting_plugin_key(plugin_name: str, key: str) -> str:
 
 
 async def get_plugin_system_setting(
-        plugin_name: str,
-        key: str,
-        /,
-        *,
-        default: Optional[Any] = None,
-        skip_cache: bool = False) -> Any | None:
+    plugin_name: str, key: str, /, *, default: Any | None = None, skip_cache: bool = False
+) -> Any | None:
     """
     Gets a plugin's system setting stored in db or from cache
 
@@ -272,9 +271,7 @@ async def get_widget_owner_id(widget_id: int, /) -> int:
         :param widget_id: The widgets id
         :return: The owner id
     """
-    widget = await app_models.DashboardWidget.get(id=widget_id).prefetch_related(
-        "dashboard"
-    )
+    widget = await app_models.DashboardWidget.get(id=widget_id).prefetch_related("dashboard")
     return widget.dashboard.owner_id
 
 
@@ -291,10 +288,7 @@ async def get_widget_details(widget_id: int, /) -> WidgetDetails:
     )
     return WidgetDetails(
         widget.name,
-        deconstruct_widget_name(
-            widget.widget.plugin.internal_name,
-            widget.widget.internal_name
-        ),
+        deconstruct_widget_name(widget.widget.plugin.internal_name, widget.widget.internal_name),
         widget.widget.plugin.internal_name,
         widget.config,
     )

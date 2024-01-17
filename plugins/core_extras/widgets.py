@@ -1,6 +1,7 @@
 import logging
 
 from quart import render_template
+
 from web_portal.plugin_api import PluginMeta
 
 from . import views
@@ -19,7 +20,7 @@ async def render_widget_iframe(config: dict) -> str:
     )
 
 
-async def render_widget(internal_name, widget_id: int, config: dict | None) -> str:
+async def render_widget(internal_name, _widget_id: int, config: dict | None) -> str:
     if config is None:
         config = {}
     match internal_name:
@@ -30,15 +31,14 @@ async def render_widget(internal_name, widget_id: int, config: dict | None) -> s
         case _:
             logger.error(
                 "widget not found in plugin::widget_name='%s',plugin_name='core_extras'",
-                internal_name
+                internal_name,
             )
             raise ValueError("Unknown widget internal name")
 
 
 async def render_widget_edit_embed_html(
-        dash_widget_id: int,
-        config: dict | None,
-        back_to_url: str) -> str:
+    dash_widget_id: int, config: dict | None, back_to_url: str
+) -> str:
     content = config.get("content", "")
 
     return await render_template(
@@ -50,9 +50,8 @@ async def render_widget_edit_embed_html(
 
 
 async def render_widget_edit_iframe(
-        dash_widget_id: int,
-        config: dict | None,
-        back_to_url: str) -> str:
+    dash_widget_id: int, config: dict | None, back_to_url: str
+) -> str:
     iframe_src = config.get("src", "")
     iframe_height = config.get("height", 150)
 
@@ -66,10 +65,8 @@ async def render_widget_edit_iframe(
 
 
 async def render_widget_edit(
-        internal_name: str,
-        dash_widget_id: int,
-        config: dict | None,
-        back_to_url: str) -> str:
+    internal_name: str, dash_widget_id: int, config: dict | None, back_to_url: str
+) -> str:
     if config is None:
         config = {}
     match internal_name:
@@ -80,7 +77,7 @@ async def render_widget_edit(
         case _:
             logger.error(
                 "widget not found in plugin::widget_name='%s',plugin_name='core_extras'",
-                internal_name
+                internal_name,
             )
             raise ValueError("Unknown widget internal name")
 
@@ -91,7 +88,7 @@ PLUGIN_META = PluginMeta(
     widgets={
         "embed_html": "Embed HTML",
         "iframe": "Embed Website",
-        },
+    },
     db_models=[],
     blueprints=[views.blueprint],
     index_route_url="core_extras.get_index",

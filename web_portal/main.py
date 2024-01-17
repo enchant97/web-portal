@@ -33,8 +33,7 @@ async def redirect_to_login(*_):
 async def setup_internals():
     # NOTE this ensures public virtual account is always created
     await models.User.update_or_create(
-        defaults={"password_hash": None},
-        username=PUBLIC_ACCOUNT_USERNAME
+        defaults={"password_hash": None}, username=PUBLIC_ACCOUNT_USERNAME
     )
 
     # NOTE this ensures plugins and widgets are registed in database
@@ -43,9 +42,9 @@ async def setup_internals():
 
         for widget_name in plugin.meta.widgets:
             name = make_combined_widget_name(plugin.internal_name, widget_name)
-            await models.Widget.update_or_create(internal_name=name, defaults={
-                "plugin": plugin_model
-            })
+            await models.Widget.update_or_create(
+                internal_name=name, defaults={"plugin": plugin_model}
+            )
 
     if get_settings().UNATTENDED_DEMO_INSTALL:
         logger.info("unattended install of demo running")
@@ -57,12 +56,13 @@ async def setup_internals():
 
 @app.context_processor
 def context_get_head_injects():
-    # TODO store rendered output in variable instead at app launch (performance improvement)
+    # TODO: store rendered output in variable instead at app launch (performance improvement)
     async def get_head_injects():
         for plugin in PluginHandler.get_loaded_plugin_values():
             if plugin.meta.get_injected_head:
                 yield await plugin.meta.get_injected_head()
-    return dict(get_head_injects=get_head_injects)
+
+    return {"get_head_injects": get_head_injects}
 
 
 def load_plugins(app: Quart) -> dict:
@@ -128,11 +128,7 @@ def create_app():
 
     logger.debug("registering tortoise-orm")
     # NOTE must be setup before any other hooks
-    register_tortoise(
-        app,
-        db_url=get_settings().DB_URI,
-        modules=db_models,
-        generate_schemas=True)
+    register_tortoise(app, db_url=get_settings().DB_URI, modules=db_models, generate_schemas=True)
 
     app.before_serving(setup_internals)
 

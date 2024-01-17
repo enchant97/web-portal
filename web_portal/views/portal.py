@@ -1,13 +1,15 @@
 import asyncio
 
-from quart import (Blueprint, flash, redirect, render_template, send_file,
-                   url_for)
+from quart import Blueprint, flash, redirect, render_template, send_file, url_for
 
-from ..core.auth import (current_user, login_admin_required,
-                         login_required_if_secured, login_standard_required)
+from ..core.auth import (
+    current_user,
+    login_admin_required,
+    login_required_if_secured,
+    login_standard_required,
+)
 from ..core.config import get_settings
-from ..core.constants import (DEFAULT_BRANDING, PUBLIC_ACCOUNT_USERNAME,
-                              SystemSettingKeys)
+from ..core.constants import DEFAULT_BRANDING, PUBLIC_ACCOUNT_USERNAME, SystemSettingKeys
 from ..core.helpers import get_system_setting
 from ..core.plugin import PluginHandler, deconstruct_widget_name
 from ..database import models
@@ -28,7 +30,8 @@ async def portal():
     # load either personal dashboard or 'public' as a fallback
     if user_id is not None:
         dashboard = await models.Dashboard.get_or_none(owner_id=user_id).prefetch_related(
-            "widgets", "widgets__widget", "widgets__widget__plugin")
+            "widgets", "widgets__widget", "widgets__widget__plugin"
+        )
     if dashboard is None:
         public_account = await models.User.filter(username=PUBLIC_ACCOUNT_USERNAME).get()
         dashboard = (await models.Dashboard.get_or_create(owner=public_account))[0]
@@ -62,7 +65,7 @@ async def portal():
 
     if failed_widgets:
         await flash(
-            f"placed widgets with names {failed_widgets} could not be loaded, " +
+            f"placed widgets with names {failed_widgets} could not be loaded, "
             "please contact administrator",
             "error",
         )
@@ -111,7 +114,7 @@ async def get_delete_plugin_data(plugin_name: str):
 
     await asyncio.gather(
         models.Plugin.filter(internal_name=plugin_name).delete(),
-        models.SystemSetting.filter(key__startswith=f"plugin__{plugin_name}").delete()
+        models.SystemSetting.filter(key__startswith=f"plugin__{plugin_name}").delete(),
     )
 
     await flash("deleted plugin data", "ok")

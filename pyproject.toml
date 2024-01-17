@@ -65,7 +65,7 @@ path = "web_portal/__init__.py"
 [tool.ruff]
 line-length=100
 src = ["web_portal", "tests"]
-ignore = ["TID252", "EM102", "S101"]
+ignore = ["TID252", "EM101", "EM102", "S101", "TRY003", "N818"]
 ignore-init-module-imports = true
 
 [tool.ruff.per-file-ignores]

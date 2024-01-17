@@ -2,6 +2,7 @@ import asyncio
 import logging
 
 from quart import render_template
+
 from web_portal.plugin_api import PluginMeta
 
 from . import models, views
@@ -11,7 +12,7 @@ logger = logging.getLogger("web-portal")
 
 
 async def render_widget_link(config: dict) -> str:
-    # TODO auto remove links that haven't been found due to deletion
+    # TODO: auto remove links that haven't been found due to deletion
     links = await models.Link.filter(id__in=config.get("links", [])).order_by("name").all()
 
     return await render_template(
@@ -47,16 +48,14 @@ async def render_widget(internal_name, widget_id: int, config: dict | None) -> s
             return await render_widget_search(config)
         case _:
             logger.error(
-                "widget not found in plugin::widget_name='%s',plugin_name='core'",
-                internal_name
+                "widget not found in plugin::widget_name='%s',plugin_name='core'", internal_name
             )
             raise ValueError("Unknown widget internal name")
 
 
 async def render_widget_edit_search(
-        dash_widget_id: int,
-        config: dict | None,
-        back_to_url: str) -> str:
+    dash_widget_id: int, config: dict | None, back_to_url: str
+) -> str:
     engines = await models.SearchEngine.all()
 
     return await render_template(
@@ -68,10 +67,7 @@ async def render_widget_edit_search(
     )
 
 
-async def render_widget_edit_link(
-        dash_widget_id: int,
-        config: dict,
-        back_to_url: str) -> str:
+async def render_widget_edit_link(dash_widget_id: int, config: dict, back_to_url: str) -> str:
     available_links, added_links = await asyncio.gather(
         models.Link.all(),
         models.Link.filter(id__in=config.get("links", [])).all(),
@@ -80,15 +76,15 @@ async def render_widget_edit_link(
     # added links need sorting (and unavailable ones replaced with "None")
     added_links_sorted = []
     for link_id in config.get("links", []):
-            found_i = None
-            for i, link in enumerate(added_links):
-                if link.id == link_id:
-                    found_i = i
-                    break
-            if found_i is not None:
-                added_links_sorted.append(added_links.pop(found_i))
-            else:
-                added_links_sorted.append(None)
+        found_i = None
+        for i, link in enumerate(added_links):
+            if link.id == link_id:
+                found_i = i
+                break
+        if found_i is not None:
+            added_links_sorted.append(added_links.pop(found_i))
+        else:
+            added_links_sorted.append(None)
 
     return await render_template(
         "core/includes/widgets-editor/link.jinja",
@@ -101,10 +97,8 @@ async def render_widget_edit_link(
 
 
 async def render_widget_edit(
-        internal_name: str,
-        dash_widget_id: int,
-        config: dict | None,
-        back_to_url: str) -> str:
+    internal_name: str, dash_widget_id: int, config: dict | None, back_to_url: str
+) -> str:
     if config is None:
         config = {}
     match internal_name:
@@ -116,8 +110,7 @@ async def render_widget_edit(
             return await render_widget_edit_search(dash_widget_id, config, back_to_url)
         case _:
             logger.error(
-                "widget not found in plugin::widget_name='%s',plugin_name='core'",
-                internal_name
+                "widget not found in plugin::widget_name='%s',plugin_name='core'", internal_name
             )
             raise ValueError("Unknown widget internal name")
 
@@ -187,7 +180,7 @@ PLUGIN_META = PluginMeta(
         "clock": "Digital Clock",
         "links": " Links",
         "search": "Web Search",
-        },
+    },
     db_models=[models],
     blueprints=[views.blueprint],
     index_route_url="core.get_index",

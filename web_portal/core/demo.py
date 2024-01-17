@@ -23,9 +23,10 @@ async def do_demo_install():
     demo_user.set_password("demo")
 
     plugins_to_setup = []
+
     for plugin in PluginHandler.get_loaded_plugin_values():
         if plugin.meta.do_demo_setup is not None:
-            plugins_to_setup.append(plugin.meta.do_demo_setup())
+            plugins_to_setup.append(plugin.meta.do_demo_setup())  # noqa: PERF401
 
     # This is a a lot of asyncio gathering!!!
     await asyncio.gather(

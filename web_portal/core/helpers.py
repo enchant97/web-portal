@@ -11,11 +11,8 @@ from ..database import models
 
 
 async def get_system_setting(
-        key: str,
-        /,
-        *,
-        default: Any = None,
-        skip_cache: bool = False) -> Any | None:
+    key: str, /, *, default: Any = None, skip_cache: bool = False
+) -> Any | None:
     """
     Gets a system setting stored in db or from cache
 
@@ -46,7 +43,7 @@ async def set_system_setting(key: str, value: Any, /):
         :param key: The setting's key
         :param value: Value to update setting to
     """
-    await models.SystemSetting.update_or_create(key=key, defaults=dict(value=value))
+    await models.SystemSetting.update_or_create(key=key, defaults={"value": value})
     current_app.config[key] = value
 
 
@@ -65,6 +62,7 @@ def redirect_using_back_to(func: Callable) -> Callable:
     Used to decorate a Quart response,
     allowing redirects to a provided back_to request arg
     """
+
     @wraps(func)
     async def wrapper(*args: Any, **kwargs: Any) -> Response:
         response = await func(*args, **kwargs)
@@ -76,4 +74,5 @@ def redirect_using_back_to(func: Callable) -> Callable:
             return redirect(back_to_url)
         # failover if nothing else applies
         return redirect(url_for("portal.portal"))
+
     return wrapper

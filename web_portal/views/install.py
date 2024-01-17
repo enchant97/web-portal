@@ -1,5 +1,3 @@
-import asyncio
-
 from quart import Blueprint, flash, redirect, render_template, request, url_for
 from tortoise.exceptions import IntegrityError
 
@@ -83,9 +81,7 @@ async def post_set_configs():
 
     portal_secured = not form.get("public-portal", False, bool)
 
-    await asyncio.gather(
-        set_system_setting(SystemSettingKeys.PORTAL_SECURED, portal_secured),
-    )
+    await set_system_setting(SystemSettingKeys.PORTAL_SECURED, portal_secured)
 
     return redirect(url_for(".get_finish"))
 
@@ -93,7 +89,7 @@ async def post_set_configs():
 @blueprint.get("/finish")
 @ensure_not_setup
 async def get_finish():
-    await set_system_setting(SystemSettingKeys.HAS_SETUP, True),
+    await set_system_setting(SystemSettingKeys.HAS_SETUP, True)
 
     return await render_template(
         "install/finish.jinja",
