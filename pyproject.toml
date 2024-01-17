@@ -45,11 +45,14 @@ serve = "mkdocs serve"
 
 [tool.hatch.envs.dev]
 dependencies = [
-  "flake8~=6.0.0",
   "pytest~=7.4.0",
   "pytest-asyncio~=0.21.0",
   "pytest-env~=0.8.2",
 ]
+
+[tool.hatch.envs.dev.scripts]
+unit-test = "pytest ./tests"
+lint = "hatch fmt --check"
 
 [project.urls]
 Documentation = "https://webportal.docs.enchantedcode.co.uk/"
@@ -58,3 +61,12 @@ Source = "https://github.com/enchant97/web-portal"
 
 [tool.hatch.version]
 path = "web_portal/__init__.py"
+
+[tool.ruff]
+line-length=100
+src = ["web_portal", "tests"]
+ignore = ["TID252", "EM102", "S101"]
+ignore-init-module-imports = true
+
+[tool.ruff.per-file-ignores]
+"web_portal/plugin_api.py" = ["F401"]
