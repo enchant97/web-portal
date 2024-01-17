@@ -4,7 +4,7 @@ from shutil import copytree
 from typing import NamedTuple, Optional
 from zipfile import ZipFile
 
-from pydantic import BaseSettings
+from pydantic_settings import BaseSettings
 
 from web_portal.plugin_api import get_plugin_data_path
 

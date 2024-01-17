@@ -4,7 +4,7 @@ from pathlib import Path
 from secrets import token_urlsafe
 
 from quart import Quart, flash, redirect, url_for
-from quart_auth import AuthManager
+from quart_auth import QuartAuth
 from tortoise.contrib.quart import register_tortoise
 from web_health_checker.contrib import quart as health_check
 
@@ -20,7 +20,7 @@ from .database import models
 logger = logging.getLogger("web-portal")
 
 app = Quart(__name__)
-auth_manager = AuthManager()
+auth_manager = QuartAuth()
 auth_manager.user_class = AuthUserEnhanced
 
 
