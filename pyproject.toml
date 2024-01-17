@@ -33,9 +33,9 @@ serve = "hypercorn \"web_portal.main:create_app()\""
 
 [tool.hatch.envs.docs]
 dependencies = [
-  "mkdocs~=1.4.3",
-  "mkdocstrings[python]~=0.22.0",
-  "mkdocs-material~=9.1.16",
+  "mkdocs~=1.5.3",
+  "mkdocstrings[python]~=0.24.0",
+  "mkdocs-material~=9.5.4",
 ]
 
 [tool.hatch.envs.docs.scripts]
