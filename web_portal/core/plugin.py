@@ -188,7 +188,7 @@ class PluginHandler:
                 )
 
     @staticmethod
-    def loaded_plugins() -> dict[LoadedPlugin]:
+    def loaded_plugins() -> dict[str, LoadedPlugin]:
         return PluginHandler._loaded_plugins
 
     @staticmethod
@@ -209,7 +209,7 @@ class PluginHandler:
         yield from PluginHandler._loaded_plugins.values()
 
     @staticmethod
-    def get_loaded_plugin_names() -> list[str]:
+    def get_loaded_plugin_names() -> Iterable[str]:
         return PluginHandler._loaded_plugins.keys()
 
 
@@ -319,3 +319,21 @@ def get_plugin_data_path(plugin_name: str) -> Path:
     data_path = get_settings().DATA_PATH / "plugins" / plugin_name
     data_path.mkdir(parents=True, exist_ok=True)
     return data_path
+
+
+async def register_loaded_plugins():
+    """
+    Register loaded plugins in the database,
+    can be safely run at every app launch.
+    """
+    for plugin in PluginHandler.loaded_plugins().values():
+        plugin_model, _ = await app_models.Plugin.update_or_create(
+            internal_name=plugin.internal_name
+        )
+
+        for widget_name in plugin.meta.widgets:
+            name = make_combined_widget_name(plugin.internal_name, widget_name)
+            await app_models.Widget.update_or_create(
+                internal_name=name,
+                defaults={"plugin": plugin_model},
+            )

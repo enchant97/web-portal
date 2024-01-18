@@ -181,8 +181,8 @@ async def post_users_new():
 @login_admin_required
 async def get_users_delete(user_id: int):
     user = await models.User.get(id=user_id)
-
-    if user.id == int(current_user.auth_id):
+    current_user_id = int(current_user.auth_id)  # type: ignore
+    if user.id == current_user_id:
         await flash("You cannot delete yourself", "error")
     elif user.username == PUBLIC_ACCOUNT_USERNAME:
         await flash("You cannot delete the virtual public", "error")
@@ -247,7 +247,7 @@ async def post_user_force_login():
         await flash("unable to force login as this user", "error")
         return redirect(url_for(".get_users"))
 
-    login_user(AuthUserEnhanced(user.id))
+    login_user(AuthUserEnhanced(str(user.id)))
     await flash("forced login to user", "ok")
 
     return redirect(url_for("portal.portal"))

@@ -56,11 +56,13 @@ async def post_add_widget():
 
     dashboard = await models.Dashboard.filter(owner_id=current_user.auth_id).get()
 
-    await dashboard.append_widget(models.DashboardWidget(
-        name=name,
-        dashboard=dashboard,
-        widget_id=widget_id,
-    ))
+    await dashboard.append_widget(
+        models.DashboardWidget(
+            name=name,
+            dashboard=dashboard,
+            widget_id=widget_id,
+        )
+    )
 
     return redirect(url_for(".get_edit_dashboard"))
 
@@ -132,8 +134,11 @@ async def post_edit_dashboard_widget(widget_id: int):
 @blueprint.get("/dashboard/widget/<int:widget_id>/shift-left")
 @login_standard_required
 async def get_widget_shift_left(widget_id: int):
-    dashboard = await models.Dashboard.\
-        filter(owner_id=current_user.auth_id).prefetch_related("widgets").get()
+    dashboard = (
+        await models.Dashboard.filter(owner_id=current_user.auth_id)
+        .prefetch_related("widgets")
+        .get()
+    )
     await dashboard.shift_widget_left(widget_id)
 
     return redirect(url_for(".get_edit_dashboard"))
@@ -142,8 +147,11 @@ async def get_widget_shift_left(widget_id: int):
 @blueprint.get("/dashboard/widget/<int:widget_id>/shift-right")
 @login_standard_required
 async def get_widget_shift_right(widget_id: int):
-    dashboard = await models.Dashboard.\
-        filter(owner_id=current_user.auth_id).prefetch_related("widgets").get()
+    dashboard = (
+        await models.Dashboard.filter(owner_id=current_user.auth_id)
+        .prefetch_related("widgets")
+        .get()
+    )
     await dashboard.shift_widget_right(widget_id)
 
     return redirect(url_for(".get_edit_dashboard"))

@@ -1,5 +1,5 @@
 from typing import Any
-from tortoise.transactions import atomic
+
 from tortoise.fields import (
     BinaryField,
     BooleanField,
@@ -12,6 +12,7 @@ from tortoise.fields import (
     ReverseRelation,
 )
 from tortoise.models import Model
+from tortoise.transactions import atomic
 from werkzeug.security import check_password_hash, generate_password_hash
 
 from ..core.constants import PUBLIC_ACCOUNT_USERNAME
@@ -78,7 +79,7 @@ class Dashboard(Model):
         unsorted_widgets = self.widgets
         if len(self.widget_order) == 0:
             return unsorted_widgets
-        order = {v:i for i,v in enumerate(self.widget_order)}
+        order = {v: i for i, v in enumerate(self.widget_order)}
         return sorted(unsorted_widgets, key=lambda x: order[x.id])
 
     @atomic()

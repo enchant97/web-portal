@@ -14,7 +14,7 @@ from .core.config import get_settings
 from .core.constants import PUBLIC_ACCOUNT_USERNAME
 from .core.demo import do_demo_install
 from .core.helpers import get_system_setting
-from .core.plugin import PluginHandler, make_combined_widget_name
+from .core.plugin import PluginHandler, register_loaded_plugins
 from .database import models
 
 logger = logging.getLogger("web-portal")
@@ -36,15 +36,7 @@ async def setup_internals():
         defaults={"password_hash": None}, username=PUBLIC_ACCOUNT_USERNAME
     )
 
-    # NOTE this ensures plugins and widgets are registed in database
-    for plugin in PluginHandler.loaded_plugins().values():
-        plugin_model, _ = await models.Plugin.update_or_create(internal_name=plugin.internal_name)
-
-        for widget_name in plugin.meta.widgets:
-            name = make_combined_widget_name(plugin.internal_name, widget_name)
-            await models.Widget.update_or_create(
-                internal_name=name, defaults={"plugin": plugin_model}
-            )
+    await register_loaded_plugins()
 
     if get_settings().UNATTENDED_DEMO_INSTALL:
         logger.info("unattended install of demo running")

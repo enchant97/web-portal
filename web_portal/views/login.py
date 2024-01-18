@@ -1,4 +1,5 @@
 import logging
+
 from quart import Blueprint, flash, redirect, render_template, request, session, url_for
 from quart_auth import login_user, logout_user
 
@@ -10,6 +11,7 @@ from ..database import models
 blueprint = Blueprint("login", __name__, url_prefix="/auth")
 
 logger = logging.getLogger("web-portal")
+
 
 @blueprint.get("/login")
 async def get_login():
@@ -31,7 +33,7 @@ async def post_login():
     if username != PUBLIC_ACCOUNT_USERNAME:
         user = await models.User.filter(username=username).get_or_none()
         if user and user.check_password(password):
-            login_user(AuthUserEnhanced(user.id))
+            login_user(AuthUserEnhanced(str(user.id)))
             return redirect(url_for("portal.portal"))
 
     await flash("Username or password incorrect", "error")

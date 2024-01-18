@@ -47,7 +47,7 @@ class AuthUserEnhanced(quart_auth.AuthUser):
 
 
 # NOTE Enables better IDE hints and creating a nice api
-current_user: AuthUserEnhanced = quart_auth.current_user
+current_user: AuthUserEnhanced = quart_auth.current_user  # type: ignore
 
 
 def login_required_if_secured(func: Callable) -> Callable:
