@@ -9,14 +9,14 @@ class Settings(BaseSettings):
     PLUGINS_PATH: Path
     DATA_PATH: Path
     SECRET_KEY: str | None = None
-    SECURE_COOKIES: bool | None = False
-    LOG_LEVEL: str | None = "INFO"
-    SHOW_VERSION_NUMBER: bool | None = True
+    SECURE_COOKIES: bool = False
+    LOG_LEVEL: str = "INFO"
+    SHOW_VERSION_NUMBER: bool = True
 
     DISABLE_PLUGIN_LOADER: bool = False
     PLUGIN_SKIP_LIST: list[str] | None = None
 
-    UNATTENDED_DEMO_INSTALL: bool | None = False
+    UNATTENDED_DEMO_INSTALL: bool = False
 
     class Config:
         case_sensitive = True
@@ -29,4 +29,4 @@ def get_settings():
     """
     returns the Settings obj
     """
-    return Settings()
+    return Settings()  # type: ignore

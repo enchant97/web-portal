@@ -96,7 +96,7 @@ def register_blueprints(app: Quart):
 
 def setup_configs(app: Quart):
     logging.basicConfig()
-    logger.setLevel(logging.getLevelName(get_settings().LOG_LEVEL))
+    logger.setLevel(logging.getLevelName(get_settings().LOG_LEVEL.upper()))
 
     app.config["__VERSION__"] = __version__
     if get_settings().SECRET_KEY:
