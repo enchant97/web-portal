@@ -26,6 +26,8 @@
     <div>
         <h3>{{ widget.name }}, {{ widget.widget.internal_name }}</h3>
         <div class="bnt-group">
+            <a class="icon-bnt" href="{{ url_for('.get_widget_shift_left', widget_id=widget.id) }}" title="Move Up">{{ macros.feather_img('arrow-up') }}</a>
+            <a class="icon-bnt" href="{{ url_for('.get_widget_shift_right', widget_id=widget.id) }}" title="Move Down">{{ macros.feather_img('arrow-down') }}</a>
             <a class="icon-bnt" href="{{ url_for('.get_edit_dashboard_widget', widget_id=widget.id) }}" title="Edit">{{ macros.feather_img('settings') }}</a>
             <a class="icon-bnt" href="{{ url_for('.get_delete_widget', widget_id=widget.id) }}" title="Delete">{{ macros.feather_img('x') }}</a>
         </div>

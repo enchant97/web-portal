@@ -40,7 +40,7 @@ async def portal():
     rendered_widgets = []
     failed_widgets = []
 
-    for dashboard_widget in dashboard.widgets:
+    for dashboard_widget in dashboard.widgets_sorted():
         dashboard_widget: models.DashboardWidget
         widget: models.Widget = dashboard_widget.widget
         plugin_name = widget.plugin.internal_name

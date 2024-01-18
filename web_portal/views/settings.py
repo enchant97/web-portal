@@ -29,7 +29,8 @@ async def get_index():
 async def get_edit_dashboard():
     widgets = await models.Widget.all()
     dashboard, is_new_dash = await models.Dashboard.get_or_create(owner_id=current_user.auth_id)
-    placed_widgets = await dashboard.widgets.all()
+    await dashboard.fetch_related("widgets")
+    placed_widgets = dashboard.widgets_sorted()
 
     if is_new_dash:
         await flash("Created new dashboard", "ok")
@@ -55,11 +56,11 @@ async def post_add_widget():
 
     dashboard = await models.Dashboard.filter(owner_id=current_user.auth_id).get()
 
-    await models.DashboardWidget.create(
+    await dashboard.append_widget(models.DashboardWidget(
         name=name,
         dashboard=dashboard,
         widget_id=widget_id,
-    )
+    ))
 
     return redirect(url_for(".get_edit_dashboard"))
 
@@ -128,12 +129,32 @@ async def post_edit_dashboard_widget(widget_id: int):
     return redirect(url_for(".get_edit_dashboard_widget", widget_id=widget_id))
 
 
+@blueprint.get("/dashboard/widget/<int:widget_id>/shift-left")
+@login_standard_required
+async def get_widget_shift_left(widget_id: int):
+    dashboard = await models.Dashboard.\
+        filter(owner_id=current_user.auth_id).prefetch_related("widgets").get()
+    await dashboard.shift_widget_left(widget_id)
+
+    return redirect(url_for(".get_edit_dashboard"))
+
+
+@blueprint.get("/dashboard/widget/<int:widget_id>/shift-right")
+@login_standard_required
+async def get_widget_shift_right(widget_id: int):
+    dashboard = await models.Dashboard.\
+        filter(owner_id=current_user.auth_id).prefetch_related("widgets").get()
+    await dashboard.shift_widget_right(widget_id)
+
+    return redirect(url_for(".get_edit_dashboard"))
+
+
 @blueprint.get("/dashboard/widget/<int:widget_id>/delete")
 @login_standard_required
 async def get_delete_widget(widget_id: int):
     dashboard = await models.Dashboard.filter(owner_id=current_user.auth_id).get()
 
-    await dashboard.widgets.filter(id=widget_id).delete()
+    await dashboard.pop_widget_by_id(widget_id)
 
     await flash("deleted widget", "ok")
 
