@@ -53,9 +53,7 @@ async def render_widget(internal_name, widget_id: int, config: dict | None) -> s
             raise ValueError("Unknown widget internal name")
 
 
-async def render_widget_edit_search(
-    dash_widget_id: int, config: dict | None, back_to_url: str
-) -> str:
+async def render_widget_edit_search(dash_widget_id: int, config: dict, back_to_url: str) -> str:
     engines = await models.SearchEngine.all()
 
     return await render_template(

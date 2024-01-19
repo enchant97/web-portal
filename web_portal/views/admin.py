@@ -31,7 +31,7 @@ async def get_switch_to_public():
     current_user_id = current_user.auth_id
     public_user = await models.User.filter(username=PUBLIC_ACCOUNT_USERNAME).get().only("id")
 
-    login_user(AuthUserEnhanced(public_user.id))
+    login_user(AuthUserEnhanced(str(public_user.id)))
     await flash(f"switched to {PUBLIC_ACCOUNT_USERNAME} account", "ok")
 
     session["prev-user-id"] = str(current_user_id)

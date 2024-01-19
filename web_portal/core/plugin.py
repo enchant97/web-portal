@@ -4,7 +4,7 @@ Module to assist plugin functionalities
 import importlib.util
 import logging
 import sys
-from collections.abc import Awaitable, Callable, Generator, Iterable
+from collections.abc import Awaitable, Callable, Collection, Generator, Iterable
 from dataclasses import dataclass
 from pathlib import Path
 from types import ModuleType
@@ -60,8 +60,8 @@ class PluginMeta:
     version_specifier: str
     human_name: str
     widgets: dict[str, str]
-    db_models: tuple[str | ModuleType]
-    blueprints: tuple[Blueprint]
+    db_models: Collection[str | ModuleType]
+    blueprints: Collection[Blueprint]
     index_route_url: str
     get_rendered_widget: Callable[[str, int, dict | None], Awaitable[str]] | None = None
     get_rendered_widget_edit: Callable[[str, int, dict | None, str], Awaitable[str]] | None = None

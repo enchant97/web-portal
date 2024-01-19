@@ -1,3 +1,4 @@
+from collections.abc import Iterable
 from typing import Any
 
 from tortoise.fields import (
@@ -75,12 +76,11 @@ class Dashboard(Model):
 
     widgets = ReverseRelation["DashboardWidget"]
 
-    def widgets_sorted(self):
-        unsorted_widgets = self.widgets
+    def widgets_sorted(self) -> Iterable["DashboardWidget"]:
         if len(self.widget_order) == 0:
-            return unsorted_widgets
+            return self.widgets
         order = {v: i for i, v in enumerate(self.widget_order)}
-        return sorted(unsorted_widgets, key=lambda x: order[x.id])
+        return sorted(self.widgets, key=lambda x: order[x.id])
 
     @atomic()
     async def append_widget(self, widget: "DashboardWidget"):
