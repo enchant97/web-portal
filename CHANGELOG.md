@@ -4,6 +4,20 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.3.0] - 2024-01-19
+### Added
+- Ability to move widgets around dashboard
+### Changed
+- Use hatch for project management
+- Convert project to be installable via pip (easier more reliable deployment)
+- Update dependencies to new versions
+    - Migrate to V2 of Pydantic
+- Ability to load plugins from any defined plugin folder
+### Fixed
+- Fix some incorrect types, possibly of causing errors in the future
+### Removed
+- Remove disabled tests
+
 ## [2.2.1] - 2023-07-22
 ### Changed
 - indicate to user when uploaded zip has no icons
