@@ -1,0 +1,16 @@
+targets:
+  deps:
+    program:  "pipx"
+    args: ["install", "hatch"]
+  serve-app:
+    program: "hatch"
+    args: ["run", "serve"]
+  serve-docs:
+    program: "hatch"
+    args: ["run", "docs:serve"]
+  test:
+    program: "hatch"
+    args: ["run", "dev:unit-test"]
+  fmt:
+    program: "hatch"
+    args: ["fmt"]
