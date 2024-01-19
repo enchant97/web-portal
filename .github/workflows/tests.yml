@@ -39,4 +39,4 @@ jobs:
         pip install hatch
     - name: Run Tests
       run: |
-        hatch run dev:tests
+        hatch run dev:unit-test
