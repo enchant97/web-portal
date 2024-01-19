@@ -65,21 +65,42 @@ While this is not the recommended method, it is possible and perfectly fine to r
 
 > Config values explained in "Configuration" section
 
-```bash
-# Clone project repo (stable branch)
-git clone https://github.com/enchant97/web-portal.git --depth=1
 
-# Enter project directory
+```bash
+#!/usr/bin/env bash
+export WEB_PORTAL_VERSION=2.2.1
+#
+# Setup Environment
+#
+mkdir web-portal
+
 cd web-portal
 
-# Create a virtual Python environment to separate dependences from system's
+mkdir -p data
+mkdir -p plugins
+
+#
+# Install/Update App
+#
+rm -rf .venv
+
 python -m venv .venv
 
-# Install Pip requirements
-.venv/bin/pip install -r requirements.txt
+source .venv/bin/activate
 
-# Create folder for app data
-mkdir data
+git clone --depth=1 --branch=v${WEB_PORTAL_VERSION} https://github.com/enchant97/web-portal.git app-src
+
+python -m pip install ./app-src
+
+#
+# Get Default Plugins
+#
+rsync -a app-src/plugins/ plugins
+
+#
+# Cleanup
+#
+rm -rf app-src
 ```
 
 ```bash
@@ -111,7 +132,7 @@ All configs shown here should be given as environment variables, or in a `.env` 
 
 > SECRET_KEY should be set, otherwise logins will be reset on server restart
 
-> Lists must be given in Python format e.g. `["core", "core_extras"]` or `["core_extras"]`
+> Lists must be given in JSON format e.g. `["core", "core_extras"]` or `["core_extras"]`
 
 This table shows how the `DB_URI` values should look:
 
@@ -164,7 +185,9 @@ After following the "Getting Ready" section, you can launch the app using Hyperc
 > You may want to run this command through systemd or similar, this will allow the app to run in the background and startup automatically.
 
 ```bash
-./.venv/bin/hypercorn 'web_portal.main:create_app()' --bind 0.0.0.0:8000 --workers 1
+#!/usr/bin/env bash
+source .venv/bin/activate
+hypercorn 'web_portal.main:create_app()' --bind 0.0.0.0:8000 --workers 1
 ```
 
 If you wish to configure Hypercorn the documentation can be found [here](https://pgjones.gitlab.io/hypercorn/), you could for example configure https or different bind methods.
