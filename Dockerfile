@@ -1,7 +1,7 @@
 # syntax=docker/dockerfile:1.4
 ARG PYTHON_VERSION=3.11
 
-FROM python:${PYTHON_VERSION}-slim as builder
+FROM python:${PYTHON_VERSION}-alpine as builder
 
     WORKDIR /app
 
