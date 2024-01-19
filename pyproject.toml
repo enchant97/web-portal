@@ -14,6 +14,7 @@ authors = [
   { name = "Leo Spratt", email = "contact@enchantedcode.co.uk" },
 ]
 classifiers = [
+  "Private :: Do Not Upload",
   "Development Status :: 5 - Production/Stable",
   "Programming Language :: Python",
   "Programming Language :: Python :: 3.11",
