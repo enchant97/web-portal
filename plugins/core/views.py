@@ -297,7 +297,7 @@ async def post_link_edit(link_id: int):
 @login_standard_required
 @redirect_using_back_to
 async def post_widget_update_search(widget_id: int):
-    if await get_widget_owner_id(widget_id) != current_user.auth_id:
+    if str(await get_widget_owner_id(widget_id)) != current_user.auth_id:
         abort(401)
 
     engine_id = (await request.form)["engine-id"]
@@ -318,7 +318,7 @@ async def post_widget_update_search(widget_id: int):
 @login_standard_required
 @redirect_using_back_to
 async def post_widget_customise_link(widget_id: int):
-    if await get_widget_owner_id(widget_id) != current_user.auth_id:
+    if str(await get_widget_owner_id(widget_id)) != current_user.auth_id:
         abort(401)
 
     widget_details = await get_widget_details(widget_id)
@@ -342,7 +342,7 @@ async def post_widget_customise_link(widget_id: int):
 @login_standard_required
 @redirect_using_back_to
 async def post_widget_add_link(widget_id: int):
-    if await get_widget_owner_id(widget_id) != current_user.auth_id:
+    if str(await get_widget_owner_id(widget_id)) != current_user.auth_id:
         abort(401)
 
     link_id = int((await request.form)["link-id"])
@@ -370,7 +370,7 @@ async def post_widget_add_link(widget_id: int):
 @login_standard_required
 @redirect_using_back_to
 async def get_widget_remove_link(widget_id: int, link_index: int):
-    if await get_widget_owner_id(widget_id) != current_user.auth_id:
+    if str(await get_widget_owner_id(widget_id)) != current_user.auth_id:
         abort(401)
 
     widget_details = await get_widget_details(widget_id)

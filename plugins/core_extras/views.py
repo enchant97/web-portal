@@ -22,7 +22,7 @@ async def get_index():
 @login_standard_required
 @redirect_using_back_to
 async def post_widget_update_embed_html(widget_id: int):
-    if await get_widget_owner_id(widget_id) != current_user.auth_id:
+    if str(await get_widget_owner_id(widget_id)) != current_user.auth_id:
         abort(401)
 
     new_content = (await request.form)["content"].strip()
@@ -47,7 +47,7 @@ async def post_widget_update_embed_html(widget_id: int):
 @login_standard_required
 @redirect_using_back_to
 async def post_widget_update_iframe(widget_id: int):
-    if await get_widget_owner_id(widget_id) != current_user.auth_id:
+    if str(await get_widget_owner_id(widget_id)) != current_user.auth_id:
         abort(401)
 
     form = await request.form
