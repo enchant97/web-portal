@@ -1,6 +1,8 @@
 from functools import lru_cache
+import logging
 from pathlib import Path
 
+from pydantic import computed_field
 from pydantic_settings import BaseSettings
 
 
@@ -17,6 +19,11 @@ class Settings(BaseSettings):
     PLUGIN_SKIP_LIST: list[str] | None = None
 
     UNATTENDED_DEMO_INSTALL: bool = False
+
+    @computed_field
+    @property
+    def log_level_as_int(self) -> int:
+        return logging.getLevelNamesMapping().get(self.LOG_LEVEL.upper(), logging.WARNING)
 
     class Config:
         case_sensitive = True
