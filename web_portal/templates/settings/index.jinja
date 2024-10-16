@@ -33,6 +33,7 @@
 <section class="panel">
     <h2>Other</h2>
     <div class="bnt-group">
+        <a class="icon-bnt" href="{{ url_for('.get_user_account') }}">{{ macros.feather_img('user') }} My Account</a>
         {% if current_user.is_authenticated_admin %}
         <a class="icon-bnt" href="{{ url_for('admin.get_index') }}">{{ macros.feather_img('tool') }} Administration</a>
         {% endif %}
