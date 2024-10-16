@@ -113,65 +113,12 @@ You may also set "Compact Links" configuration which allows the links widget to 
 #### Web Search
 In the widget editor you to select a specific search engine. These search engines have to be added by an admin first, by going to the plugin "Administration Settings" page and navigating to "Engine Management".
 
+
 ## Plugin - Core-Extras
 The Core-Extras plugin which is built-in to Web Portal (unless you removed it). It provides several widgets which are listed below:
 
 - Embed HTML - Embed some custom HTML code (also known as injection)
 - Embed Website - Embed a website by providing its url, uses an iframe so may not work with all sites
-
-
-## Plugins
-Web Portal works by implementing a plugin system allowing for different widgets to be installed.
-
-Plugins are stored in a plugins folder, this plugin system allows you to easily install a new plugin (or remove) without requiring Web Portal to be re-installed.
-
-### Add
-To install a plugin into this folder follow these steps:
-
-1. Ensure Web Portal is shutdown
-2. Ensure plugin loader is enabled (set by the environment variable)
-3. Ensure "plugins" directory has a empty file called `__init__.py` in it.
-4. Copy/Move plugin package into folder
-5. Startup Web Portal
-6. Plugin should now be registered
-
-### Remove
-To remove follow these steps:
-
-1. Follow any steps given by the plugins guide
-2. Ensure Web Portal is shutdown
-3. Move/Delete the specific plugin package from the "plugins" directory
-4. Startup Web Portal
-5. Go to `"Plugin Settings" > "Missing Plugins"` (as admin) to remove plugin data
-
-### Where Is The Plugins Directory?
-Assuming you are running the official Docker image; Web Portal is structured as shown below:
-
-```
-data/
-    ...
-
-app/
-    web_portal/
-        ...
-
-    plugins/
-        core
-        core_extras
-        another_plugin
-        ...
-```
-
-To add plugins you can mount a volume as shown below using Docker Compose:
-
-```yml
-# filepath: docker-compose.yml
-volumes:
-  - ./data:/app/data
-  - ./plugins:/app/plugins
-```
-
-> IMPORTANT: When you mount the plugins folder as a docker volume it will disable the built-in plugins provided by the image.
 
 
 ## The End
