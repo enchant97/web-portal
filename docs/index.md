@@ -6,6 +6,18 @@ Web Portal is a all-in-one web dashboard, providing many widgets to build a pers
 
 > If you want just a basic link panel configured with a yaml file checkout Web Portal Lite available here: <https://github.com/enchant97/web-portal-lite>.
 
+## Announcement
+This project as of 2024/10/16 is in maintenance only mode.
+
+### What does this mean?
+I currently find it feature complete and do not find myself needing any more features. I will still perform bug fixes and security patches when required.
+
+### Can I still suggest a feature?
+Yes, however I may not implement it. But will accept contributions.
+
+### Is it EOL?
+No. I use this app **daily**. I just don't require anymore features.
+
 ## Features
 - Minimal use of Javascript, to provide a lightning fast experience
 - Icon based UI
