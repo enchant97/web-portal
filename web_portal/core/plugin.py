@@ -1,6 +1,7 @@
 """
 Module to assist plugin functionalities
 """
+
 import importlib.util
 import logging
 import sys

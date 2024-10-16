@@ -66,11 +66,11 @@ path = "web_portal/__init__.py"
 [tool.ruff]
 line-length=100
 src = ["web_portal", "tests"]
-ignore = ["TID252", "EM101", "EM102", "S101", "TRY003", "N818"]
-ignore-init-module-imports = true
+lint.ignore = ["TID252", "EM101", "EM102", "S101", "TRY003", "N818"]
 
-[tool.ruff.per-file-ignores]
+[tool.ruff.lint.per-file-ignores]
 "web_portal/plugin_api.py" = ["F401"]
+"scripts/hash_password.py" = ["T201"]
 
 [tool.pytest.ini_options]
 asyncio_mode="strict"

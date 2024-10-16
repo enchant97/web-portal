@@ -25,7 +25,7 @@ class SystemSetting(Model):
 
 
 class User(Model):
-    id = IntField(pk=True)  # noqa: A003
+    id = IntField(pk=True)
     username = CharField(128, unique=True)
     password_hash = BinaryField(null=True)
     is_admin = BooleanField(default=False)
@@ -57,20 +57,20 @@ class User(Model):
 
 
 class Plugin(Model):
-    id = IntField(pk=True)  # noqa: A003
+    id = IntField(pk=True)
     internal_name = CharField(128, unique=True)
 
     widgets = ReverseRelation["Widget"]
 
 
 class Widget(Model):
-    id = IntField(pk=True)  # noqa: A003
+    id = IntField(pk=True)
     internal_name = CharField(128, unique=True)
     plugin: ForeignKeyRelation[Plugin] = ForeignKeyField("models.Plugin", "widgets")
 
 
 class Dashboard(Model):
-    id = IntField(pk=True)  # noqa: A003
+    id = IntField(pk=True)
     owner: ForeignKeyRelation[User] = ForeignKeyField("models.User")
     widget_order: Field[list[int]] = JSONField(default=[])  # type: ignore
 
@@ -144,7 +144,7 @@ class Dashboard(Model):
 
 
 class DashboardWidget(Model):
-    id = IntField(pk=True)  # noqa: A003
+    id = IntField(pk=True)
     name = CharField(128)
     show_header = BooleanField(default=False)
     dashboard: ForeignKeyRelation[Dashboard] = ForeignKeyField("models.Dashboard", "widgets")

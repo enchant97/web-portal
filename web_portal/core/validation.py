@@ -1,6 +1,7 @@
 """
 Module to provide validation functions for forms/requests
 """
+
 import re
 
 from .constants import (

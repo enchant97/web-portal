@@ -10,7 +10,7 @@ class SearchEngineMethod(str, Enum):
 
 
 class Link(Model):
-    id = IntField(pk=True)  # noqa: A003
+    id = IntField(pk=True)
     name = CharField(128, unique=True)
     url = TextField()
     color_name = CharField(128)
@@ -21,7 +21,7 @@ class Link(Model):
 
 
 class SearchEngine(Model):
-    id = IntField(pk=True)  # noqa: A003
+    id = IntField(pk=True)
     name = CharField(128, unique=True)
     url = TextField()
     query_param = CharField(128)

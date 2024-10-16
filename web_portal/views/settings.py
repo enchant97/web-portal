@@ -4,9 +4,9 @@ import logging
 from quart import Blueprint, flash, redirect, render_template, request, session, url_for
 from quart_auth import logout_user
 
-from ..core.validation import check_password
 from ..core.auth import current_user, login_standard_required
 from ..core.plugin import PluginHandler, deconstruct_widget_name
+from ..core.validation import check_password
 from ..database import models
 
 blueprint = Blueprint("settings", __name__, url_prefix="/settings")
@@ -50,20 +50,19 @@ async def post_change_password():
     if new_password != confirm_new_password:
         await flash("new passwords do not match", "error")
         return redirect(url_for(".get_user_account"))
-    elif (message := check_password(user.username, new_password)) is not None:
+    if (message := check_password(user.username, new_password)) is not None:
         await flash(message, "error")
         return redirect(url_for(".get_user_account"))
-    elif not user.check_password(current_password):
+    if not user.check_password(current_password):
         await flash("your current password is not valid", "error")
         logger.warning("failed change password attempt from '%s'", request.remote_addr)
         return redirect(url_for(".get_user_account"))
-    else:
-        user.set_password(new_password)
-        await user.save()
-        logout_user()
-        session.clear()
-        await flash("password changed. You have been logged out", "ok")
-        return redirect(url_for("login.get_login"))
+    user.set_password(new_password)
+    await user.save()
+    logout_user()
+    session.clear()
+    await flash("password changed. You have been logged out", "ok")
+    return redirect(url_for("login.get_login"))
 
 
 @blueprint.get("/dashboard/edit")

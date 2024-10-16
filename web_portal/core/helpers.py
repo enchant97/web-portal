@@ -1,6 +1,7 @@
 """
 Misc functions that will assist with other modules
 """
+
 from collections.abc import Callable
 from functools import wraps
 from typing import Any
