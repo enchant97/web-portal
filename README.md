@@ -50,6 +50,11 @@ No. I use this app **daily**. I just don't require anymore features.
 ## Demo Video
 WIP
 
+## Support Me
+Like this project? Consider supporting me financially so I can continue development.
+
+<a href="https://www.buymeacoffee.com/leospratt" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-blue.png" alt="Buy Me A Coffee" height=60></a>
+
 ## Third-Party Plugins
 It is encouraged to extend and build upon this app to make it the ultimate dashboard.
 
