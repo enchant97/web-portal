@@ -68,7 +68,7 @@ While this is not the recommended method, it is possible and perfectly fine to r
 
 ```bash
 #!/usr/bin/env bash
-export WEB_PORTAL_VERSION=2.3.1
+export WEB_PORTAL_VERSION=2.4.0
 #
 # Setup Environment
 #
