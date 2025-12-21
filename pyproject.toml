@@ -35,14 +35,13 @@ serve = "hypercorn \"web_portal.main:create_app()\""
 
 [tool.hatch.envs.docs]
 dependencies = [
-  "mkdocs~=1.6.1",
-  "mkdocstrings[python]~=0.26.2",
-  "mkdocs-material~=9.5.41",
+  "zensical~=0.0.13",
+  "mkdocstrings[python]~=1.0.0",
 ]
 
 [tool.hatch.envs.docs.scripts]
-build = "mkdocs build --clean"
-serve = "mkdocs serve"
+build = "zensical build --clean"
+serve = "zensical serve"
 
 [tool.hatch.envs.dev]
 dependencies = [
