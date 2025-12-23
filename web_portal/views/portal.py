@@ -1,5 +1,3 @@
-import asyncio
-
 from quart import Blueprint, flash, redirect, render_template, send_file, url_for
 
 from ..core.auth import (
@@ -112,10 +110,8 @@ async def get_delete_plugin_data(plugin_name: str):
         await flash("cannot delete loaded plugin, unload first", "error")
         return redirect(url_for(".get_plugins_index"))
 
-    await asyncio.gather(
-        models.Plugin.filter(internal_name=plugin_name).delete(),
-        models.SystemSetting.filter(key__startswith=f"plugin__{plugin_name}").delete(),
-    )
+    await models.Plugin.filter(internal_name=plugin_name).delete()
+    await models.SystemSetting.filter(key__startswith=f"plugin__{plugin_name}").delete()
 
     await flash("deleted plugin data", "ok")
 

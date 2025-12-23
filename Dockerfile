@@ -1,5 +1,6 @@
 # syntax=docker/dockerfile:1.4
-ARG PYTHON_VERSION=3.11
+ARG PYTHON_VERSION=3.14
+ARG ALPINE_VERSION=3.23
 
 FROM python:${PYTHON_VERSION}-alpine as builder
 
@@ -12,7 +13,7 @@ FROM python:${PYTHON_VERSION}-alpine as builder
 
     RUN --mount=type=cache,target=/root/.cache pip install .
 
-FROM python:${PYTHON_VERSION}-alpine
+FROM python:${PYTHON_VERSION}-alpine${ALPINE_VERSION}
 
     WORKDIR /app
     EXPOSE 8000

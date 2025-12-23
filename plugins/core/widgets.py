@@ -165,10 +165,8 @@ async def demo_install():
         ),
     )
 
-    await asyncio.gather(
-        models.Link.bulk_create(links),
-        models.SearchEngine.bulk_create(engines),
-    )
+    await models.Link.bulk_create(links)
+    await models.SearchEngine.bulk_create(engines)
 
 
 PLUGIN_META = PluginMeta(

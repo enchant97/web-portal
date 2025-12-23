@@ -83,9 +83,7 @@ async def post_system_settings():
         await flash("cannot make portal public when in demo mode", "error")
         return redirect(url_for(".get_system_settings"))
 
-    await asyncio.gather(
-        set_system_setting(SystemSettingKeys.PORTAL_SECURED, portal_secured),
-    )
+    await set_system_setting(SystemSettingKeys.PORTAL_SECURED, portal_secured)
 
     await flash("saved system settings", "ok")
 
@@ -101,9 +99,7 @@ async def post_system_settings_branding():
         "title": form.get("title", DEFAULT_BRANDING["title"], str),
     }
 
-    await asyncio.gather(
-        set_system_setting(SystemSettingKeys.BRANDING, new_branding),
-    )
+    await set_system_setting(SystemSettingKeys.BRANDING, new_branding)
 
     await flash("saved custom brand settings", "ok")
 

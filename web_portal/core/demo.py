@@ -1,5 +1,3 @@
-import asyncio
-
 from tortoise.transactions import atomic
 
 from ..core.constants import SystemSettingKeys
@@ -22,17 +20,11 @@ async def do_demo_install():
     )
     demo_user.set_password("demo")
 
-    plugins_to_setup = []
+    await models.User.bulk_create((admin_user, demo_user))
+    await set_system_setting(SystemSettingKeys.PORTAL_SECURED, True)
+    await set_system_setting(SystemSettingKeys.HAS_SETUP, True)
+    await set_system_setting(SystemSettingKeys.DEMO_MODE, True)
 
     for plugin in PluginHandler.get_loaded_plugin_values():
         if plugin.meta.do_demo_setup is not None:
-            plugins_to_setup.append(plugin.meta.do_demo_setup())  # noqa: PERF401
-
-    # This is a a lot of asyncio gathering!!!
-    await asyncio.gather(
-        models.User.bulk_create((admin_user, demo_user)),
-        set_system_setting(SystemSettingKeys.PORTAL_SECURED, True),
-        set_system_setting(SystemSettingKeys.HAS_SETUP, True),
-        set_system_setting(SystemSettingKeys.DEMO_MODE, True),
-        *plugins_to_setup,
-    )
+            await plugin.meta.do_demo_setup()
