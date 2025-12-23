@@ -1,5 +1,5 @@
 :root {
-    --border-radius: 10px;
+    --border-radius: 0.75rem;
 
     --font-family-title: 'Roboto', sans-serif;
     --font-family-main: 'Open Sans', sans-serif;
@@ -7,18 +7,23 @@
 
     --font-dark--light: var(--font-dark-no-adjust);
     --font-light--light: #f0f0f0;
-    --bg-body--light: #ffffff;
-    --bg-sub-1--light: #f2f2f2;
-    --bg-sub-2--light: #e5e6e6;
-    --bg-btn--light: #c8c8c8ff;
+    --bg-body--light: oklch(1 0 0);
+    --bg-sub-1--light: oklch(96.8% 0.007 247.896);
+    --bg-sub-2--light: oklch(87.1% 0.006 286.286);
+    --bg-btn--light: var(bg-body--light);
 
     --font-dark--dark: var(--font-light--dark);
     --font-light--dark: #bcbcbc;
-    --bg-body--dark: #1d232a;
-    --bg-sub-1--dark: #191e24;
-    --bg-sub-2--dark: #15191e;
-    --bg-btn--dark: #2a323c;
+    --bg-body--dark: oklch(21% 0.006 285.885);
+    --bg-sub-1--dark: oklch(27.4% 0.006 286.033);
+    --bg-sub-2--dark: oklch(37% 0.013 285.805);
+    --bg-btn--dark: var(--bg-body--dark);
 
+    --bg-btn-primary--dark: oklch(0.3686 0.1296 252.24);
+    --bg-btn-primary--light: oklch(0.6 0.1296 252.24);
+
+    --box-shadow-glass--light: inset -1px 1px 3px 0 rgba(0, 0, 0, 0.2), 0px 0px 5px 0px rgba(0, 0, 0, 0.1);
+    --box-shadow-glass--dark: inset -1px 1px 3px 0 rgba(255, 255, 255, 0.3), 0px 0px 5px 0px rgba(0, 0, 0, 0.4);
 
     color-scheme: light;
     --font-dark: var(--font-dark--light);
@@ -27,6 +32,8 @@
     --bg-sub-1: var(--bg-sub-1--light);
     --bg-sub-2: var(--bg-sub-2--light);
     --bg-ne: var(--bg-btn--light);
+    --bg-btn-primary: var(--bg-btn-primary--light);
+    --box-shadow-glass: var(--box-shadow-glass--light);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -38,6 +45,8 @@
         --bg-sub-1: var(--bg-sub-1--dark);
         --bg-sub-2: var(--bg-sub-2--dark);
         --bg-ne: var(--bg-btn--dark);
+        --bg-btn-primary: var(--bg-btn-primary--dark);
+        --box-shadow-glass: var(--box-shadow-glass--dark);
     }
 }
 
@@ -49,6 +58,8 @@
     --bg-sub-1: var(--bg-sub-1--light);
     --bg-sub-2: var(--bg-sub-2--light);
     --bg-ne: var(--bg-btn--light);
+    --bg-btn-primary: var(--bg-btn-primary--light);
+    --box-shadow-glass: var(--box-shadow-glass--light);
 }
 
 [data-theme=dark]:root {
@@ -59,6 +70,8 @@
     --bg-sub-1: var(--bg-sub-1--dark);
     --bg-sub-2: var(--bg-sub-2--dark);
     --bg-ne: var(--bg-btn--dark);
+    --bg-btn-primary: var(--bg-btn-primary--dark);
+    --box-shadow-glass: var(--box-shadow-glass--dark);
 }
 
 main,
@@ -146,10 +159,19 @@ button,
     border-style: none;
     margin: .1rem;
     background-color: var(--bg-ne);
+    box-shadow: var(--box-shadow-glass);
+}
+
+input[type="checkbox"],
+input[type="radio"] {
+    width: 1rem;
+    height: 1rem;
 }
 
 input {
+    width: -moz-available;
     width: -webkit-fill-available;
+    width: stretch;
 }
 
 button,
@@ -205,9 +227,9 @@ footer a {
 
 .widget-outer {
     border-radius: var(--border-radius);
-    background-color: var(--bg-sub-1);
     padding: 10px;
     margin-bottom: 8px;
+    box-shadow: var(--box-shadow-glass);
 }
 
 .widget-heading {
@@ -215,10 +237,10 @@ footer a {
 }
 
 .panel {
-    background-color: var(--bg-sub-1);
     padding: .5rem;
     margin-bottom: 1rem;
     border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow-glass);
 }
 
 .bnt-group {
@@ -242,6 +264,7 @@ table td.bnt-group {
     border-radius: var(--border-radius);
     padding: 10px;
     margin-bottom: 5px;
+    background-color: var(--bg-sub-1);
 }
 
 .flashes div.ok {
@@ -306,6 +329,17 @@ table td.bnt-group {
 
 #theme-picker-selector button {
     padding: 1rem 2rem;
+    background-color: var(--bg-body);
+}
+
+#theme-picker-selector button.active {
+    background-color: var(--bg-btn-primary);
+}
+
+#theme-picker-selector button:hover {
+    cursor: pointer;
+    transition-duration: 400ms;
+    background-color: black;
 }
 
 @media(max-width:640px) {

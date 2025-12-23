@@ -21,13 +21,14 @@
 .widget-inner.core__links .outer {
     display: flex;
     border-radius: var(--border-radius);
-    box-shadow: #0000005c 0px 0px 11px 0px;
+    box-shadow: var(--box-shadow-glass);
 }
 
 .widget-inner.core__links .chip {
     width: 1.2rem;
     border-top-left-radius: var(--border-radius);
     border-bottom-left-radius: var(--border-radius);
+    box-shadow: var(--box-shadow-glass);
 }
 
 .widget-inner.core__links .inner {
