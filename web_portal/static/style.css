@@ -6,14 +6,14 @@
     --font-dark-no-adjust: black;
 
     --font-dark--light: var(--font-dark-no-adjust);
-    --font-light--light: #f0f0f0;
+    --font-light--light: oklch(87% .006 286);
     --bg-body--light: oklch(1 0 0);
     --bg-sub-1--light: oklch(96.8% 0.007 247.896);
     --bg-sub-2--light: oklch(87.1% 0.006 286.286);
     --bg-btn--light: var(bg-body--light);
 
     --font-dark--dark: var(--font-light--dark);
-    --font-light--dark: #bcbcbc;
+    --font-light--dark: oklch(87% .006 286);
     --bg-body--dark: oklch(21% 0.006 285.885);
     --bg-sub-1--dark: oklch(27.4% 0.006 286.033);
     --bg-sub-2--dark: oklch(37% 0.013 285.805);
