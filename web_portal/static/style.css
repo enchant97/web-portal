@@ -82,8 +82,7 @@ textarea,
 select,
 button,
 label,
-div,
-strong {
+div {
     color: var(--font-dark);
     font-size: 1rem;
     font-family: var(--font-family-main);
@@ -174,6 +173,7 @@ input {
     width: stretch;
 }
 
+
 button,
 .bnt,
 .icon-bnt {
@@ -211,7 +211,7 @@ footer {
 }
 
 footer a {
-    color: #1d7dab;
+    color: oklch(0.5584 0.1418 235.46);
     text-decoration: none;
 }
 
@@ -260,23 +260,14 @@ table td.bnt-group {
 }
 
 .flashes div {
-    color: var(--font-light);
     border-radius: var(--border-radius);
-    padding: 10px;
-    margin-bottom: 5px;
-    background-color: var(--bg-sub-1);
-}
-
-.flashes div.ok {
-    background-color: #217915;
-}
-
-.flashes div.error {
-    background-color: #aa2020;
+    padding: 0.75rem;
+    margin-bottom: 0.25rem;
+    box-shadow: var(--box-shadow-glass);
 }
 
 .flashes div span {
-    margin-left: 15px;
+    margin-left: 1rem;
     color: var(--font-light);
     font-weight: bold;
     float: right;
@@ -290,11 +281,23 @@ table td.bnt-group {
     color: black;
 }
 
+.ok {
+    background-color: oklch(0.4974 0.1866 141.51);
+    color: var(--font-light);
+}
+
+.error {
+    background-color: oklch(0.5263 0.2404 26.81);
+    color: var(--font-light);
+}
+
 .img-branding {
     display: block;
     margin: auto;
     max-width: 200px;
+    width: -moz-available;
     width: -webkit-fill-available;
+    width: stretch;
 }
 
 .login {
