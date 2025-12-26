@@ -2,7 +2,11 @@
 Misc functions that will assist with other modules
 """
 
-from collections.abc import Callable
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from collections.abc import Callable
+
 from functools import wraps
 from typing import Any
 

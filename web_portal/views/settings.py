@@ -1,7 +1,11 @@
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from uuid import UUID
+
 import asyncio
 import logging
 from io import BytesIO
-from uuid import UUID
 
 from PIL import Image
 from quart import Blueprint, flash, redirect, render_template, request, session, url_for
@@ -9,6 +13,7 @@ from quart.helpers import abort
 from quart_auth import logout_user
 
 from web_portal.core.config import get_settings
+
 from ..core.auth import current_user, login_standard_required
 from ..core.plugin import PluginHandler, deconstruct_widget_name
 from ..core.validation import check_password

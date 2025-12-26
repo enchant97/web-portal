@@ -2,7 +2,11 @@
 Module to assist with authentication
 """
 
-from collections.abc import Callable
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from collections.abc import Callable
+
 from functools import wraps
 from typing import Any
 
@@ -33,17 +37,13 @@ class AuthUserEnhanced(quart_auth.AuthUser):
 
     @property
     async def is_authenticated_admin(self):
-        if (await self.is_authenticated) and (
+        return (await self.is_authenticated) and (
             await models.User.filter(id=current_user.auth_id, is_admin=True).get_or_none()
-        ):
-            return True
-        return False
+        )
 
     @property
     async def is_public_user(self):
-        if self.auth_id is not None and str(self.auth_id) == await self.get_public_user_id():
-            return True
-        return False
+        return self.auth_id is not None and str(self.auth_id) == await self.get_public_user_id()
 
 
 # NOTE Enables better IDE hints and creating a nice api

@@ -1,6 +1,10 @@
-from collections.abc import Iterable
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from collections.abc import Iterable
+    from uuid import UUID
+
 from typing import Any
-from uuid import UUID
 
 from tortoise.fields import (
     BinaryField,
@@ -80,14 +84,14 @@ class Dashboard(Model):
     widgets = ReverseRelation["DashboardWidget"]
     background_images = ReverseRelation["DashboardBackgroundImage"]
 
-    def widgets_sorted(self) -> Iterable["DashboardWidget"]:
+    def widgets_sorted(self) -> Iterable[DashboardWidget]:
         if len(self.widget_order) == 0:
             return self.widgets
         order = {v: i for i, v in enumerate(self.widget_order)}
         return sorted(self.widgets, key=lambda x: order[x.id])
 
     @atomic()
-    async def append_widget(self, widget: "DashboardWidget"):
+    async def append_widget(self, widget: DashboardWidget):
         await self.fetch_related("widgets")
         if len(self.widget_order) == 0:
             self.widget_order = [x.id for x in self.widgets_sorted()]

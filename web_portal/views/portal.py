@@ -1,6 +1,10 @@
-import random
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from uuid import UUID
+
+import secrets
 from io import BytesIO
-from uuid import UUID
 
 from quart import Blueprint, abort, flash, redirect, render_template, send_file, url_for
 
@@ -41,7 +45,7 @@ async def portal():
 
     background_image_uid = await dashboard.get_background_image_uids()
     if len(background_image_uid) > 0:
-        background_image_uid = random.choice(background_image_uid)
+        background_image_uid = secrets.choice(background_image_uid)
     else:
         background_image_uid = None
 

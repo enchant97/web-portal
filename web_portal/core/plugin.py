@@ -2,17 +2,22 @@
 Module to assist plugin functionalities
 """
 
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from collections.abc import Awaitable, Callable, Collection, Generator, Iterable
+    from pathlib import Path
+    from types import ModuleType
+
+    from quart import Blueprint
+
 import importlib.util
 import logging
 import sys
-from collections.abc import Awaitable, Callable, Collection, Generator, Iterable
 from dataclasses import dataclass
-from pathlib import Path
-from types import ModuleType
 from typing import Any, ClassVar
 
 from packaging.specifiers import InvalidSpecifier, SpecifierSet
-from quart import Blueprint
 
 from ..database import models as app_models
 from .config import get_settings
@@ -81,7 +86,7 @@ class PluginMeta:
             ver_specifier = SpecifierSet(self.version_specifier)
         except InvalidSpecifier:
             raise PluginVersionException(
-                "unexpected version specifier, " "please use format from PEP 440 e.g. '== 2'"
+                "unexpected version specifier, please use format from PEP 440 e.g. '== 2'"
             ) from None
         else:
             return app_version in ver_specifier
