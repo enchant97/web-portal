@@ -23,7 +23,7 @@ from tortoise.models import Model
 from tortoise.transactions import atomic
 from werkzeug.security import check_password_hash, generate_password_hash
 
-from ..core.constants import PUBLIC_ACCOUNT_USERNAME
+from web_portal.core.constants import PUBLIC_ACCOUNT_USERNAME
 
 
 class SystemSetting(Model):

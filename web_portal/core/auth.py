@@ -13,9 +13,9 @@ from typing import Any
 import quart_auth
 from quart import abort
 
-from ..database import models
-from .constants import PUBLIC_ACCOUNT_USERNAME, SystemSettingKeys
-from .helpers import get_system_setting
+from web_portal.core.constants import PUBLIC_ACCOUNT_USERNAME, SystemSettingKeys
+from web_portal.core.helpers import get_system_setting
+from web_portal.database import models
 
 
 class AuthUserEnhanced(quart_auth.AuthUser):

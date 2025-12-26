@@ -8,14 +8,14 @@ from quart_auth import QuartAuth
 from tortoise.contrib.quart import register_tortoise
 from web_health_checker.contrib import quart as health_check
 
-from . import __version__
-from .core.auth import AuthUserEnhanced
-from .core.config import get_settings
-from .core.constants import PUBLIC_ACCOUNT_USERNAME
-from .core.demo import do_demo_install
-from .core.helpers import get_system_setting
-from .core.plugin import PluginHandler, register_loaded_plugins
-from .database import models
+from web_portal import __version__
+from web_portal.core.auth import AuthUserEnhanced
+from web_portal.core.config import get_settings
+from web_portal.core.constants import PUBLIC_ACCOUNT_USERNAME
+from web_portal.core.demo import do_demo_install
+from web_portal.core.helpers import get_system_setting
+from web_portal.core.plugin import PluginHandler, register_loaded_plugins
+from web_portal.database import models
 
 logger = logging.getLogger("web-portal")
 

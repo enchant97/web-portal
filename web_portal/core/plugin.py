@@ -19,10 +19,10 @@ from typing import Any, ClassVar
 
 from packaging.specifiers import InvalidSpecifier, SpecifierSet
 
-from ..database import models as app_models
-from .config import get_settings
-from .constants import RESTRICTED_PLUGIN_NAMES
-from .helpers import get_system_setting, remove_system_setting, set_system_setting
+from web_portal.core.config import get_settings
+from web_portal.core.constants import RESTRICTED_PLUGIN_NAMES
+from web_portal.core.helpers import get_system_setting, remove_system_setting, set_system_setting
+from web_portal.database import models as app_models
 
 logger = logging.getLogger("web-portal")
 

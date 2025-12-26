@@ -4,7 +4,7 @@ Module to provide validation functions for forms/requests
 
 import re
 
-from .constants import (
+from web_portal.core.constants import (
     MAX_PASSWORD_LENGTH,
     MAX_USERNAME_LENGTH,
     MIN_PASSWORD_LENGTH,

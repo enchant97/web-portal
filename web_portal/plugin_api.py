@@ -7,15 +7,15 @@ as the supported methods/classes/variables to use by a plugin,
 and will be documented in the plugin api manual.
 """
 
-from .core.auth import (
+from web_portal.core.auth import (
     current_user,
     ensure_not_setup,
     login_admin_required,
     login_required_if_secured,
     login_standard_required,
 )
-from .core.helpers import redirect_using_back_to
-from .core.plugin import (
+from web_portal.core.helpers import redirect_using_back_to
+from web_portal.core.plugin import (
     PluginMeta,
     WidgetDetails,
     get_plugin_data_path,

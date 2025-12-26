@@ -4,17 +4,17 @@ from quart import Blueprint, flash, redirect, render_template, request, session,
 from quart_auth import login_user
 from tortoise.exceptions import IntegrityError
 
-from ..core.auth import (
+from web_portal.core.auth import (
     AuthUserEnhanced,
     current_user,
     login_admin_required,
     login_standard_required,
 )
-from ..core.config import get_settings
-from ..core.constants import DEFAULT_BRANDING, PUBLIC_ACCOUNT_USERNAME, SystemSettingKeys
-from ..core.helpers import get_system_setting, set_system_setting
-from ..core.validation import check_password, is_username_allowed
-from ..database import models
+from web_portal.core.config import get_settings
+from web_portal.core.constants import DEFAULT_BRANDING, PUBLIC_ACCOUNT_USERNAME, SystemSettingKeys
+from web_portal.core.helpers import get_system_setting, set_system_setting
+from web_portal.core.validation import check_password, is_username_allowed
+from web_portal.database import models
 
 blueprint = Blueprint("admin", __name__, url_prefix="/admin")
 

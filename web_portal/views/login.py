@@ -3,10 +3,10 @@ import logging
 from quart import Blueprint, flash, redirect, render_template, request, session, url_for
 from quart_auth import login_user, logout_user
 
-from ..core.auth import AuthUserEnhanced, current_user, login_standard_required
-from ..core.constants import PUBLIC_ACCOUNT_USERNAME, SystemSettingKeys
-from ..core.helpers import get_system_setting
-from ..database import models
+from web_portal.core.auth import AuthUserEnhanced, current_user, login_standard_required
+from web_portal.core.constants import PUBLIC_ACCOUNT_USERNAME, SystemSettingKeys
+from web_portal.core.helpers import get_system_setting
+from web_portal.database import models
 
 blueprint = Blueprint("login", __name__, url_prefix="/auth")
 

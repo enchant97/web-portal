@@ -1,9 +1,9 @@
 from tortoise.transactions import atomic
 
-from ..core.constants import SystemSettingKeys
-from ..core.helpers import set_system_setting
-from ..core.plugin import PluginHandler
-from ..database import models
+from web_portal.core.constants import SystemSettingKeys
+from web_portal.core.helpers import set_system_setting
+from web_portal.core.plugin import PluginHandler
+from web_portal.database import models
 
 
 @atomic()

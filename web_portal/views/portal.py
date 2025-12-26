@@ -8,17 +8,17 @@ from io import BytesIO
 
 from quart import Blueprint, abort, flash, redirect, render_template, send_file, url_for
 
-from ..core.auth import (
+from web_portal.core.auth import (
     current_user,
     login_admin_required,
     login_required_if_secured,
     login_standard_required,
 )
-from ..core.config import get_settings
-from ..core.constants import DEFAULT_BRANDING, PUBLIC_ACCOUNT_USERNAME, SystemSettingKeys
-from ..core.helpers import get_system_setting
-from ..core.plugin import PluginHandler, deconstruct_widget_name
-from ..database import models
+from web_portal.core.config import get_settings
+from web_portal.core.constants import DEFAULT_BRANDING, PUBLIC_ACCOUNT_USERNAME, SystemSettingKeys
+from web_portal.core.helpers import get_system_setting
+from web_portal.core.plugin import PluginHandler, deconstruct_widget_name
+from web_portal.database import models
 
 blueprint = Blueprint("portal", __name__, url_prefix="/")
 

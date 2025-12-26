@@ -1,12 +1,12 @@
 from quart import Blueprint, flash, redirect, render_template, request, url_for
 from tortoise.exceptions import IntegrityError
 
-from ..core.auth import ensure_not_setup
-from ..core.constants import PUBLIC_ACCOUNT_USERNAME, SystemSettingKeys
-from ..core.demo import do_demo_install
-from ..core.helpers import set_system_setting
-from ..core.validation import check_password, is_username_allowed
-from ..database import models
+from web_portal.core.auth import ensure_not_setup
+from web_portal.core.constants import PUBLIC_ACCOUNT_USERNAME, SystemSettingKeys
+from web_portal.core.demo import do_demo_install
+from web_portal.core.helpers import set_system_setting
+from web_portal.core.validation import check_password, is_username_allowed
+from web_portal.database import models
 
 blueprint = Blueprint("install", __name__, url_prefix="/install")
 

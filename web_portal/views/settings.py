@@ -12,12 +12,11 @@ from quart import Blueprint, flash, redirect, render_template, request, session,
 from quart.helpers import abort
 from quart_auth import logout_user
 
+from web_portal.core.auth import current_user, login_standard_required
 from web_portal.core.config import get_settings
-
-from ..core.auth import current_user, login_standard_required
-from ..core.plugin import PluginHandler, deconstruct_widget_name
-from ..core.validation import check_password
-from ..database import models
+from web_portal.core.plugin import PluginHandler, deconstruct_widget_name
+from web_portal.core.validation import check_password
+from web_portal.database import models
 
 blueprint = Blueprint("settings", __name__, url_prefix="/settings")
 

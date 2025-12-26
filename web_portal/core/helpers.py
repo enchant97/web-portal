@@ -12,7 +12,7 @@ from typing import Any
 
 from quart import Response, current_app, redirect, request, url_for
 
-from ..database import models
+from web_portal.database import models
 
 
 async def get_system_setting(
