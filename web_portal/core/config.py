@@ -1,6 +1,6 @@
 import logging
 from functools import lru_cache
-from pathlib import Path
+from pathlib import Path  # noqa: TC003
 
 from pydantic import computed_field
 from pydantic_settings import BaseSettings
