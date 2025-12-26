@@ -11,35 +11,30 @@ It has been designed to run through docker and it is recommended to put it behin
 
 If you want just a basic link panel configured with a yaml file checkout Web Portal Lite available here: <https://github.com/enchant97/web-portal-lite>.
 
-## Announcement
-This project as of 2024/10/16 is in maintenance only mode.
-
-### What does this mean?
-I currently find it feature complete and do not find myself needing any more features. I will still perform bug fixes and security patches when required.
+## State Of Project
+I currently find it feature complete. I will still perform bug fixes and security patches when required as I use this project myself.
 
 ### Can I still suggest a feature?
-Yes, however I may not implement it. But will accept contributions.
+Of course! However, I may not implement it. But I will accept contributions.
 
-### Is it EOL?
-No. I use this app **daily**. I just don't require anymore features.
-
-## Features
-- Minimal use of Javascript, to provide a lightning fast experience
+## Fe## Features
+- Minimal use of JavaScript, to provide a lightning fast experience
 - Icon based UI
 - Minimal docker image (if deployed with docker)
 - Adjustable site theme
+- Configurable background image
 - Plugin support
 - Inbuilt Plugin Widgets
-  - Core
-    - Digital Clock
-    - Links
-      - Groups
-      - Colors
-      - Icons
-    - Search bar
-  - Core-Extras
-    - HTML embed
-    - Website embed (through iframe)
+    - Core
+        - Digital Clock
+        - Links
+            - Groups
+            - Colors
+            - Icons
+        - Search bar
+    - Core-Extras
+        - HTML embed
+        - Website embed (through iframe)
 - Password protection for admin modification
 - Optionally secure the portal with user accounts & passwords
 - MySQL & SQLite support
@@ -74,19 +69,9 @@ You can discuss plugins [here](https://github.com/enchant97/web-portal/discussio
 
 > Choose a tag/release for most stable if running project
 
-## Contributions
-Contributing to this project is welcome, whether that is an issue or pull request, but please read the guidelines below:
-
-- Contributions may get rejected, if they do not fit the project
-- New widgets most likely will not be added, instead make a plugin (feel free to add the idea to the GitHub discussions page, [here](https://github.com/enchant97/web-portal/discussions/categories/ideas))
-- You should keep code to this existing style/format
-- Contributions should not require more pip packages from being added, although there may be exceptions
-- Contributions must be licensed under the same as the project
-- Submit pull requests to 'next' branch, please include some details of what the Contribution is
-- Don't change the version number
 
 ## Documentation
-More details and guides on installing can be found at: [webportal.docs.enchantedcode.co.uk/](https://enchantedcode.co.uk/web-portal/) or view the markdown in the `docs` folder [here](docs/index.md).
+More details and guides on installing can be found at: [webportal.docs.enchantedcode.co.uk/](https://web-portal.docs.enchantedcode.co.uk/) or view the markdown in the `docs` folder [here](docs/index.md).
 
 ## License
 This project is Copyright (c) 2024 Leo Spratt, licences shown below:

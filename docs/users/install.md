@@ -2,7 +2,7 @@
 This sections will guide you though installing web-portal.
 
 - If following the Docker guide it is expected you have Docker and Docker Compose installed
-- If following without Docker you will need Python 3.11, older versions will not work
+- If following without Docker you will need Python 3.14, older versions will not work
 - Is recommended to install behind a reverse proxy like Nginx for custom routing and domain names.
 - Third-Party plugins may require additional configs to be set
 
@@ -36,8 +36,6 @@ This is an example config (using SQLite) which you can copy, as long as `SECRET_
 > Config values explained in "Configuration" section
 
 ```yaml
-version: "3"
-
 services:
   web-portal:
     container_name: web-portal
@@ -52,10 +50,10 @@ services:
       - 8000:8000
     environment:
       # This config is built into the Docker image
-      # - "DATA_PATH=/app/data"
-      - "DB_URI=sqlite:///app/data/db.sqlite"
+      # DATA_PATH: "/app/data"
+      DB_URI: "sqlite:///app/data/db.sqlite"
       # This must be secure
-      - "SECRET_KEY=replace_me_123"
+      SECRET_KEY: "replace_me_123"
 ```
 
 ### Without Docker

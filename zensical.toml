@@ -17,12 +17,14 @@ nav = [
         "developers/index.md",
         "developers/building-plugins.md",
         "developers/plugin-reference.md"
-    ]}
+    ]},
+    {"Support Me" = "https://buymeacoffee.com/leospratt"}
 ]
 
 [project.theme]
 features = [
     "navigation.instant",
+    "navigation.instant.progress",
     "navigation.expand",
     "navigation.path"
 ]
