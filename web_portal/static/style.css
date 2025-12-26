@@ -316,6 +316,13 @@ table td.bnt-group {
     text-align: center;
 }
 
+.img-preview-thumbnail {
+    width: 6rem;
+    aspect-ratio: 3/2;
+    object-fit: cover;
+    border-radius: var(--border-radius);
+}
+
 #theme-picker-selector {
     display: flex;
     justify-content: center;
@@ -347,6 +354,23 @@ table td.bnt-group {
     cursor: pointer;
     transition-duration: 400ms;
     background-color: black;
+}
+
+:root[data-has-background-image="1"] body {
+    min-height: 98vh;
+    background-color: black;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+:root[data-has-background-image="1"] :is(body>header, body>footer, #widgets .widget-outer) {
+    backdrop-filter: blur(12px);
+    background-color: color-mix(in oklab, var(--bg-body)40%, transparent);
+}
+
+:root[data-has-background-image="1"] :is(body>header) {
+    border-radius: var(--border-radius);
+    padding: 0 0.25rem;
 }
 
 @media(max-width:640px) {

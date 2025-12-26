@@ -129,6 +129,7 @@ All configs shown here should be given as environment variables, or in a `.env` 
 | SHOW_VERSION_NUMBER   | Whether the app version number is displayed | True                 |
 | DISABLE_PLUGIN_LOADER | Disable the plugin loader                   | False                |
 | PLUGIN_SKIP_LIST      | Skip loading specific plugins               | -                    |
+| ALLOW_BACKGROUND_IMAGE_UPLOAD | Whether to allow image uploads | True |
 
 > SECRET_KEY should be set, otherwise logins will be reset on server restart
 

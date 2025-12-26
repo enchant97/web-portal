@@ -100,6 +100,7 @@ def setup_configs(app: Quart):
     app.config["QUART_AUTH_COOKIE_SECURE"] = get_settings().SECURE_COOKIES
     app.config["PUBLIC_ACCOUNT_USERNAME"] = PUBLIC_ACCOUNT_USERNAME
     app.config["SHOW_VERSION_NUMBER"] = get_settings().SHOW_VERSION_NUMBER
+    app.config["ALLOW_BACKGROUND_IMAGE_UPLOAD"] = get_settings().ALLOW_BACKGROUND_IMAGE_UPLOAD
 
 
 def create_app():

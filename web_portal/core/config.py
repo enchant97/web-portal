@@ -15,6 +15,8 @@ class Settings(BaseSettings):
     LOG_LEVEL: str = "INFO"
     SHOW_VERSION_NUMBER: bool = True
 
+    ALLOW_BACKGROUND_IMAGE_UPLOAD: bool = True
+
     DISABLE_PLUGIN_LOADER: bool = False
     PLUGIN_SKIP_LIST: list[str] | None = None
 

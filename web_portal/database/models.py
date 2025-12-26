@@ -1,5 +1,6 @@
 from collections.abc import Iterable
 from typing import Any
+from uuid import UUID
 
 from tortoise.fields import (
     BinaryField,
@@ -11,6 +12,8 @@ from tortoise.fields import (
     IntField,
     JSONField,
     ReverseRelation,
+    TextField,
+    UUIDField,
 )
 from tortoise.models import Model
 from tortoise.transactions import atomic
@@ -75,6 +78,7 @@ class Dashboard(Model):
     widget_order: Field[list[int]] = JSONField(default=[])  # type: ignore
 
     widgets = ReverseRelation["DashboardWidget"]
+    background_images = ReverseRelation["DashboardBackgroundImage"]
 
     def widgets_sorted(self) -> Iterable["DashboardWidget"]:
         if len(self.widget_order) == 0:
@@ -142,6 +146,13 @@ class Dashboard(Model):
 
         await self.save()
 
+    async def get_background_image_uids(self) -> list[UUID]:
+        await self.fetch_related("background_images")
+        return await self.background_images.all().values_list("uid", flat=True)
+
+    async def append_background_image(self, content: bytes, mimetype: str):
+        return await self.background_images.create(content=content, mimetype=mimetype)
+
 
 class DashboardWidget(Model):
     id = IntField(pk=True)
@@ -150,3 +161,12 @@ class DashboardWidget(Model):
     dashboard: ForeignKeyRelation[Dashboard] = ForeignKeyField("models.Dashboard", "widgets")
     widget: ForeignKeyRelation[Widget] = ForeignKeyField("models.Widget")
     config = JSONField(null=True)
+
+
+class DashboardBackgroundImage(Model):
+    uid = UUIDField(pk=True)
+    dashboard: ForeignKeyRelation[Dashboard] = ForeignKeyField(
+        "models.Dashboard", "background_images"
+    )
+    content = BinaryField(null=False)
+    mimetype = TextField(null=False)

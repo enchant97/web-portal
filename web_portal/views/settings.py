@@ -1,9 +1,14 @@
 import asyncio
 import logging
+from io import BytesIO
+from uuid import UUID
 
+from PIL import Image
 from quart import Blueprint, flash, redirect, render_template, request, session, url_for
+from quart.helpers import abort
 from quart_auth import logout_user
 
+from web_portal.core.config import get_settings
 from ..core.auth import current_user, login_standard_required
 from ..core.plugin import PluginHandler, deconstruct_widget_name
 from ..core.validation import check_password
@@ -208,6 +213,55 @@ async def get_delete_widget(widget_id: int):
     await flash("deleted widget", "ok")
 
     return redirect(url_for(".get_edit_dashboard"))
+
+
+@blueprint.get("/dashboard/background-image")
+@login_standard_required
+async def get_set_background_image():
+    if not get_settings().ALLOW_BACKGROUND_IMAGE_UPLOAD:
+        await flash("background image uploading has been disabled by the admin", "error")
+        return redirect(url_for(".get_set_background_image"))
+    dashboard = await models.Dashboard.filter(owner_id=current_user.auth_id).get()
+    image_uids = await dashboard.get_background_image_uids()
+    return await render_template(
+        "settings/set-background-image.jinja",
+        image_uids=image_uids,
+    )
+
+
+@blueprint.post("/dashboard/background-image")
+@login_standard_required
+async def post_add_background_image():
+    if not get_settings().ALLOW_BACKGROUND_IMAGE_UPLOAD:
+        abort(403)
+    content_buff = (await request.files)["image-file"]
+    content = None
+    image = Image.open(content_buff)
+    mimetype = image.get_format_mimetype()
+    if mimetype is None:
+        await flash("unknown image file type", "error")
+        return redirect(url_for(".get_set_background_image"))
+    if mimetype == "image/svg+xml":
+        content = content_buff.getvalue()
+    else:
+        with BytesIO() as buff:
+            image.thumbnail((1440, 1440))
+            image.save(buff, format="webp", quality=80)
+            mimetype = "image/webp"
+            content = buff.getvalue()
+    dashboard = await models.Dashboard.filter(owner_id=current_user.auth_id).get()
+    await dashboard.append_background_image(content, mimetype)
+    return redirect(url_for(".get_set_background_image"))
+
+
+@blueprint.get("/dashboard/background-image/<uuid:image_uid>/delete")
+@login_standard_required
+async def get_delete_background_image(image_uid: UUID):
+    dashboard = (
+        await models.Dashboard.filter(owner_id=current_user.auth_id).get_or_none().only("id")
+    )
+    await models.DashboardBackgroundImage.filter(uid=image_uid, dashboard_id=dashboard.id).delete()
+    return redirect(url_for(".get_set_background_image"))
 
 
 @blueprint.get("/dashboard/restore-defaults")

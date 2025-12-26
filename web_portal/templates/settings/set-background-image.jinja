@@ -1,0 +1,50 @@
+{% extends "/shared/base.jinja" %}
+{% block title %}Background Images{% endblock %}
+{% block main %}
+<section class="panel">
+    <h2>Background Images</h2>
+    <p>
+        Here you can manage background images for your dashboard.
+    </p>
+</section>
+
+<section class="panel">
+    <h3>Upload Image</h3>
+    <form action="{{ url_for('.post_add_background_image') }}" method="post" enctype="multipart/form-data">
+        <input type="file" name="image-file" id="image-file" accept="image/*" aria-label="upload image" required>
+        <button type="submit">Upload</button>
+    </form>
+</section>
+
+<section class="panel">
+    <h3>Existing Images</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>Preview</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for image_uid in image_uids %}
+            <tr>
+                <td><a href={{ url_for("portal.get_background_image", image_uid=image_uid) }} target="_blank">
+                    <img
+                        class="img-preview-thumbnail"
+                        src={{ url_for("portal.get_background_image", image_uid=image_uid) }}
+                    />
+                </a></td>
+                <td class="bnt-group">
+                    <a
+                        class="icon-bnt"
+                        href="{{ url_for(".get_delete_background_image", image_uid=image_uid) }}"
+                        title="Delete"
+                    >{{ macros.feather_img('x') }}</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</section>
+
+{% endblock %}

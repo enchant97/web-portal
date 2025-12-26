@@ -153,7 +153,7 @@ class PluginHandler:
     @staticmethod
     def load_plugins(
         app_version: str, skip_list: Iterable[str] | None = None
-    ) -> Generator[LoadedPlugin, None, None]:
+    ) -> Generator[LoadedPlugin]:
         for name in PluginHandler.get_plugin_names():
             if skip_list is not None and name in skip_list:
                 logger.info("skipping loading plugin as in skip list::plugin_name='%s'", name)
@@ -206,7 +206,7 @@ class PluginHandler:
             logger.exception("plugin is not loaded::plugin_name='%s'", name)
 
     @staticmethod
-    def get_loaded_plugin_values() -> Generator[LoadedPlugin, None, None]:
+    def get_loaded_plugin_values() -> Generator[LoadedPlugin]:
         yield from PluginHandler._loaded_plugins.values()
 
     @staticmethod

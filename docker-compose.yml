@@ -1,8 +1,6 @@
 # ** IMPORTANT **
 # This is to host a demo
 # please read the docs on how to deploy
-version: "3"
-
 services:
   web-portal:
     container_name: demo-web-portal
@@ -13,7 +11,8 @@ services:
     ports:
       - 127.0.0.1:8000:8000
     environment:
-      - "DB_URI=sqlite://:memory:"
-      - "PLUGIN_SKIP_LIST=[\"core_extras\"]"
-      - "ALLOW_ICON_UPLOADS=0"
-      - "UNATTENDED_DEMO_INSTALL=1"
+      DB_URI": "sqlite://:memory:"
+      PLUGIN_SKIP_LIST: '["core_extras"]'
+      ALLOW_BACKGROUND_IMAGE_UPLOAD: "0"
+      ALLOW_ICON_UPLOADS: "0"
+      UNATTENDED_DEMO_INSTALL: "1"

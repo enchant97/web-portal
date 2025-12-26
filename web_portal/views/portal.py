@@ -1,4 +1,8 @@
-from quart import Blueprint, flash, redirect, render_template, send_file, url_for
+import random
+from io import BytesIO
+from uuid import UUID
+
+from quart import Blueprint, abort, flash, redirect, render_template, send_file, url_for
 
 from ..core.auth import (
     current_user,
@@ -34,6 +38,12 @@ async def portal():
         public_account = await models.User.filter(username=PUBLIC_ACCOUNT_USERNAME).get()
         dashboard = (await models.Dashboard.get_or_create(owner=public_account))[0]
         await dashboard.fetch_related("widgets", "widgets__widget", "widgets__widget__plugin")
+
+    background_image_uid = await dashboard.get_background_image_uids()
+    if len(background_image_uid) > 0:
+        background_image_uid = random.choice(background_image_uid)
+    else:
+        background_image_uid = None
 
     rendered_widgets = []
     failed_widgets = []
@@ -71,7 +81,36 @@ async def portal():
     return await render_template(
         "portal.jinja",
         branding=await get_system_setting(SystemSettingKeys.BRANDING, default=DEFAULT_BRANDING),
+        background_image_uid=background_image_uid,
         rendered_widgets=rendered_widgets,
+    )
+
+
+@blueprint.get("/static/background-images/<uuid:image_uid>")
+@login_required_if_secured
+async def get_background_image(image_uid: UUID):
+    # check if app is setup
+    has_setup = await models.SystemSetting.get_or_none(key="has_setup")
+    if has_setup is None or has_setup.value is False:
+        abort(404)
+
+    user_id = current_user.auth_id
+    dashboard = None
+    # load either personal dashboard or 'public' as a fallback
+    if user_id is not None:
+        dashboard = await models.Dashboard.filter(owner_id=user_id).get_or_none().only("id")
+    if dashboard is None:
+        public_account = await models.User.filter(username=PUBLIC_ACCOUNT_USERNAME).get()
+        dashboard = (await models.Dashboard.get_or_create(owner=public_account))[0]
+    # get the image
+    image = await models.DashboardBackgroundImage.filter(
+        uid=image_uid, dashboard_id=dashboard.id
+    ).get()
+    image_buff = BytesIO(image.content)
+    return await send_file(
+        image_buff,
+        mimetype=image.mimetype,
+        cache_timeout=64_000,
     )
 
 
