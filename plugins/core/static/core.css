@@ -26,6 +26,7 @@
 
 .widget-inner.core__links .chip {
     width: 1.2rem;
+    min-width: 1.2rem;
     border-top-left-radius: var(--border-radius);
     border-bottom-left-radius: var(--border-radius);
     box-shadow: var(--box-shadow-glass);

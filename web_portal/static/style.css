@@ -104,10 +104,11 @@ body {
     background-color: var(--bg-body);
     max-width: 1000px;
     margin: auto;
-    padding: 1rem;
+    padding: 0 0.75rem;
 }
 
 header {
+    margin-top: 0.75rem;
     display: flex;
     align-items: center;
     margin-bottom: 1rem;
@@ -206,8 +207,10 @@ header nav .icon-bnt {
 footer {
     text-align: center;
     margin-top: 12rem;
-    border-top: var(--bg-sub-2) solid .4rem;
-    padding-top: 1rem;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow-glass);
+    padding: 1rem;
+    background-color: var(--bg-body);
 }
 
 footer a {
@@ -328,6 +331,7 @@ table td.bnt-group {
     width: 100%;
     height: 100%;
     border: none;
+    z-index: 99;
 }
 
 #theme-picker-selector button {
@@ -361,6 +365,10 @@ table td.bnt-group {
 }
 
 @media(max-width:500px) {
+
+    header h1 {
+        margin-right: 0;
+    }
 
     header,
     header nav {
