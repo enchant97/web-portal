@@ -5,6 +5,7 @@ on:
     branches: [ main ]
   pull_request:
     branches: [ main, next ]
+  workflow_dispatch:
 
 jobs:
   lint:
@@ -37,3 +38,24 @@ jobs:
     - name: Run Tests
       run: |
         hatch run dev:unit-test
+
+  e2e-test:
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v6
+    - name: Set up Python
+      uses: actions/setup-python@v6
+      with:
+        python-version: '3.14'
+    - name: Install Tools
+      run: |
+        pip install hatch
+        hatch run dev:e2e-deps
+    - name: Run Tests
+      run: hatch run dev:e2e-test
+    - uses: actions/upload-artifact@v6
+      if: ${{ !cancelled() }}
+      with:
+        name: playwright-traces
+        path: test-results/

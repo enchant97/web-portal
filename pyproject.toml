@@ -49,10 +49,14 @@ dependencies = [
   "pytest~=9.0.2",
   "pytest-asyncio~=1.3.0",
   "pytest-env~=1.2.0",
+  "playwright~=1.57.0",
+  "pytest-playwright~=0.7.2"
 ]
 
 [tool.hatch.envs.dev.scripts]
-unit-test = "pytest ./tests"
+unit-test = "pytest ./tests/test_core"
+e2e-test = "pytest --tracing=retain-on-failure ./tests/test_e2e.py"
+e2e-deps = "playwright install --with-deps"
 lint = "hatch fmt --check"
 
 [project.urls]
