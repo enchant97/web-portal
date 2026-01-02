@@ -33,6 +33,7 @@ dependencies = [
 
 [tool.hatch.envs.default.scripts]
 serve = "hypercorn \"web_portal.main:create_app()\""
+deps = ""
 
 [tool.hatch.envs.docs]
 dependencies = [

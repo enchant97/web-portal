@@ -51,6 +51,7 @@ jobs:
     - name: Install Tools
       run: |
         pip install hatch
+        hatch run deps
         hatch run dev:e2e-deps
     - name: Run Tests
       run: hatch run dev:e2e-test
