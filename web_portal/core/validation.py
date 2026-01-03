@@ -28,8 +28,6 @@ def check_password(username: str, password: str, password_conf: str | None = Non
 def is_username_allowed(username: str) -> bool:
     if username == PUBLIC_ACCOUNT_USERNAME:
         return False
-    if (len(username) > 0 and len(username) <= MAX_USERNAME_LENGTH) and re.fullmatch(
+    return (len(username) > 0 and len(username) <= MAX_USERNAME_LENGTH) and re.fullmatch(
         VALID_USERNAME_RE, username
-    ) is not None:
-        return True
-    return False
+    ) is not None

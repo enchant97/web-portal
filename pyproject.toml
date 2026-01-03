@@ -77,7 +77,7 @@ lint.ignore = ["EM101", "EM102", "TRY003", "N818"]
 "web_portal/plugin_api.py" = ["F401"]
 "scripts/hash_password.py" = ["T201"]
 "plugins/*" = ["TID252"]
-"tests/*" = ["S101"]
+"tests/*" = ["S101", "TRY002", "S310", "PT003"]
 
 [tool.pytest.ini_options]
 asyncio_mode="strict"

@@ -2,12 +2,16 @@ import os
 import shutil
 import signal
 import time
+import typing
+from http import HTTPStatus
 from subprocess import Popen
 from urllib.error import HTTPError, URLError
 from urllib.request import urlopen
 
 import pytest
-from playwright.sync_api import Page
+
+if typing.TYPE_CHECKING:
+    from playwright.sync_api import Page
 
 BASE_URL = "http://127.0.0.1:8000"
 
@@ -17,7 +21,7 @@ def _wait_for_ready(*, timeout=15, interval=0.5):
     while time.time() < deadline:
         try:
             with urlopen(f"{BASE_URL}/is-healthy", timeout=2) as resp:
-                if resp.status == 200:
+                if resp.status == HTTPStatus.OK:
                     return True
         except (URLError, HTTPError):
             pass
@@ -40,7 +44,7 @@ def before_each_after_each(page: Page):
             "PLUGINS_PATH": "./plugins",
             "DATA_PATH": "./data",
         },
-        preexec_fn=os.setsid,
+        preexec_fn=os.setsid,  # noqa: PLW1509
     )
     try:
         _wait_for_ready()
@@ -49,6 +53,7 @@ def before_each_after_each(page: Page):
     finally:
         os.killpg(os.getpgid(proc.pid), signal.SIGKILL)
         proc.wait()
+
 
 def test_login(page: Page):
     page.goto(f"{BASE_URL}/auth/login")

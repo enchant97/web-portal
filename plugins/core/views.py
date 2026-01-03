@@ -235,7 +235,7 @@ async def post_link_new():
 
     if icon_name and get_icon_path(icon_name) is None:
         logger.warning(
-            "icon name requested not found, " "or permission to read is missing::name='%s'",
+            "icon name requested not found, or permission to read is missing::name='%s'",
             icon_name,
         )
         await flash("failed to find icon", "error")
@@ -271,7 +271,7 @@ async def post_link_edit(link_id: int):
 
     if icon_name and get_icon_path(icon_name) is None:
         logger.warning(
-            "icon name requested not found, " "or permission to read is missing::name='%s'",
+            "icon name requested not found, or permission to read is missing::name='%s'",
             icon_name,
         )
         await flash("failed to find icon", "error")
