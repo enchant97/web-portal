@@ -56,8 +56,8 @@ dependencies = [
 
 [tool.hatch.envs.dev.scripts]
 unit-test = "pytest ./tests/test_core"
-e2e-test = "pytest --tracing=retain-on-failure ./tests/test_e2e.py"
-e2e-deps = "playwright install --with-deps"
+e2e-test = "pytest --tracing=retain-on-failure --browser chromium ./tests/test_e2e.py"
+e2e-deps = "playwright install --with-deps chromium"
 lint = "hatch fmt --check"
 
 [project.urls]

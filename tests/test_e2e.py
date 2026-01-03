@@ -4,8 +4,23 @@ import shutil
 
 import pytest
 from playwright.sync_api import Page
+from urllib.request import urlopen
+from urllib.error import URLError, HTTPError
 
 BASE_URL = "http://127.0.0.1:8000"
+
+
+def _wait_for_ready(*, timeout=15, interval=0.5):
+    deadline = time.time() + timeout
+    while time.time() < deadline:
+        try:
+            with urlopen(f"{BASE_URL}/is-healthy", timeout=2) as resp:
+                if resp.status == 200:
+                    return True
+        except (URLError, HTTPError):
+            pass
+        time.sleep(interval)
+    raise TimeoutError("timed out before in ready state")
 
 
 @pytest.fixture(scope="function", autouse=True)
@@ -23,8 +38,8 @@ def before_each_after_each(page: Page):
             "DATA_PATH": "./data",
         },
     )
-    time.sleep(5)  # XXX Find a better way
     try:
+        _wait_for_ready()
         page.goto(BASE_URL)
         yield
     finally:
