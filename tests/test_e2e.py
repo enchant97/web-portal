@@ -1,11 +1,13 @@
+import os
+import shutil
+import signal
 import time
 from subprocess import Popen
-import shutil
+from urllib.error import HTTPError, URLError
+from urllib.request import urlopen
 
 import pytest
 from playwright.sync_api import Page
-from urllib.request import urlopen
-from urllib.error import URLError, HTTPError
 
 BASE_URL = "http://127.0.0.1:8000"
 
@@ -38,14 +40,15 @@ def before_each_after_each(page: Page):
             "PLUGINS_PATH": "./plugins",
             "DATA_PATH": "./data",
         },
+        preexec_fn=os.setsid,
     )
     try:
         _wait_for_ready()
         page.goto(BASE_URL)
         yield
     finally:
-        proc.terminate()
-
+        os.killpg(os.getpgid(proc.pid), signal.SIGKILL)
+        proc.wait()
 
 def test_login(page: Page):
     page.goto(f"{BASE_URL}/auth/login")
