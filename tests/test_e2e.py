@@ -34,6 +34,7 @@ def before_each_after_each(page: Page):
             "DB_URI": "sqlite://:memory:",
             "SECRET_KEY": "testing_e2e",
             "UNATTENDED_DEMO_INSTALL": "1",
+            "ENABLE_E2E_TESTING_API": "1",
             "PLUGINS_PATH": "./plugins",
             "DATA_PATH": "./data",
         },

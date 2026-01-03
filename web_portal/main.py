@@ -90,6 +90,9 @@ def setup_configs(app: Quart):
     logging.basicConfig()
     logger.setLevel(get_settings().log_level_as_int)
 
+    if get_settings().ENABLE_E2E_TESTING_API:
+        logger.critical("e2e testing api is enabled, this will make your app INSECURE")
+
     app.config["__VERSION__"] = __version__
     if get_settings().SECRET_KEY:
         app.secret_key = get_settings().SECRET_KEY

@@ -21,6 +21,7 @@ class Settings(BaseSettings):
     PLUGIN_SKIP_LIST: list[str] | None = None
 
     UNATTENDED_DEMO_INSTALL: bool = False
+    ENABLE_E2E_TESTING_API: bool = False
 
     @computed_field
     @property
