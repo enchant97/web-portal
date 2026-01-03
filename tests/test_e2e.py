@@ -56,3 +56,20 @@ def test_login(page: Page):
     page.locator("#password").fill("demo")
     page.locator("button[type=submit]").click()
     page.wait_for_url(BASE_URL)
+
+
+def test_change_password(page: Page):
+    page.goto(f"{BASE_URL}/_e2e/login_as_user/demo")
+    page.get_by_title("Settings").click()
+    page.wait_for_url(f"{BASE_URL}/settings/")
+    page.get_by_text("My Account").click()
+    page.wait_for_url(f"{BASE_URL}/settings/account")
+    page.locator("#current-password").fill("demo")
+    page.locator("#new-password").fill("akgGG308")
+    page.locator("#confirm-new-password").fill("akgGG308")
+    page.locator("button[type=submit]").click()
+    page.wait_for_url(f"{BASE_URL}/auth/login")
+    page.locator("#username").fill("demo")
+    page.locator("#password").fill("akgGG308")
+    page.locator("button[type=submit]").click()
+    page.wait_for_url(BASE_URL)
