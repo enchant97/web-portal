@@ -4,12 +4,12 @@
 <section class="panel">
     <h2>Menu</h2>
     <div class="bnt-group">
-        <a class="icon-bnt" href="{{ url_for('portal.get_plugins_index') }}">{{ macros.feather_img('box') }} Plugins</a>
-        <a class="icon-bnt" href="{{ url_for('admin.get_switch_to_public') }}">{{ macros.feather_img('user') }} Switch
+        <a class="icon-bnt" href="{{ url_for('portal.get_plugins_index') }}" data-testid="plugins_hzle">{{ macros.feather_img('box') }} Plugins</a>
+        <a class="icon-bnt" href="{{ url_for('admin.get_switch_to_public') }}" data-testid="topublic_wivb">{{ macros.feather_img('user') }} Switch
             To
             Public</a>
-        <a class="icon-bnt" href="{{ url_for('admin.get_users') }}">{{ macros.feather_img('users') }} Users</a>
-        <a class="icon-bnt" href="{{ url_for('admin.get_system_settings') }}">{{ macros.feather_img('tool') }} System
+        <a class="icon-bnt" href="{{ url_for('admin.get_users') }}" data-testid="users_sgsg">{{ macros.feather_img('users') }} Users</a>
+        <a class="icon-bnt" href="{{ url_for('admin.get_system_settings') }}" data-testid="settings_ljbz">{{ macros.feather_img('tool') }} System
             Settings</a>
     </div>
 </section>

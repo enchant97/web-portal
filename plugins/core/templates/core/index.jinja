@@ -14,10 +14,10 @@
 {% if current_user.is_authenticated_admin %}
 <section class="panel">
     <h2>Plugin Settings</h2>
-    <a class="bnt" href="{{ url_for('.get_engines_index') }}">Engine Management</a>
-    <a class="bnt" href="{{ url_for('.get_links_index') }}">Links Management</a>
+    <a class="bnt" href="{{ url_for('.get_engines_index') }}" data-testid="engine_fhug">Engine Management</a>
+    <a class="bnt" href="{{ url_for('.get_links_index') }}" data-testid="links_obmq">Links Management</a>
     {% if config.plugin__core.ALLOW_ICON_UPLOADS %}
-    <a class="bnt" href="{{ url_for('.get_upload_icons') }}">Upload Icons</a>
+    <a class="bnt" href="{{ url_for('.get_upload_icons') }}" data-testid="icons_jbrd">Upload Icons</a>
     {% endif %}
 </section>
 {% endif %}

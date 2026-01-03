@@ -60,9 +60,9 @@ def test_login(page: Page):
 
 def test_change_password(page: Page):
     page.goto(f"{BASE_URL}/_e2e/login_as_user/demo")
-    page.get_by_title("Settings").click()
+    page.get_by_test_id("settings_drjr").click()
     page.wait_for_url(f"{BASE_URL}/settings/")
-    page.get_by_text("My Account").click()
+    page.get_by_test_id("myaccount_pjjx").click()
     page.wait_for_url(f"{BASE_URL}/settings/account")
     page.locator("#current-password").fill("demo")
     page.locator("#new-password").fill("akgGG308")

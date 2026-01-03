@@ -33,7 +33,7 @@
         <h1>{{ self.title() }}</h1>
         <nav>
             {% block nav %}{% endblock %}
-            <button class="icon-bnt hidden" id="themeToggleBnt" title="Theme Picker">{{ macros.feather_img('sun') }}|{{
+            <button class="icon-bnt hidden" id="themeToggleBnt" title="Theme Picker" data-testid="theme_gxmr">{{ macros.feather_img('sun') }}|{{
                 macros.feather_img('moon') }}</button>
         </nav>
     </header>
