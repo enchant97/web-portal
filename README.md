@@ -40,7 +40,9 @@ Of course! However, I may not implement it. But I will accept contributions.
 - MySQL & SQLite support
 
 ## Showcase
-[![web-portal showcase image, showing dark and light themes](docs/assets/portal-view.png)](docs/assets/portal-view.png)
+[![web-portal showcase image, showing dashboard with background image](docs/assets/showcase-bi.webp)](docs/assets/showcase-bi.webp)
+
+[![web-portal showcase image, showing dark and light themes](docs/assets/showcase-nbi.webp)](docs/assets/showcase-nbi.webp)
 
 ## Demo Video
 WIP

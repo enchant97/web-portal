@@ -35,7 +35,9 @@ Of course! However, I may not implement it. But I will accept contributions.
 - MySQL & SQLite support
 
 ## Showcase
-[![web-portal showcase image, showing dark and light themes](assets/portal-view.png)](assets/portal-view.png)
+[![web-portal showcase image, showing dashboard with background image](assets/showcase-bi.webp)](assets/showcase-bi.webp)
+
+[![web-portal showcase image, showing dark and light themes](assets/showcase-nbi.webp)](assets/showcase-nbi.webp)
 
 ## Third-Party Plugins
 It is encouraged to extend and build upon this app to make it the ultimate dashboard.
