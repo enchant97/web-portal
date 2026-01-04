@@ -7,9 +7,10 @@
 
 Web Portal is a all-in-one web dashboard, providing many widgets to build a personal portal. With the ability to load external plugins.
 
-It has been designed to run through docker and it is recommended to put it behind a proxy like Nginx for custom routing and domain names.
+## Showcase
+[![web-portal showcase image, showing dashboard with background image](docs/assets/showcase-bi.webp)](docs/assets/showcase-bi.webp)
 
-If you want just a basic link panel configured with a yaml file checkout Web Portal Lite available here: <https://github.com/enchant97/web-portal-lite>.
+[![web-portal showcase image, showing dark and light themes](docs/assets/showcase-nbi.webp)](docs/assets/showcase-nbi.webp)
 
 ## State Of Project
 I currently find it feature complete. I will still perform bug fixes and security patches when required as I use this project myself.
@@ -38,11 +39,6 @@ Of course! However, I may not implement it. But I will accept contributions.
 - Password protection for admin modification
 - Optionally secure the portal with user accounts & passwords
 - MySQL & SQLite support
-
-## Showcase
-[![web-portal showcase image, showing dashboard with background image](docs/assets/showcase-bi.webp)](docs/assets/showcase-bi.webp)
-
-[![web-portal showcase image, showing dark and light themes](docs/assets/showcase-nbi.webp)](docs/assets/showcase-nbi.webp)
 
 ## Demo Video
 WIP
