@@ -24,6 +24,8 @@ FROM python:${PYTHON_VERSION}-alpine${ALPINE_VERSION}
     ENV PORT="8000"
     ENV PLUGINS_PATH="/app/plugins"
     ENV DATA_PATH="/app/data"
+    ENV DB_URI="sqlite:///app/data/db.sqlite"
+    VOLUME [ "/app/data" ]
 
     COPY LICENSE.txt THIRD-PARTY.txt ./
 

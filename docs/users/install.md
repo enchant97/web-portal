@@ -31,7 +31,7 @@ web_portal/
 ```
 
 ### Example Compose File
-This is an example config (using SQLite) which you can copy, as long as `SECRET_KEY` value is changed for security.
+This is an example config using SQLite (the default) which you can copy, as long as `SECRET_KEY` value is changed for security.
 
 > Config values explained in "Configuration" section
 
@@ -49,11 +49,9 @@ services:
       # Change only left side
       - 8000:8000
     environment:
-      # This config is built into the Docker image
-      # DATA_PATH: "/app/data"
-      DB_URI: "sqlite:///app/data/db.sqlite"
-      # This must be secure
-      SECRET_KEY: "replace_me_123"
+      # This must be secure,
+      # could use `openssl rand -base64 32` to generate one
+      - "SECRET_KEY="
 ```
 
 ### Without Docker
@@ -107,7 +105,9 @@ rm -rf app-src
 PLUGINS_PATH="./plugins"
 DATA_PATH="./data"
 DB_URI="sqlite://data/db.sqlite"
-SECRET_KEY="replace_me_123"
+# This must be secure,
+# could use `openssl rand -base64 32` to generate one
+SECRET_KEY=""
 ```
 
 
