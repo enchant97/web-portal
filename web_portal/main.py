@@ -11,9 +11,9 @@ from web_health_checker.contrib import quart as health_check
 from web_portal import __version__
 from web_portal.core.auth import AuthUserEnhanced
 from web_portal.core.config import get_settings
-from web_portal.core.constants import PUBLIC_ACCOUNT_USERNAME
+from web_portal.core.constants import PUBLIC_ACCOUNT_USERNAME, SystemSettingKeys
 from web_portal.core.demo import do_demo_install
-from web_portal.core.helpers import get_system_setting
+from web_portal.core.helpers import get_system_setting, set_system_setting
 from web_portal.core.plugin import PluginHandler, register_loaded_plugins
 from web_portal.database import models
 
@@ -42,8 +42,13 @@ async def setup_internals():
         logger.info("unattended install of demo running")
         await do_demo_install()
 
+    if get_settings().ENABLE_E2E_TESTING_API and get_settings().UNATTENDED_DEMO_INSTALL:
+        # e2e makes use of unattended install, but does not want demo mode enabled
+        await set_system_setting(SystemSettingKeys.DEMO_MODE, False)
+
     # HACK Quart's config needs to have db loading added
-    await get_system_setting("DEMO_MODE")
+    # loads db setting into Quart app config
+    await get_system_setting(SystemSettingKeys.DEMO_MODE)
 
 
 @app.context_processor
