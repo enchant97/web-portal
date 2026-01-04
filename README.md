@@ -17,7 +17,7 @@ I currently find it feature complete. I will still perform bug fixes and securit
 ### Can I still suggest a feature?
 Of course! However, I may not implement it. But I will accept contributions.
 
-## Fe## Features
+## Features
 - Minimal use of JavaScript, to provide a lightning fast experience
 - Icon based UI
 - Minimal docker image (if deployed with docker)
