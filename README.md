@@ -61,20 +61,14 @@ Here are some ideas:
 You can discuss plugins [here](https://github.com/enchant97/web-portal/discussions/categories/third-party-plugins).
 
 ## Branches
-| Name         | Description            | State         |
-| :----------- | :--------------------- | :------------ |
-| main         | Work ready for release | Stable        |
-| next         | Work for next version  | Very Unstable |
-| historical-X | Historical versions    | Unsupported   |
-
-> Choose a tag/release for most stable if running project
+Please select a tag/release for stable version of project. "main"
 
 
 ## Documentation
 More details and guides on installing can be found at: [webportal.docs.enchantedcode.co.uk/](https://web-portal.docs.enchantedcode.co.uk/) or view the markdown in the `docs` folder [here](docs/index.md).
 
 ## License
-This project is Copyright (c) 2024 Leo Spratt, licences shown below:
+This project is Copyright (c) 2026 Leo Spratt, licences shown below:
 
 Code
 
