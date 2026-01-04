@@ -9,6 +9,7 @@ from urllib.error import HTTPError, URLError
 from urllib.request import urlopen
 
 import pytest
+from playwright.sync_api import expect
 
 if typing.TYPE_CHECKING:
     from playwright.sync_api import Page
@@ -63,6 +64,12 @@ def test_login(page: Page):
     page.wait_for_url(BASE_URL)
 
 
+def test_logout(page: Page):
+    page.goto(f"{BASE_URL}/_e2e/login_as_user/demo")
+    page.get_by_test_id("logout_aelc").click()
+    page.wait_for_url(f"{BASE_URL}/auth/login")
+
+
 def test_change_password(page: Page):
     page.goto(f"{BASE_URL}/_e2e/login_as_user/demo")
     page.get_by_test_id("settings_drjr").click()
@@ -78,3 +85,40 @@ def test_change_password(page: Page):
     page.locator("#password").fill("akgGG308")
     page.locator("button[type=submit]").click()
     page.wait_for_url(BASE_URL)
+
+
+def test_admin_adjust_public_portal(page: Page):
+    def do_adjustment(*, enable_public: bool):
+        page.goto(f"{BASE_URL}/_e2e/login_as_user/admin")
+        page.get_by_test_id("settings_drjr").click()
+        page.wait_for_url(f"{BASE_URL}/settings/")
+        page.get_by_test_id("admin_zeec").click()
+        page.wait_for_url(f"{BASE_URL}/admin/")
+        page.get_by_test_id("settings_ljbz").click()
+        page.wait_for_url(f"{BASE_URL}/admin/system-settings/")
+        page.locator("#system-setting-public-portal").set_checked(enable_public)
+        page.get_by_test_id("submit_qoyc").click()
+        page.wait_for_url(f"{BASE_URL}/admin/system-settings/")
+        page.context.clear_cookies()
+        page.goto(f"{BASE_URL}")
+
+    do_adjustment(enable_public=True)
+    expect(page.locator("body header h1")).to_have_text("Portal")
+    do_adjustment(enable_public=False)
+    page.wait_for_url(f"{BASE_URL}/auth/login")
+
+
+def test_admin_change_branding(page: Page):
+    page.goto(f"{BASE_URL}/_e2e/login_as_user/admin")
+    page.get_by_test_id("settings_drjr").click()
+    page.wait_for_url(f"{BASE_URL}/settings/")
+    page.get_by_test_id("admin_zeec").click()
+    page.wait_for_url(f"{BASE_URL}/admin/")
+    page.get_by_test_id("settings_ljbz").click()
+    page.wait_for_url(f"{BASE_URL}/admin/system-settings/")
+    new_brand_title = "My Dashboard"
+    page.locator("#branding-title").fill(new_brand_title)
+    page.get_by_test_id("submit_agjw").click()
+    page.wait_for_url(f"{BASE_URL}/admin/system-settings/")
+    page.goto(f"{BASE_URL}")
+    expect(page.locator("body header h1")).to_have_text(new_brand_title)

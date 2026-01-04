@@ -7,7 +7,7 @@
         <label for="system-setting-public-portal">Public Portal</label>
         <input type="checkbox" name="public-portal" id="system-setting-public-portal" value="1" {{
             macros.checkbox_checked(public_portal) }}>
-        <button type="submit">Save</button>
+        <button type="submit" data-testid="submit_qoyc">Save</button>
     </form>
 </section>
 
@@ -16,7 +16,7 @@
     <form action="{{ url_for('.post_system_settings_branding') }}" method="post">
         <label for="branding-title">Title</label>
         <input type="text" name="title" id="branding-title" placeholder="e.g. Home Portal" value="{{ branding.title }}" required>
-        <button type="submit">Save</button>
+        <button type="submit" data-testid="submit_agjw">Save</button>
     </form>
 </section>
 
@@ -30,10 +30,10 @@
     <form action="{{ url_for('.post_custom_css') }}" method="post" enctype="multipart/form-data">
         <label for="system-setting-custom-css">Upload CSS File</label>
         <input type="file" name="custom-css" id="system-setting-custom-css" accept="text/css">
-        <button type="submit">Upload</button>
+        <button type="submit" data-testid="submit_orst">Upload</button>
     </form>
     {% if has_custom_css %}
-    <a class="bnt" href="{{ url_for('.get_delete_custom_css') }}">Delete Existing</a>
+    <a class="bnt" href="{{ url_for('.get_delete_custom_css') }}" data-testid="delete_vwdo">Delete Existing</a>
     {% endif %}
 </section>
 
