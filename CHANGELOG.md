@@ -4,6 +4,21 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.5.0] - 2026-01-04
+### Added
+- #148; Ability to set dashboard background images
+- End-To-End testing using Playwright (only part of app currently covered)
+- Add some default in Dockerfile
+  - provide sqlite url
+  - provide default volume
+### Changed
+- #147; Appearance now matches my other apps.
+- Migrate to OKLCH for colors and utilise the P3 gamut
+- Improve visibility of some text on error and ok messages
+- Migrate docs to build using "zensical"
+- Update deps
+- Now requires minimum of Python 3.14
+
 ## [2.4.0] - 2024-10-16
 ### Added
 - #144; allow a user to change their password

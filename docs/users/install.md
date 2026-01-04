@@ -39,7 +39,7 @@ This is an example config using SQLite (the default) which you can copy, as long
 services:
   web-portal:
     container_name: web-portal
-    image: ghcr.io/enchant97/web-portal:2
+    image: ghcr.io/enchant97/web-portal:2.5
     restart: unless-stopped
     volumes:
       - ./data:/app/data
@@ -64,7 +64,7 @@ While this is not the recommended method, it is possible and perfectly fine to r
 
 ```bash
 #!/usr/bin/env bash
-export WEB_PORTAL_VERSION=2.4.0
+export WEB_PORTAL_VERSION=2.5.0
 #
 # Setup Environment
 #
