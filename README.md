@@ -41,7 +41,9 @@ Of course! However, I may not implement it. But I will accept contributions.
 - MySQL & SQLite support
 
 ## Demo Video
-WIP
+[![Demo Video](https://img.youtube.com/vi/a8IM_RD8MK0/0.jpg)](https://youtu.be/a8IM_RD8MK0 "Demo Video")
+
+<https://youtu.be/a8IM_RD8MK0>
 
 ## Support Me
 Like this project? Consider supporting me financially so I can continue development.

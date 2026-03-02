@@ -6,6 +6,11 @@ Web Portal is a all-in-one web dashboard, providing many widgets to build a pers
 
 [![web-portal showcase image, showing dark and light themes](assets/showcase-nbi.webp)](assets/showcase-nbi.webp)
 
+## Demo Video
+[![Demo Video](https://img.youtube.com/vi/a8IM_RD8MK0/0.jpg)](https://youtu.be/a8IM_RD8MK0 "Demo Video")
+
+<https://youtu.be/a8IM_RD8MK0>
+
 ## State Of Project
 I currently find it feature complete and do not find myself needing any more features. I will still perform bug fixes and security patches when required.
 
