@@ -55,7 +55,7 @@ jobs:
         hatch run dev:e2e-deps
     - name: Run Tests
       run: hatch run dev:e2e-test
-    - uses: actions/upload-artifact@v6
+    - uses: actions/upload-artifact@v7
       if: ${{ !cancelled() }}
       with:
         name: playwright-traces
