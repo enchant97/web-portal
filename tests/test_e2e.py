@@ -122,3 +122,23 @@ def test_admin_change_branding(page: Page):
     page.wait_for_url(f"{BASE_URL}/admin/system-settings/")
     page.goto(f"{BASE_URL}")
     expect(page.locator("body header h1")).to_have_text(new_brand_title)
+
+
+def test_edit_link_preserves_color_and_icon(page: Page):
+    page.goto(f"{BASE_URL}/_e2e/login_as_user/admin")
+    page.goto(f"{BASE_URL}/plugins/core/links")
+
+    link_row = page.locator("tbody tr").filter(has_text="Bitwarden")
+    link_row.get_by_title("Edit").click()
+
+    expect(page.locator("#core-link-color-name")).to_have_value("cyan")
+    expect(page.locator("#core-link-icon-name")).to_have_value("bitwarden")
+
+    page.locator("#core-link-name").fill("Bitwarden Vault")
+    page.locator("button[type=submit]").click()
+    page.wait_for_url(f"{BASE_URL}/plugins/core/links")
+
+    edited_row = page.locator("tbody tr").filter(has_text="Bitwarden Vault")
+    edited_row.get_by_title("Edit").click()
+    expect(page.locator("#core-link-color-name")).to_have_value("cyan")
+    expect(page.locator("#core-link-icon-name")).to_have_value("bitwarden")
