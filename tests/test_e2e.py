@@ -135,6 +135,7 @@ def test_edit_link_preserves_color_and_icon(page: Page):
     expect(page.locator("#core-link-icon-name")).to_have_value("bitwarden")
 
     page.locator("#core-link-name").fill("Bitwarden Vault")
+    page.locator("#core-link-url").fill("https://bitwarden.com/")
     page.locator("button[type=submit]").click()
     page.wait_for_url(f"{BASE_URL}/plugins/core/links")
 
