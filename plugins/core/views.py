@@ -269,7 +269,9 @@ async def post_link_edit(link_id: int):
         await flash("link name cannot be blank", "error")
         return redirect(url_for(".get_link_edit", link_id=link_id))
 
-    if icon_name and get_icon_path(icon_name) is None:
+    # Keep a previously selected icon even if its file is temporarily unavailable.
+    # This prevents an unrelated edit from silently clearing the saved icon.
+    if icon_name and icon_name != link.icon_name and get_icon_path(icon_name) is None:
         logger.warning(
             "icon name requested not found, or permission to read is missing::name='%s'",
             icon_name,
