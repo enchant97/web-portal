@@ -84,7 +84,7 @@ from tortoise.models import Model
 
 
 class MyModel(Model):
-    id = IntField(pk=True)
+    id = IntField(primary_key=True)
     name = TextField()
 
     class Meta:

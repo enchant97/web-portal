@@ -3,10 +3,16 @@ from functools import lru_cache
 from pathlib import Path  # noqa: TC003
 
 from pydantic import computed_field
-from pydantic_settings import BaseSettings
+from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class Settings(BaseSettings):
+    model_config = SettingsConfigDict(
+        case_sensitive=True,
+        env_file=".env",
+        env_file_encoding="utf-8",
+    )
+
     DB_URI: str
     PLUGINS_PATH: Path
     DATA_PATH: Path
@@ -27,11 +33,6 @@ class Settings(BaseSettings):
     @property
     def log_level_as_int(self) -> int:
         return logging.getLevelNamesMapping().get(self.LOG_LEVEL.upper(), logging.WARNING)
-
-    class Config:
-        case_sensitive = True
-        env_file = ".env"
-        env_file_encoding = "utf-8"
 
 
 @lru_cache

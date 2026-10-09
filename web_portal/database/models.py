@@ -27,12 +27,12 @@ from web_portal.core.constants import PUBLIC_ACCOUNT_USERNAME
 
 
 class SystemSetting(Model):
-    key = CharField(128, pk=True)
+    key = CharField(128, primary_key=True)
     value = JSONField()
 
 
 class User(Model):
-    id = IntField(pk=True)
+    id = IntField(primary_key=True)
     username = CharField(128, unique=True)
     password_hash = BinaryField(null=True)
     is_admin = BooleanField(default=False)
@@ -64,20 +64,20 @@ class User(Model):
 
 
 class Plugin(Model):
-    id = IntField(pk=True)
+    id = IntField(primary_key=True)
     internal_name = CharField(128, unique=True)
 
     widgets = ReverseRelation["Widget"]
 
 
 class Widget(Model):
-    id = IntField(pk=True)
+    id = IntField(primary_key=True)
     internal_name = CharField(128, unique=True)
     plugin: ForeignKeyRelation[Plugin] = ForeignKeyField("models.Plugin", "widgets")
 
 
 class Dashboard(Model):
-    id = IntField(pk=True)
+    id = IntField(primary_key=True)
     owner: ForeignKeyRelation[User] = ForeignKeyField("models.User")
     widget_order: Field[list[int]] = JSONField(default=[])  # type: ignore
 
@@ -159,7 +159,7 @@ class Dashboard(Model):
 
 
 class DashboardWidget(Model):
-    id = IntField(pk=True)
+    id = IntField(primary_key=True)
     name = CharField(128)
     show_header = BooleanField(default=False)
     dashboard: ForeignKeyRelation[Dashboard] = ForeignKeyField("models.Dashboard", "widgets")
@@ -168,7 +168,7 @@ class DashboardWidget(Model):
 
 
 class DashboardBackgroundImage(Model):
-    uid = UUIDField(pk=True)
+    uid = UUIDField(primary_key=True)
     dashboard: ForeignKeyRelation[Dashboard] = ForeignKeyField(
         "models.Dashboard", "background_images"
     )
