@@ -10,11 +10,15 @@
         <input type="text" name="name" id="core-link-name" placeholder="name..." value="{{ link.name }}" required>
         <label for="core-link-color-name">Color</label>
         <select name="color_name" id="core-link-color-name">
+            {% set selected_color = link.color_name %}
             {% include "/shared/includes/options-color.jinja" %}
         </select>
         <label for="core-link-icon-name">Icon Name</label>
         <select name="icon-name" id="core-link-icon-name">
             <option value="">** No Icon **</option>
+            {% if link.icon_name and link.icon_name not in icon_names %}
+            <option selected value="{{ link.icon_name }}">{{ link.icon_name }} (currently unavailable)</option>
+            {% endif %}
             {% for name in icon_names %}
             <option {% if link.icon_name==name %}selected{% endif %} value="{{ name }}">{{ name }}</option>
             {% endfor %}

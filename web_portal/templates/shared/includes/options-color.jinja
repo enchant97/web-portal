@@ -1,29 +1,11 @@
-<option value="no-color">** No Color **</option>
+<option value="no-color" {% if selected_color|default("no-color") == "no-color" %}selected{% endif %}>** No Color **</option>
 <optgroup label="Standard">
-    <option>white</option>
-    <option>grey</option>
-    <option>grey-black</option>
-    <option>black</option>
-    <option>red</option>
-    <option>orange</option>
-    <option>yellow</option>
-    <option>green</option>
-    <option>green-blue</option>
-    <option>cyan</option>
-    <option>blue</option>
-    <option>purple</option>
-    <option>pink</option>
-    <option>pink-red</option>
+    {% for color in ("white", "grey", "grey-black", "black", "red", "orange", "yellow", "green", "green-blue", "cyan", "blue", "purple", "pink", "pink-red") %}
+    <option value="{{ color }}" {% if selected_color|default("no-color") == color %}selected{% endif %}>{{ color }}</option>
+    {% endfor %}
 </optgroup>
 <optgroup label="Alternatives">
-    <option>red-alt</option>
-    <option>orange-alt</option>
-    <option>yellow-alt</option>
-    <option>green-alt</option>
-    <option>green-blue-alt</option>
-    <option>cyan-alt</option>
-    <option>blue-alt</option>
-    <option>purple-alt</option>
-    <option>pink-alt</option>
-    <option>pink-red-alt</option>
+    {% for color in ("red-alt", "orange-alt", "yellow-alt", "green-alt", "green-blue-alt", "cyan-alt", "blue-alt", "purple-alt", "pink-alt", "pink-red-alt") %}
+    <option value="{{ color }}" {% if selected_color|default("no-color") == color %}selected{% endif %}>{{ color }}</option>
+    {% endfor %}
 </optgroup>
