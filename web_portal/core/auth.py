@@ -2,10 +2,15 @@
 Module to assist with authentication
 """
 
+import logging
 from typing import TYPE_CHECKING
+
+from flask import request
 
 if TYPE_CHECKING:
     from collections.abc import Callable
+
+    from quart import Quart
 
 from functools import wraps
 from typing import Any
@@ -16,6 +21,8 @@ from quart import abort
 from web_portal.core.constants import PUBLIC_ACCOUNT_USERNAME, SystemSettingKeys
 from web_portal.core.helpers import get_system_setting
 from web_portal.database import models
+
+logger = logging.getLogger("web-portal")
 
 
 class AuthUserEnhanced(quart_auth.AuthUser):
@@ -98,3 +105,20 @@ def ensure_not_setup(func: Callable) -> Callable:
         return await func(*args, **kwargs)
 
     return wrapper
+
+
+def register_forward_auth(app: Quart):
+    async def before_request():
+        remote_user = request.headers.get("Remote-User")
+        if remote_user and remote_user != PUBLIC_ACCOUNT_USERNAME and current_user.auth_id is None:
+            user, is_new = await models.User.get_or_create(
+                defaults={"is_admin": False, "username": remote_user}, username=remote_user
+            )
+            if is_new:
+                logging.info(
+                    "created new user from provided forward-auth details, username='%s'",
+                    remote_user,
+                )
+            quart_auth.login_user(AuthUserEnhanced(str(user.id)))
+
+    app.before_request(before_request)

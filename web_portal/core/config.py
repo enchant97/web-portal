@@ -21,6 +21,8 @@ class Settings(BaseSettings):
     LOG_LEVEL: str = "INFO"
     SHOW_VERSION_NUMBER: bool = True
 
+    ENABLE_FORWARD_AUTH: bool = False
+
     ALLOW_BACKGROUND_IMAGE_UPLOAD: bool = True
 
     DISABLE_PLUGIN_LOADER: bool = False

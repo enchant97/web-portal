@@ -128,6 +128,7 @@ All configs shown here should be given as environment variables, or in a `.env` 
 | DISABLE_PLUGIN_LOADER | Disable the plugin loader                   | False                |
 | PLUGIN_SKIP_LIST      | Skip loading specific plugins               | -                    |
 | ALLOW_BACKGROUND_IMAGE_UPLOAD | Whether to allow image uploads | True |
+| ENABLE_FORWARD_AUTH | Whether to allow handling of forward-auth | False |
 
 > SECRET_KEY should be set, otherwise logins will be reset on server restart
 
@@ -139,6 +140,8 @@ This table shows how the `DB_URI` values should look:
 | :------- | :-------------------------------------- |
 | MySQL    | mysql://user:password@hostname/database |
 | SQLite   | sqlite://path-to-database.db            |
+
+Forward auth should not be enabled if your app can be accessed without going through a compatible reverse-proxy. Web Portal expects the header `Remote-User` to be set to the authenticated username.
 
 #### Core Plugin
 If you have the "core" plugin installed, which comes built-in to Web Portal unless you have removed it. These are the configs:

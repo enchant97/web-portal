@@ -9,7 +9,7 @@ from tortoise.contrib.quart import register_tortoise
 from web_health_checker.contrib import quart as health_check
 
 from web_portal import __version__
-from web_portal.core.auth import AuthUserEnhanced
+from web_portal.core.auth import AuthUserEnhanced, register_forward_auth
 from web_portal.core.config import get_settings
 from web_portal.core.constants import PUBLIC_ACCOUNT_USERNAME, SystemSettingKeys
 from web_portal.core.demo import do_demo_install
@@ -130,6 +130,9 @@ def create_app():
     logger.debug("registering tortoise-orm")
     # NOTE must be setup before any other hooks
     register_tortoise(app, db_url=get_settings().DB_URI, modules=db_models, generate_schemas=True)
+
+    if get_settings().ENABLE_FORWARD_AUTH:
+        register_forward_auth(app)
 
     app.before_serving(setup_internals)
 
