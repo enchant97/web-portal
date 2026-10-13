@@ -33,6 +33,12 @@
 
 <section class="panel">
     <h2>Add Link</h2>
+    <p>Here you can add a link to the widget out of the available links that an admin has added.</p>
+    {% if current_user.is_authenticated_admin %}
+    <p>As an administrator you can add a new links to this list via the <a href="{{ url_for('core.get_links_index') }}">Links Manager</a>.</p>
+    {% else %}
+    <p>If you would like a new link added to this list, please contact the administrator.</p>
+    {% endif %}
     <form action="{{ url_for('core.post_widget_add_link', widget_id=dash_widget_id, back_to=back_to_url) }}"
         method="post">
         <label for="core-widget-link-id">Link</label>
@@ -48,6 +54,7 @@
 
 <section class="panel">
     <h2>Added Links</h2>
+    <p>This list displays all links added to the current widget.</p>
     <table>
         <thead>
             <tr>

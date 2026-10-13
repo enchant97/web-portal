@@ -21,6 +21,12 @@
 {% else %}
 <section class="panel">
     <h2>Configure</h2>
+    <p>Here you can set which search engine to use for the widget.</p>
+    {% if current_user.is_authenticated_admin %}
+    <p>As an administrator you can add a new engines to this list via the <a href="{{ url_for('core.get_engines_index') }}">Engine Management</a>.</p>
+    {% else %}
+    <p>If you would like a new engine added to this list, please contact the administrator.</p>
+    {% endif %}
     <form action="{{ url_for('core.post_widget_update_search', widget_id=dash_widget_id, back_to=back_to_url) }}"
         method="post" class="panel">
         <label for="core-widget-search-engine-id">Search Engine</label>
