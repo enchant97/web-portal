@@ -36,9 +36,7 @@ async def render_widget(internal_name, _widget_id: int, config: dict | None) -> 
             raise ValueError("Unknown widget internal name")
 
 
-async def render_widget_edit_embed_html(
-    dash_widget_id: int, config: dict | None, back_to_url: str
-) -> str:
+async def render_widget_edit_embed_html(dash_widget_id: int, config: dict, back_to_url: str) -> str:
     content = config.get("content", "")
 
     return await render_template(
@@ -49,9 +47,7 @@ async def render_widget_edit_embed_html(
     )
 
 
-async def render_widget_edit_iframe(
-    dash_widget_id: int, config: dict | None, back_to_url: str
-) -> str:
+async def render_widget_edit_iframe(dash_widget_id: int, config: dict, back_to_url: str) -> str:
     iframe_src = config.get("src", "")
     iframe_height = config.get("height", 150)
 

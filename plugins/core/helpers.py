@@ -76,7 +76,7 @@ def _extract_upload_as_zip(upload_fp: Path, extract_into_fp: Path):
         zip_file.extractall(extract_into_fp)
 
 
-def extract_upload(upload_fp: str | Path, extract_into_fp: Path):
+def extract_upload(upload_fp: Path, extract_into_fp: Path):
     """
     extracts an uploaded compressed format,
     accepted formats are taken from VALID_UPLOAD_EXTENSIONS

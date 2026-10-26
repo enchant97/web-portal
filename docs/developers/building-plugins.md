@@ -37,10 +37,10 @@ from web_portal import plugin_api
 
 blueprint = Blueprint("my_plugin", __name__)
 
+
 @blueprint.get("/")
 @plugin_api.login_standard_required
-async def protected_route():
-    ...
+async def protected_route(): ...
 ```
 
 Don't:
@@ -52,10 +52,10 @@ from web_portal import plugin_api
 
 blueprint = Blueprint("my_plugin", __name__)
 
+
 @blueprint.get("/")
 @login_required
-async def protected_route():
-    ...
+async def protected_route(): ...
 ```
 
 ### Using Quart & Quart Auth
@@ -181,18 +181,13 @@ async def get_index():
     return await render_template("my_plugin/index.jinja")
 
 
-async def render_widget(
-        internal_name: str,
-        widget_id: int,
-        config: dict | None) -> str:
+async def render_widget(internal_name: str, widget_id: int, config: dict | None) -> str:
     return await render_template("my_plugin/my_widget.jinja")
 
 
 async def render_widget_edit(
-        internal_name: str,
-        dash_widget_id: int,
-        config: dict | None,
-        back_to_url: str) -> str:
+    internal_name: str, dash_widget_id: int, config: dict | None, back_to_url: str
+) -> str:
     return "No editor available"
 
 
@@ -201,7 +196,7 @@ PLUGIN_META = PluginMeta(
     human_name="My Plugin",
     widgets={
         "my_widget": "An amazing widget",
-        },
+    },
     db_models=[],
     blueprints=[blueprint],
     get_rendered_widget=render_widget,

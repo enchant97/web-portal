@@ -24,7 +24,7 @@ def _wait_for_ready(*, timeout=15, interval=0.5):
             with urlopen(f"{BASE_URL}/is-healthy", timeout=2) as resp:
                 if resp.status == HTTPStatus.OK:
                     return True
-        except (URLError, HTTPError):
+        except URLError, HTTPError:
             pass
         time.sleep(interval)
     raise TimeoutError("timed out before in ready state")

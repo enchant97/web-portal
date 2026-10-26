@@ -328,7 +328,7 @@ async def post_widget_customise_link(widget_id: int):
     if widget_details.plugin_name != "core" or widget_details.internal_name != "links":
         abort(400)
 
-    widget_config = widget_details.config
+    widget_config: dict | None = widget_details.config
 
     if widget_config is None:
         widget_config = {"links": []}

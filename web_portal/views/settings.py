@@ -240,7 +240,7 @@ async def post_add_background_image():
         abort(403)
     content_buff = (await request.files)["image-file"]
     content = None
-    image = Image.open(content_buff)
+    image = Image.open(content_buff.stream)
     mimetype = image.get_format_mimetype()
     if mimetype is None:
         await flash("unknown image file type", "error")
