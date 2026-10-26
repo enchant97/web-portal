@@ -1,8 +1,8 @@
 # syntax=docker/dockerfile:1.4
 ARG PYTHON_VERSION=3.14
-ARG ALPINE_VERSION=3.23
+ARG ALPINE_VERSION=3.24
 
-FROM python:${PYTHON_VERSION}-alpine as builder
+FROM python:${PYTHON_VERSION}-alpine${ALPINE_VERSION} as builder
 
     COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
 
