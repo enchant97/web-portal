@@ -65,7 +65,7 @@ Please select a tag/release for stable version of project. "main"
 
 
 ## Documentation
-More details and guides on installing can be found at: [webportal.docs.enchantedcode.co.uk/](https://web-portal.docs.enchantedcode.co.uk/) or view the markdown in the `docs` folder [here](docs/index.md).
+More details and guides on installing can be found at: [webportal.docs.enchantedcode.co.uk/](https://webportal.docs.enchantedcode.co.uk/) or view the markdown in the `docs` folder [here](docs/index.md).
 
 ## License
 This project is Copyright (c) 2026 Leo Spratt, licences shown below:
