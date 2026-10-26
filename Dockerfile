@@ -4,14 +4,26 @@ ARG ALPINE_VERSION=3.23
 
 FROM python:${PYTHON_VERSION}-alpine as builder
 
+    COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
+
     WORKDIR /app
+
+    ENV PYTHONUNBUFFERED=1
+    ENV UV_NO_DEV=1
+    ENV UV_PYTHON_DOWNLOADS=0
+    ENV UV_COMPILE_BYTECODE=1
+    ENV UV_LINK_MODE=copy
+
+    RUN --mount=type=cache,target=/root/.cache/uv \
+        --mount=type=bind,source=uv.lock,target=uv.lock \
+        --mount=type=bind,source=pyproject.toml,target=pyproject.toml \
+        uv sync --locked --no-install-project --no-editable
 
     COPY . .
 
-    RUN python -m venv .venv
-    ENV PATH="/app/.venv/bin:$PATH"
+    RUN --mount=type=cache,target=/root/.cache/uv \
+        uv sync --locked --no-editable
 
-    RUN --mount=type=cache,target=/root/.cache pip install .
 
 FROM python:${PYTHON_VERSION}-alpine${ALPINE_VERSION}
 

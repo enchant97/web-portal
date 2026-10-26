@@ -1,1 +1,3 @@
-__version__ = "2.5.0"
+from importlib.metadata import version
+
+__version__ = version("web-portal")

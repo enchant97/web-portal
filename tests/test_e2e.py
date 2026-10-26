@@ -32,11 +32,11 @@ def _wait_for_ready(*, timeout=15, interval=0.5):
 
 @pytest.fixture(scope="function", autouse=True)
 def before_each_after_each(page: Page):
-    hatch_bin = shutil.which("hatch")
-    if hatch_bin is None:
-        raise Exception("could not locate 'hatch' executable")
+    uv_bin = shutil.which("uv")
+    if uv_bin is None:
+        raise Exception("could not locate 'uv' executable")
     proc = Popen(
-        [hatch_bin, "run", "serve"],
+        [uv_bin, "run", "poe", "serve"],
         env={
             "DB_URI": "sqlite://:memory:",
             "SECRET_KEY": "testing_e2e",

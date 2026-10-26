@@ -2,61 +2,70 @@ name: Tests
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
   pull_request:
-    branches: [ main, next ]
+    branches: [main, next]
   workflow_dispatch:
 
 jobs:
   lint:
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout
-      uses: actions/checkout@v6
-    - name: Set up Python
-      uses: actions/setup-python@v6
-      with:
-        python-version: "3.14"
-    - name: Install Tools
-      run: |
-        pip install hatch
-    - name: Run Linter
-      run: |
-        hatch run dev:lint
+      - name: Checkout
+        uses: actions/checkout@v7
+      - name: Set up Python
+        uses: actions/setup-python@v7
+        with:
+          python-version-file: "pyproject.toml"
+      - name: Install uv
+        uses: astral-sh/setup-uv@07a047e608db84b3d8c06cd9a7c7dcc9c355c18e
+        with:
+          enable-cache: true
+      - name: Install the project
+        run: uv sync --locked --dev
+      - name: Run Linter
+        run: uv run poe lint-check
 
   unit-test:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v6
-    - name: Set up Python
-      uses: actions/setup-python@v6
-      with:
-        python-version: "3.14"
-    - name: Install Tools
-      run: |
-        pip install hatch
-    - name: Run Tests
-      run: |
-        hatch run dev:unit-test
+      - name: Checkout
+        uses: actions/checkout@v7
+      - name: Set up Python
+        uses: actions/setup-python@v7
+        with:
+          python-version-file: "pyproject.toml"
+      - name: Install uv
+        uses: astral-sh/setup-uv@07a047e608db84b3d8c06cd9a7c7dcc9c355c18e
+        with:
+          enable-cache: true
+      - name: Install the project
+        run: uv sync --locked --dev --group test
+      - name: Run Unit Tests
+        run: uv run poe test-unit
 
   e2e-test:
     timeout-minutes: 60
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v6
-    - name: Set up Python
-      uses: actions/setup-python@v6
-      with:
-        python-version: '3.14'
-    - name: Install Tools
-      run: |
-        pip install hatch
-        hatch run deps
-        hatch run dev:e2e-deps
-    - name: Run Tests
-      run: hatch run dev:e2e-test
-    - uses: actions/upload-artifact@v6
-      if: ${{ !cancelled() }}
-      with:
-        name: playwright-traces
-        path: test-results/
+      - name: Checkout
+        uses: actions/checkout@v7
+      - name: Set up Python
+        uses: actions/setup-python@v7
+        with:
+          python-version-file: "pyproject.toml"
+      - name: Install uv
+        uses: astral-sh/setup-uv@07a047e608db84b3d8c06cd9a7c7dcc9c355c18e
+        with:
+          enable-cache: true
+      - name: Install the project
+        run: uv sync --locked --dev --group test
+      - name: Install E2E Deps
+        run: uv run poe test-e2e-deps
+      - name: Run E2E Tests
+        run: uv run poe test-e2e
+      - uses: actions/upload-artifact@v7
+        if: ${{ !cancelled() }}
+        with:
+          name: playwright-traces
+          path: test-results/

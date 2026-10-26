@@ -1,16 +1,13 @@
 targets:
-  deps:
-    program:  "pipx"
-    args: ["install", "hatch"]
-  serve-app:
-    program: "hatch"
-    args: ["run", "serve"]
+  serve:
+    program: "uv"
+    args: ["run", "poe", "serve"]
   serve-docs:
-    program: "hatch"
-    args: ["run", "docs:serve"]
+    program: "uv"
+    args: ["run", "poe", "docs-serve"]
   test:
-    program: "hatch"
-    args: ["run", "dev:unit-test"]
+    program: "uv"
+    args: ["run", "poe", "test-unit"]
   fmt:
-    program: "hatch"
-    args: ["fmt"]
+    program: "uv"
+    args: ["run", "poe", "lint"]

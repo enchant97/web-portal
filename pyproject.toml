@@ -1,14 +1,14 @@
 [build-system]
-requires = ["hatchling"]
-build-backend = "hatchling.build"
+requires = ["uv_build>=0.13.5,<0.14"]
+build-backend = "uv_build"
 
 [project]
 name = "web-portal"
-dynamic = ["version"]
 description = ''
 readme = "README.md"
-requires-python = ">=3.14"
+requires-python = ">=3.14,<3.15"
 license = "AGPL-3.0-only"
+version = "2.5.0"
 keywords = []
 authors = [
   { name = "Leo Spratt", email = "contact@enchantedcode.co.uk" },
@@ -31,42 +31,42 @@ dependencies = [
   "pillow~=12.3.0"
 ]
 
-[tool.hatch.envs.default.scripts]
-serve = "hypercorn \"web_portal.main:create_app()\""
-deps = ""
-
-[tool.hatch.envs.docs]
-dependencies = [
-  "zensical~=0.0.69",
-  "mkdocstrings[python]~=1.0.6",
-]
-
-[tool.hatch.envs.docs.scripts]
-build = "zensical build --clean"
-serve = "zensical serve"
-
-[tool.hatch.envs.dev]
-dependencies = [
+[dependency-groups]
+test = [
   "pytest~=9.1.1",
   "pytest-asyncio~=1.4.0",
   "pytest-env~=1.7.1",
   "playwright~=1.63.0",
   "pytest-playwright~=0.10.0"
 ]
+docs = [
+  "zensical~=0.0.69",
+  "mkdocstrings[python]~=1.0.6",
+]
+dev = [
+  "poethepoet",
+]
 
-[tool.hatch.envs.dev.scripts]
-unit-test = "pytest ./tests/test_core"
-e2e-test = "pytest --tracing=retain-on-failure --browser chromium ./tests/test_e2e.py"
-e2e-deps = "playwright install --with-deps chromium"
-lint = "hatch fmt --check"
+[tool.uv]
+default-groups = ["dev"]
+
+[tool.uv.build-backend]
+module-root = ""
+
+[tool.poe.tasks]
+serve = "hypercorn \"web_portal.main:create_app()\""
+docs-build = "uv run --group docs --no-default-groups zensical build --clean"
+docs-serve = "uv run --group docs --no-default-groups zensical serve"
+test-unit = "uv run --group test pytest ./tests/test_core"
+test-e2e = "uv run --group test pytest --tracing=retain-on-failure --browser chromium ./tests/test_e2e.py"
+test-e2e-deps = "uv run --group test playwright install --with-deps chromium"
+lint-check = "uvx ruff format --check"
+lint = "uvx ruff format"
 
 [project.urls]
 Documentation = "https://webportal.docs.enchantedcode.co.uk/"
 Issues = "https://github.com/enchant97/web-portal/issues"
 Source = "https://github.com/enchant97/web-portal"
-
-[tool.hatch.version]
-path = "web_portal/__init__.py"
 
 [tool.ruff]
 line-length=100
