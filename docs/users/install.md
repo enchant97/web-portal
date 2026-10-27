@@ -2,7 +2,7 @@
 This sections will guide you though installing web-portal.
 
 - If following the Docker guide it is expected you have Docker and Docker Compose installed
-- If following without Docker you will need Python 3.14, older versions will not work
+- If following without Docker you will need the python version specified in the `pyproject.toml`, older versions will not work
 - Is recommended to install behind a reverse proxy like Nginx for custom routing and domain names.
 - Third-Party plugins may require additional configs to be set
 
@@ -39,7 +39,7 @@ This is an example config using SQLite (the default) which you can copy, as long
 services:
   web-portal:
     container_name: web-portal
-    image: ghcr.io/enchant97/web-portal:2.5
+    image: ghcr.io/enchant97/web-portal:2.6
     restart: unless-stopped
     volumes:
       - ./data:/app/data
@@ -64,7 +64,7 @@ While this is not the recommended method, it is possible and perfectly fine to r
 
 ```bash
 #!/usr/bin/env bash
-export WEB_PORTAL_VERSION=2.5.0
+export WEB_PORTAL_VERSION=2.6.0
 #
 # Setup Environment
 #

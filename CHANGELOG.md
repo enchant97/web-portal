@@ -4,6 +4,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.6.0] - 2026-10-27
+### Added
+- #155; SSO Integration with Forward Auth
+### Changed
+- replace deprecated methods
+- switch to uv allowing for reproducible builds, as we now have a lockfile.
+### Fixed
+- Update deps (held back tortoise-orm v1 as can't get it to work yet)
+- #158; missing await on plugin settings reads
+- #157; link editor resetting saved color and icon selections
+
 ## [2.5.0] - 2026-01-04
 ### Added
 - #148; Ability to set dashboard background images

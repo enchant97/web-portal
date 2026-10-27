@@ -8,7 +8,7 @@ description = ''
 readme = "README.md"
 requires-python = ">=3.14,<3.15"
 license = "AGPL-3.0-only"
-version = "2.5.0"
+version = "2.6.0"
 keywords = []
 authors = [
   { name = "Leo Spratt", email = "contact@enchantedcode.co.uk" },
