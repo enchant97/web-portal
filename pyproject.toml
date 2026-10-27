@@ -40,8 +40,8 @@ test = [
   "pytest-playwright~=0.10.0"
 ]
 docs = [
-  "zensical~=0.0.69",
-  "mkdocstrings[python]~=1.0.6",
+  "zensical~=0.0.73",
+  "mkdocstrings-python~=2.0",
 ]
 dev = [
   "poethepoet",

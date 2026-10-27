@@ -79,8 +79,8 @@ class PluginMeta:
         """
         Check whether the version requirement matches the given app version
 
-            :param app_version: The app version, given as a semantic version number
-            :return: Whether it is supported
+        :param app_version: The app version, given as a semantic version number
+        :return: Whether it is supported
         """
         try:
             ver_specifier = SpecifierSet(self.version_specifier)
@@ -237,11 +237,11 @@ async def get_plugin_system_setting(
     """
     Gets a plugin's system setting stored in db or from cache
 
-        :param plugin_name: The plugin's internal name
-        :param key: The setting's key
-        :param default: The default value to use if no setting was found, defaults to None
-        :param skip_cache: Whether the skip cache and load from db directly, defaults to False
-        :return: The loaded value or None
+    :param plugin_name: The plugin's internal name
+    :param key: The setting's key
+    :param default: The default value to use if no setting was found, defaults to None
+    :param skip_cache: Whether the skip cache and load from db directly, defaults to False
+    :return: The loaded value or None
     """
     full_key = make_system_setting_plugin_key(plugin_name, key)
     return await get_system_setting(full_key, default=default, skip_cache=skip_cache)
@@ -251,9 +251,9 @@ async def set_plugin_system_setting(plugin_name: str, key: str, value: Any, /):
     """
     Set a plugin's system setting stored in db and updates cache
 
-        :param plugin_name: The plugin's internal name
-        :param key: The setting's key
-        :param value: Value to update setting to
+    :param plugin_name: The plugin's internal name
+    :param key: The setting's key
+    :param value: Value to update setting to
     """
     full_key = make_system_setting_plugin_key(plugin_name, key)
     await set_system_setting(full_key, value)
@@ -263,8 +263,8 @@ async def remove_plugin_system_setting(plugin_name: str, key: str, /):
     """
     Removes a set plugin's system setting stored in db and cache
 
-        :param plugin_name: The plugin's internal name
-        :param key: The setting's key
+    :param plugin_name: The plugin's internal name
+    :param key: The setting's key
     """
     full_key = make_system_setting_plugin_key(plugin_name, key)
     await remove_system_setting(full_key)
@@ -274,8 +274,8 @@ async def get_widget_owner_id(widget_id: int, /) -> int:
     """
     Get a widget's owner id
 
-        :param widget_id: The widgets id
-        :return: The owner id
+    :param widget_id: The widgets id
+    :return: The owner id
     """
     widget = await app_models.DashboardWidget.get(id=widget_id).prefetch_related("dashboard")
     return widget.dashboard.owner_id
@@ -285,8 +285,8 @@ async def get_widget_details(widget_id: int, /) -> WidgetDetails:
     """
     Get a widgets details
 
-        :param widget_id: The widgets id
-        :return: The details
+    :param widget_id: The widgets id
+    :return: The details
     """
     widget = await app_models.DashboardWidget.get(id=widget_id).prefetch_related(
         "widget",
@@ -304,8 +304,8 @@ async def set_widget_config(widget_id: int, config: Any | None, /):
     """
     Set a widgets config
 
-        :param widget_id: The widgets id
-        :param config: The config to update to
+    :param widget_id: The widgets id
+    :param config: The config to update to
     """
     widget = await app_models.DashboardWidget.get(id=widget_id)
     widget.config = config
@@ -319,8 +319,8 @@ def get_plugin_data_path(plugin_name: str) -> Path:
     path will be created if not exists
     when this function is run
 
-        :param plugin_name: The plugin's internal name
-        :return: The data path
+    :param plugin_name: The plugin's internal name
+    :return: The data path
     """
     data_path = get_settings().DATA_PATH / "plugins" / plugin_name
     data_path.mkdir(parents=True, exist_ok=True)

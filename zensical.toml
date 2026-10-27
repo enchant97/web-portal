@@ -56,4 +56,4 @@ paths = ["web_portal"]
 [project.plugins.mkdocstrings.handlers.python.options]
 docstring_style = "sphinx"
 inherited_members = true
-show_source = false
+show_source = true
